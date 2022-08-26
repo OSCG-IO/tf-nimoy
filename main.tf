@@ -21,6 +21,41 @@ resource "aws_instance" "node1-1" {
   tags = {
     Name = "node1-1"
   }
+   user_data = <<EOF
+#! /bin/bash
+  echo "### Set HOSTNAME"
+  echo 'node1-1' > /etc/hostname
+
+  echo "### Update the OS w/ Git & Python3"
+  sudo apt update -y
+  sudo apt install -y wget curl git python3
+
+  echo "Setup /db"
+  sudo mkdir /db
+  sudo chown ubuntu:ubuntu /db
+
+  echo "### Configure .bashrc"
+  echo 'export PATH=$PATH:/db/oscg/pg14/bin'     >> /home/ubuntu/.bashrc
+
+  echo "### Installing IO"
+  cd /db
+  python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"
+  chown -R ubuntu:ubuntu oscg
+  cd oscg
+  su - ubuntu -c "./io install pg14 --start : tune pg14 : install spock"
+
+  echo "### Generating SSH key"
+  cd /home/ubuntu
+  echo -e "\n\n\n" | ssh-keygen -t rsa -f /home/ubuntu/.ssh/id_rsa.pub
+
+  touch /home/ubuntu/.ssh/authorized_keys
+  chmod 600 /home/ubuntu/.ssh/authorized_keys
+  echo '' >> /home/ubuntu/.ssh/authorized_keys
+
+  echo "### rebooting to get new HOSTNAME"
+  sudo reboot
+EOF
+
 }
 
 
@@ -34,9 +69,11 @@ resource "aws_instance" "driver1-1" {
   }
  user_data = <<EOF
 #! /bin/bash
-  echo "### Update the OS w/ Java & Python3"
+  echo "### Set HOSTNAME"
+  echo 'driver1-1' > /etc/hostname
+
+  echo "### Update the OS w/ Git, Java & Python3"
   sudo apt update -y
-  sudo apt upgrade -y
   sudo apt install -y wget git openjdk-11-jdk python3 python3-dev python3-pip
   j_home=/usr/lib/jvm/java-11-openjdk
   arch=`arch`
@@ -46,6 +83,8 @@ resource "aws_instance" "driver1-1" {
 
   echo "### Install Paralell SSH"
   sudo pip3 install git+https://github.com/lilydjwg/pssh
+
+  sudo su - ubuntu
 
   echo "Install NIMOY"
   cd /home/ubuntu
@@ -57,7 +96,8 @@ resource "aws_instance" "driver1-1" {
 
   echo "Install ANT"
   cd /home/ubuntu
-  ANT=apache-ant-1.9.16-bin
+  ANT=apache-ant-1.9.16-bin'
+  a_home=/home/ubuntu/$ANT
   rm -f $ANT.tar.gz
   wget http://mirror.olnevhost.net/pub/apache/ant/binaries/$ANT.tar.gz
   tar xf $ANT.tar.gz
@@ -69,12 +109,13 @@ resource "aws_instance" "driver1-1" {
   echo 'export ANT_HOME=$HOME/apache-ant-1.9.16' >> /home/ubuntu/.bashrc
   echo 'export PATH=$ANT_HOME/bin:$PATH'         >> /home/ubuntu/.bashrc
   echo 'export RMT=$HOME/test/nimoy/remote'      >> /home/ubuntu/.bashrc
+  echo 'export PATH=$PATH:$HOME/oscg/pg14/bin'   >> /home/ubuntu/.bashrc
 
   echo "### Build nimoy locally"
   source .bashrc
   cd /home/ubuntu/test/nimoy/remote
-  ant clean
-  ant
+  $a_home/ant clean
+  $a_home/ant
 
   echo "### Installing IO"
   cd /home/ubuntu
@@ -85,6 +126,13 @@ resource "aws_instance" "driver1-1" {
   echo "### Generating SSH key"
   cd /home/ubuntu
   echo -e "\n\n\n" | ssh-keygen -t rsa
+
+  touch .ssh/authorized_keys
+  chmod 600 .ssh/authorized_keys
+  echo '' >> .ssh/authorized_keys
+
+  echo "### rebooting to get new HOSTNAME"
+  sudo reboot
 EOF
 
 }
