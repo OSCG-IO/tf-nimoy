@@ -1,3 +1,4 @@
+
 terraform {
   required_providers {
     aws = {
@@ -9,22 +10,28 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
-provider "aws" {
-  region  = "us-west-2"
+locals {
+  driver = format("%s%s", "driver", var.nn)
+  node   = format("%s%s", "node",   var.nn)
 }
 
-resource "aws_instance" "node1-1" {
+
+provider "aws" {
+  region  = var.rgn
+}
+
+resource "aws_instance"  "node" {
   ami           = "ami-0ee02425a4c7e78bb"
-  instance_type = "c6g.large"
-  availability_zone = "us-west-2c"
-  key_name = "aws-oregon-key"
+  instance_type = var.type
+  availability_zone = var.az
+  key_name = var.key
   tags = {
-    Name = "node1-1"
+    Name = local.node
   }
    user_data = <<EOF
 #! /bin/bash
   echo "### Set HOSTNAME"
-  echo 'node1-1' > /etc/hostname
+  echo "${local.node}" > /etc/hostname
 
   echo "### Update the OS w/ Git & Python3"
   sudo apt update -y
@@ -59,18 +66,18 @@ EOF
 }
 
 
-resource "aws_instance" "driver1-1" {
+resource "aws_instance" "driver" {
   ami           = "ami-0ee02425a4c7e78bb"
-  instance_type = "c6g.large"
-  availability_zone = "us-west-2c"
-  key_name = "aws-oregon-key"
+  instance_type = var.type
+  availability_zone = var.az
+  key_name = var.key
   tags = {
-    Name = "driver1-1"
+    Name = local.driver
   }
  user_data = <<EOF
 #! /bin/bash
   echo "### Set HOSTNAME"
-  echo 'driver1-1' > /etc/hostname
+  echo "${local.driver}" > /etc/hostname
 
   echo "### Update the OS w/ Git, Java & Python3"
   sudo apt update -y
