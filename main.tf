@@ -21,7 +21,7 @@ provider "aws" {
 }
 
 resource "aws_instance"  "node" {
-  ami           = "ami-0ee02425a4c7e78bb"
+  ami           = var.image
   instance_type = var.type
   availability_zone = var.az
   key_name = var.key
@@ -48,8 +48,7 @@ resource "aws_instance"  "node" {
   cd /db
   python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"
   chown -R ubuntu:ubuntu oscg
-  cd oscg
-  su - ubuntu -c "./io install pg14 --start : tune pg14 : install spock"
+  su - ubuntu -c "/db/oscg/io install pg14 --start : tune pg14 : install spock"
 
   echo "### Generating SSH key"
   cd /home/ubuntu
@@ -67,7 +66,7 @@ EOF
 
 
 resource "aws_instance" "driver" {
-  ami           = "ami-0ee02425a4c7e78bb"
+  ami           = var.image
   instance_type = var.type
   availability_zone = var.az
   key_name = var.key
@@ -103,7 +102,7 @@ resource "aws_instance" "driver" {
 
   echo "Install ANT"
   cd /home/ubuntu
-  ANT=apache-ant-1.9.16-bin'
+  ANT=apache-ant-1.9.16-bin
   a_home=/home/ubuntu/$ANT
   rm -f $ANT.tar.gz
   wget http://mirror.olnevhost.net/pub/apache/ant/binaries/$ANT.tar.gz
@@ -127,8 +126,8 @@ resource "aws_instance" "driver" {
   echo "### Installing IO"
   cd /home/ubuntu
   python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"
-  cd oscg
-  ./io install pg14 --start : stop pg14 
+  chown -R ubuntu:ubuntu oscg
+  su - ubuntu -c "/home/ubuntu/oscg/io install pg14"
 
   echo "### Generating SSH key"
   cd /home/ubuntu
