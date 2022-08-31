@@ -6,15 +6,28 @@ fi
 
 source env.sh
 
-setNodesCommon () {
-  echo "variable \"nn\" { default = \"1-1\" }"     >  $NN1/variables.tf
-  echo "variable \"type\" { default = \"$TYPE\" }" >> $NN1/variables.tf
+setNodesVars () {
+  echo "## setNodesVar() for NN & TYPE=$TYPE"
 
-  echo "variable \"nn\" { default = \"2-1\" }"     >  $NN2/variables.tf
-  echo "variable \"type\" { default = \"$TYPE\" }" >> $NN2/variables.tf
+  echo "variable \"nn\" { default = \"1-1\" }"     >  $NN1/variables.node.tf
+  echo "variable \"type\" { default = \"$TYPE\" }" >> $NN1/variables.node.tf
 
-  echo "variable \"nn\" { default = \"3-1\" }"     >  $NN3/variables.tf
-  echo "variable \"type\" { default = \"$TYPE\" }" >> $NN3/variables.tf
+  echo "variable \"nn\" { default = \"2-1\" }"     >  $NN2/variables.node.tf
+  echo "variable \"type\" { default = \"$TYPE\" }" >> $NN2/variables.node.tf
+
+  echo "variable \"nn\" { default = \"3-1\" }"     >  $NN3/variables.node.tf
+  echo "variable \"type\" { default = \"$TYPE\" }" >> $NN3/variables.node.tf
+}
+
+
+copyLocation() {
+  echo "## copyLocation($1, $2, $3)"
+  cld="$1" 
+  n="$2"
+  nn="$3"
+  
+  lctn=$cld-$n.tf
+  cp locations/$lctn  $nn/variables.$lctn
 }
 
 cpNodes () {
@@ -23,35 +36,56 @@ cpNodes () {
   cp $1 $NN3
 }
 
-initNodesDir () {
-  echo "### Initialize 3 node cluster of Drivers & Nodes"
+setupNodesDir () {
+  echo ""
+  echo "# destroy any nodes that may be present"
   destroy="destroy -auto-approve"
   if [ -d $NN1 ]; then
-    ./TF.sh n1 "$destroy"
+     echo "## destroy n1 $N1"  
+    ./TF.sh n1 "$destroy" 2> /dev/null
   fi
   if [ -d $NN2 ]; then
-    ./TF.sh n2 "$destroy"
+     echo "## destroy n2 $N2" 
+    ./TF.sh n2 "$destroy" 2> /dev/null
   fi
   if [ -d $NN3 ]; then
-    ./TF.sh n3 "$destroy"
+     echo "## destroy n3 $N3" 
+    ./TF.sh n3 "$destroy" 2> /dev/null
   fi
+  sleep 1
 
+  echo ""
+  echo "# create new nodes/nn directory tree" 
   rm -rf $NN
   mkdir -p $NN1
   mkdir -p $NN2
   mkdir -p $NN3
+  sleep 1
 
+  echo "## copying common terraform files"
   cpNodes main.tf
   cpNodes outputs.tf 
+  sleep 1
+
+  echo "## copying IO variables file"
+  cpNodes variables.IO.tf
+  sleep 1
 }
 
 
-echo "### MAINLINE for setupTF.sh"
+echo "###### Setup Multi-Region Demo Cluster ######"
+echo "# n1: $N1"
+echo "# n2: $N2"
+echo "# n3: $N3"
 
-initNodesDir
+setupNodesDir
 
-cp variables.$N1.tf   $NN1
-cp variables.$N2.tf   $NN2
-cp variables.$N3.tf   $NN3
+echo ""
+echo "# copy location files"
+copyLocation aws $N1 $NN1
+copyLocation aws $N2 $NN2
+copyLocation aws $N3 $NN3
 
-setNodesCommon
+echo ""
+echo "# create node specfic variables"
+setNodesVars
