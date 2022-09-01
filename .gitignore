@@ -1,2 +1,6 @@
 nodes
 .terraform
+*.log
+my.out
+hosts
+ansible_hosts

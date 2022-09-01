@@ -11,29 +11,40 @@ if [ "$#" -ne 2 ]; then
   exit 1
 fi
 
-## set -x
+runAction() {
+  nd="$1"
+  ndActn="$2"
+  ndDir="$3"
+  valid_action=True 
+  echo " "
+  echo "## $nd ##"
+  cd $ndDir
+#  if [ "$ndActn" == "destroy" ]; then
+#    parms="-input=false -auto-approve"
+#    echo "running $ndActn $parms ASNYC"
+#    terraform $ndActn $parms >> $PWD/out.log  2>&1 &
+#  else
+    terraform $ndActn
+#  fi
+}
+
+############## MAINLINE ##################
+#set -x
 
 nn="$1"
 action="$2"
-
 valid_action=False
 
 if [ "$nn" == "n1" ] || [ "$nn" == "all" ]; then
-  valid_action=True 
-  cd $NN1
-  terraform $action
+  runAction n1 $action $NN1
 fi
 
 if [ "$nn" == "n2" ] || [ "$nn" == "all" ]; then
-  valid_action=True 
-  cd $NN2
-  terraform $action
+  runAction n2 $action $NN2
 fi
 
 if [ "$nn" == "n3" ] || [ "$nn" == "all" ]; then
-  valid_action=True 
-  cd $NN3
-  terraform $action
+  runAction n3 $action $NN3
 fi
 
 if [ "$valid_action" == "False" ]; then

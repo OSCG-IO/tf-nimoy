@@ -8,8 +8,8 @@ TYPE=c6g.medium
 ## now:    oregon, montreal, dublin, sydney
 ## soon:   dallas, osaka
 N1=oregon
-N2=dublin
-N3=sydney
+N2=oregon
+N3=oregon
 
 creds="./aws-creds.sh"
 if [ -f "$creds" ]; then

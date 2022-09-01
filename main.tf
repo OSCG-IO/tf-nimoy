@@ -35,7 +35,7 @@ resource "aws_instance"  "node" {
 
   echo "### Update the OS w/ Git & Python3"
   sudo apt update -y
-  sudo apt install -y wget curl git python3
+  sudo apt install -y wget curl git python3 net-tools
 
   echo "Setup /db"
   sudo mkdir /db
@@ -80,7 +80,7 @@ resource "aws_instance" "driver" {
 
   echo "### Update the OS w/ Git, Java & Python3"
   sudo apt update -y
-  sudo apt install -y wget git openjdk-11-jdk python3 python3-dev python3-pip
+  sudo apt install -y wget git openjdk-11-jdk python3 python3-dev python3-pip net-tools ansible
   j_home=/usr/lib/jvm/java-11-openjdk
   arch=`arch`
   if [ "$arch" == "aarch64" ]; then
