@@ -133,9 +133,9 @@ resource "aws_instance" "driver" {
   cd /home/ubuntu
   echo -e "\n\n\n" | ssh-keygen -t rsa
 
-  touch .ssh/authorized_keys
-  chmod 600 .ssh/authorized_keys
-  echo '' >> .ssh/authorized_keys
+  echo "### Generating SSH key"
+  cd /home/ubuntu
+  echo -e "\n\n\n" | ssh-keygen -t rsa -f /home/ubuntu/.ssh/id_rsa.pub
 
   echo "### rebooting to get new HOSTNAME"
   sudo reboot

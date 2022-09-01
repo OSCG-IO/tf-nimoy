@@ -1,0 +1,1 @@
+cat hosts >> /etc/hosts

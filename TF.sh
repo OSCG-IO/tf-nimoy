@@ -36,15 +36,15 @@ action="$2"
 valid_action=False
 
 if [ "$nn" == "n1" ] || [ "$nn" == "all" ]; then
-  runAction n1 $action $NN1
+  runAction n1 "$action" $NN1
 fi
 
 if [ "$nn" == "n2" ] || [ "$nn" == "all" ]; then
-  runAction n2 $action $NN2
+  runAction n2 "$action" $NN2
 fi
 
 if [ "$nn" == "n3" ] || [ "$nn" == "all" ]; then
-  runAction n3 $action $NN3
+  runAction n3 "$action" $NN3
 fi
 
 if [ "$valid_action" == "False" ]; then
