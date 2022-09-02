@@ -3,7 +3,7 @@
   hosts: hosts_to_add_key
   vars:
     - status : "present"
-    - key : "~/.ssh/id_rsa.pub"
+    - key : "/home/ubuntu/.ssh/id_rsa.pub"
 
   tasks:
 

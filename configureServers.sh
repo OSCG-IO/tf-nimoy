@@ -20,6 +20,8 @@ ssh -i $key $usr@$d1 'mkdir keys'
 scp -i $key ~/keys/aws-oregon-key.pem $usr@$d1:keys/.
 ssh -i $key $usr@$d1 'echo -e "\n\n\n" | ssh-keygen -t rsa'
 
-ssh -i $key $usr@$d1 'ansible-playbook add-key.yml -i ansible_hosts --user ubuntu --key-file ~/keys/aws-oregon-key.pem -e "key=~/.ssh/id_rsa.pub"'
+ssh -i $key $usr@$d1 'ansible-playbook add-key.yml -i ansible_hosts --user ubuntu --key-file ~/keys/aws-oregon-key.pem -e "key=/home/ubuntu/.ssh/id_rsa.pub"'
 ssh -i $key $usr@$d1 'sudo ./catHosts.sh'
+
+ssh -i $key $usr@$d1 'cd test/nimoy/remote/benchmarksql; /home/ubuntu/apache-ant-1.9.16/bin/ant'
 

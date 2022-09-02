@@ -44,20 +44,6 @@ resource "aws_instance"  "node" {
   echo "### Configure .bashrc"
   echo 'export PATH=$PATH:/db/oscg/pg14/bin'     >> /home/ubuntu/.bashrc
 
-  echo "### Installing IO"
-  cd /db
-  python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"
-  chown -R ubuntu:ubuntu oscg
-  su - ubuntu -c "/db/oscg/io install pg14 --start : tune pg14 : install spock"
-
-  echo "### Generating SSH key"
-  cd /home/ubuntu
-  echo -e "\n\n\n" | ssh-keygen -t rsa -f /home/ubuntu/.ssh/id_rsa.pub
-
-  touch /home/ubuntu/.ssh/authorized_keys
-  chmod 600 /home/ubuntu/.ssh/authorized_keys
-  echo '' >> /home/ubuntu/.ssh/authorized_keys
-
   echo "### rebooting to get new HOSTNAME"
   sudo reboot
 EOF
@@ -97,13 +83,13 @@ resource "aws_instance" "driver" {
   rm -rf test
   mkdir -p test/data
   cd test
-  ##git clone https://github.com/OSCG-IO/io
   git clone https://github.com/OSCG-IO/nimoy
+  cd /home/ubuntu
+  chown -R ubuntu:ubuntu test
 
   echo "Install ANT"
   cd /home/ubuntu
   ANT=apache-ant-1.9.16-bin
-  a_home=/home/ubuntu/$ANT
   rm -f $ANT.tar.gz
   wget http://mirror.olnevhost.net/pub/apache/ant/binaries/$ANT.tar.gz
   tar xf $ANT.tar.gz
@@ -116,26 +102,6 @@ resource "aws_instance" "driver" {
   echo 'export PATH=$ANT_HOME/bin:$PATH'         >> /home/ubuntu/.bashrc
   echo 'export RMT=$HOME/test/nimoy/remote'      >> /home/ubuntu/.bashrc
   echo 'export PATH=$PATH:$HOME/oscg/pg14/bin'   >> /home/ubuntu/.bashrc
-
-  echo "### Build nimoy locally"
-  source .bashrc
-  cd /home/ubuntu/test/nimoy/remote
-  $a_home/ant clean
-  $a_home/ant
-
-  echo "### Installing IO"
-  cd /home/ubuntu
-  python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"
-  chown -R ubuntu:ubuntu oscg
-  su - ubuntu -c "/home/ubuntu/oscg/io install pg14"
-
-  echo "### Generating SSH key"
-  cd /home/ubuntu
-  echo -e "\n\n\n" | ssh-keygen -t rsa
-
-  echo "### Generating SSH key"
-  cd /home/ubuntu
-  echo -e "\n\n\n" | ssh-keygen -t rsa -f /home/ubuntu/.ssh/id_rsa.pub
 
   echo "### rebooting to get new HOSTNAME"
   sudo reboot

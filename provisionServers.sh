@@ -36,7 +36,7 @@ cpNodes () {
   cp $1 $NN3
 }
 
-setupNodesDir () {
+destroyNodes () {
   echo ""
   echo "# destroy any nodes that may be present"
   destroy="destroy -auto-approve"
@@ -53,6 +53,11 @@ setupNodesDir () {
     ./TF.sh n3 "$destroy" 2> /dev/null
   fi
   sleep 1
+
+}
+
+setupNodesDir () {
+  ##destroyNodes
 
   echo ""
   echo "# create new nodes/nn directory tree" 
@@ -89,3 +94,13 @@ copyLocation aws $N3 $NN3
 echo ""
 echo "# create node specfic variables"
 setNodesVars
+
+./TF.sh all init
+./TF.sh all "apply -auto-approve"
+
+echo ""
+date
+echo "sleeping for a bit so servers can run init & reboot"
+yes | pv -SL1 -F 'Resuming in %e' -s 150 > /dev/null
+./configureServers.sh
+
