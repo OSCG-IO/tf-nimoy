@@ -30,29 +30,23 @@ On OSX run:
 
 ### 4.) Change the version of pgXX to use in 'variables.IO.tf'
 
+### 5.) The provisioning & cloud-init info for setting up the 'driver' & 'node' vm's is in 'main.tf'
 
-### 5.) run './provisionServers.sh' and it will do the needful for you as follows:
+### 6.) run './provisionServers.sh' and it will setupp a multi-region demo cluster as follows:
 
-     #### Setup Multi-Region Demo Cluster ######
-     ##### create new nodes/nn directory tree
-       ## copying common terraform files
-       ## copying IO variables file
-
-       # copy location files
-       # create node specfic variables
-      ## setNodesVar() for NN & TYPE=c6g.medium
+     # create new nodes/nn directory tree
+        ## copying common terraform files
+        ## copying IO variables file
+        ## copy location files
+        ## create node specfic variables
+        ## setNodesVar() for NN & TYPE=c6g.medium
  
     # run 'terraform init & apply' to create driver & db node in each location
-    # sleeping for a bit so servers can run init & reboot
-
-    # run './TF.sh all output' to create the file 'shit.out'
-
-    # run 'python3 make_hosts_file.py' to create the 'hosts' & 'ansible_hosts' files
-
-    # copy keys files (ansible_hosts, add-key.yml, hosts, & catHosts.sh) to 'driver1-1'
-
+    # sleep for a couple mins so servers can run init & reboot
+    # run './TF.sh all output' to show the Output variables for all the nodes ibn the 'my.out' files
+    # run 'python3 make_hosts_file.py' to create the 'hosts' & 'ansible_hosts' files from the 'my.out' file
+    # copy ansible input files (ansible_hosts, add-key.yml, hosts, & catHosts.sh) to 'driver1-1')
     # generate an ssh key pair on driver1-1
-
     # use ansible playbook 'add-key.yml' to allow for passwordless ssh between 'driver1-1' and all other drivers & nodes.
     
 
