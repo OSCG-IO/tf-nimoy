@@ -1,0 +1,26 @@
+dump_dir=/db/dump_dir
+this_dir=`pwd`
+RUN=$this_dir/benchmarksql/run
+PSSH="pssh -i -h hosts"
+PSCP="pscp -h hosts"
+pgXX=pg14
+IO_DIR=/home/ubuntu/oscg
+io=$IO_DIR/io
+PG=$IO_DIR/$pgXX
+psql="$PG/bin/psql -U postgres"
+
+
+
+export DRIVER1=$ip_d1
+export NODE1=$ip_n1
+export NODE1_IP=$ip_n1
+
+export DRIVER2=$ip_d2
+export NODE2=$ip_n2
+export NODE2_IP=$ip_n2
+
+export DRIVER3=$ip_d3
+export NODE3=$ip_n3
+export NODE3_IP=$ip_n3
+
+
