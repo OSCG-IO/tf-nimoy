@@ -4,3 +4,4 @@ nodes
 my.out
 hosts
 ansible_hosts
+hosts.new
