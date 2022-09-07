@@ -1,3 +1,8 @@
+setupEtcHosts () {
+  $SCP hosts          $usr@$1:.
+  $SCP catHosts.sh    $usr@$1:.
+  $SSH $usr@$1 'sudo ./catHosts.sh'
+}
 
 set -x
 
@@ -10,6 +15,7 @@ python3 make_hosts_file.py
 cp hosts.base.osx hosts.new
 cat hosts >> hosts.new
 sudo cp hosts.new  /etc/hosts
+rm -f ~/.ssh/known_hosts
 d1=driver1-1
 
 key="~/keys/dl-m1book-key.pem"
@@ -19,8 +25,13 @@ SCP="scp -o StrictHostKeyChecking=no"
 
 $SCP -i $key  ansible_hosts  $usr@$d1:.
 $SCP -i $key  add-key.yml    $usr@$d1:.
-$SCP -i $key  hosts          $usr@$d1:.
-$SCP -i $key  catHosts.sh    $usr@$d1:.
+
+setupEtcHosts driver1-1
+setupEtcHosts node1-1
+setupEtcHosts driver2-1
+setupEtcHosts node2-1
+setupEtcHosts driver3-1
+setupEtcHosts node3-1
 
 $SSH -i $key $usr@$d1 'mkdir keys'
 $SCP -i $key ~/keys/dl-m1book-key.pem  $usr@$d1:keys/.
