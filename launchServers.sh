@@ -98,10 +98,16 @@ setNodesVars
 ./TF.sh all init
 ./TF.sh all "apply -auto-approve"
 
-echo ""
-date
-echo "sleeping for a bit so servers can run init & reboot"
-yes | pv -SL1 -F 'Resuming in %e' -s 150 > /dev/null
+echo " "
+echo "configuring localhost"
+./updateLocalhost.sh
 
-echo "Now run ./configureServers.sh"
+echo ""
+echo "standing by before reboot..."
+echo "  run './configServers.sh' after the reboot of this localhost"
+
+echo "sleeping for a couple mins so servers can init & reboot"
+yes | pv -SL1 -F 'Resuming in %e' -s 120 > /dev/null
+
+sudo reboot
 

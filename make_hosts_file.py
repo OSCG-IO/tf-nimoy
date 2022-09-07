@@ -4,6 +4,7 @@ f = open('my.out', 'r')
 fa = open('ansible_hosts', 'w')
 fh = open('hosts', 'w')
 
+fh.write("" + os.linesep)
 fa.write("[hosts_to_add_key]" + os.linesep)
 
 Lines = f.readlines()
@@ -35,7 +36,7 @@ for line in Lines:
         fh.write(ii +  "   driver" + n + "-1" + os.linesep)
         break
 
-
+fh.write("" + os.linesep)
 fa.write(os.linesep + "[hosts_to_add_key:vars]" + os.linesep + \
    'ansible_ssh_common_args="-o StrictHostKeyChecking=no"' + os.linesep)
 
