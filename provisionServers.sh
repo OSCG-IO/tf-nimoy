@@ -102,5 +102,6 @@ echo ""
 date
 echo "sleeping for a bit so servers can run init & reboot"
 yes | pv -SL1 -F 'Resuming in %e' -s 150 > /dev/null
-./configureServers.sh
+
+echo "Now run ./configureServers.sh"
 
