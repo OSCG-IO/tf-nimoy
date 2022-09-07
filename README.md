@@ -11,8 +11,8 @@ On OSX run:
 
 ### 1.) Add your AWS credentials to a local file called 'aws-creds.sh' to look like this:
 
-    export AWS_ACCESS_KEY_ID=AKIAYPZPKNVEACEPPY6R
-    export AWS_SECRET_ACCESS_KEY=HWW0i5Ef+rp9WzZE7YQMbntlXhbuzbpPMwocxwPH
+    export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
+    export AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 ### 2.) Configure the top of the 'env.sh' with the machine type and locations
 
@@ -43,7 +43,7 @@ On OSX run:
  
     # run 'terraform init & apply' to create driver & db node in each location
     # sleep for a couple mins so servers can run init & reboot
-    # run './TF.sh all output' to show the Output variables for all the nodes ibn the 'my.out' files
+    # run './TF.sh all output' to show the Output variables for all the nodes in the 'my.out' file
     # run 'python3 make_hosts_file.py' to create the 'hosts' & 'ansible_hosts' files from the 'my.out' file
     # copy ansible input files (ansible_hosts, add-key.yml, hosts, & catHosts.sh) to 'driver1-1')
     # generate an ssh key pair on driver1-1
