@@ -30,7 +30,7 @@ $SSH -i $key $usr@$d1 'echo -e "\n\n\n" | ssh-keygen -t rsa'
 $SSH -i $key $usr@$d1 'ansible-playbook add-key.yml -i ansible_hosts --user ubuntu --key-file ~/keys/dl-m1book-key.pem  -e "key=/home/ubuntu/.ssh/id_rsa.pub"'
 $SSH -i $key $usr@$d1 'sudo ./catHosts.sh'
 
-bs='cd test/nimoy/remote/benchmarksql; /home/ubuntu/apache-ant-1.9.16/bin/ant'
+bs='cd test/tf-nimoy/remote/benchmarksql; /home/ubuntu/apache-ant-1.9.16/bin/ant'
 io='python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; cd oscg; ./io install pg14; echo "*:5432:*:postgres:password" >> /home/ubuntu/.pgpass; chmod 600 /home/ubuntu/.pgpass'
 
 $SSH $usr@driver1-1 "$bs"

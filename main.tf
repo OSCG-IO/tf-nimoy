@@ -73,8 +73,8 @@ resource "aws_instance" "driver" {
     j_home=$j_home-arm64
   fi
 
-  echo "### Install Paralell SSH"
-  sudo pip3 install git+https://github.com/lilydjwg/pssh
+  ##echo "### Install Paralell SSH"
+  ##sudo pip3 install git+https://github.com/lilydjwg/pssh
 
   sudo su - ubuntu
 
@@ -83,7 +83,7 @@ resource "aws_instance" "driver" {
   rm -rf test
   mkdir -p test/data
   cd test
-  git clone https://github.com/OSCG-IO/nimoy
+  git clone https://github.com/OSCG-IO/tf-nimoy
   cd /home/ubuntu
   chown -R ubuntu:ubuntu test
 
@@ -100,7 +100,7 @@ resource "aws_instance" "driver" {
   echo 'export PATH=$PATH:$JAVA_HOME/bin'        >> /home/ubuntu/.bashrc
   echo 'export ANT_HOME=$HOME/apache-ant-1.9.16' >> /home/ubuntu/.bashrc
   echo 'export PATH=$ANT_HOME/bin:$PATH'         >> /home/ubuntu/.bashrc
-  echo 'export RMT=$HOME/test/nimoy/remote'      >> /home/ubuntu/.bashrc
+  echo 'export RMT=$HOME/test/tf-nimoy/remote'   >> /home/ubuntu/.bashrc
   echo 'export PATH=$PATH:$HOME/oscg/pg14/bin'   >> /home/ubuntu/.bashrc
 
   echo "### rebooting to get new HOSTNAME"
