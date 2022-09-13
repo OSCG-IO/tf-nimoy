@@ -35,7 +35,8 @@ resource "aws_instance"  "node" {
 
   echo "### Update the OS w/ Git & Python3"
   sudo apt update -y
-  sudo apt install -y wget curl git python3 net-tools
+  sudo apt upgrade -y
+  sudo apt install -y wget curl python3 net-tools golang
 
   echo "Setup /db"
   sudo mkdir /db
@@ -72,9 +73,6 @@ resource "aws_instance" "driver" {
   if [ "$arch" == "aarch64" ]; then
     j_home=$j_home-arm64
   fi
-
-  ##echo "### Install Paralell SSH"
-  ##sudo pip3 install git+https://github.com/lilydjwg/pssh
 
   sudo su - ubuntu
 
