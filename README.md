@@ -50,6 +50,9 @@ On OSX run:
     # use ansible playbook 'add-key.yml' to allow for passwordless ssh between 'driver1-1' and all other drivers & nodes.
 
 ### 7.) run './configServers.sh' to further setup the servers
+
+
+### 8.) SSH to driver1-1; cd $RMT; cat README.md
     
 
 ### ![spock2](https://user-images.githubusercontent.com/1664798/186249698-08853672-a72e-4e39-b236-ad020faa9f94.png)
