@@ -13,6 +13,7 @@ terraform {
 locals {
   driver = format("%s%s", "driver", var.nn)
   node   = format("%s%s", "node",   var.nn)
+  sg     = format("%s%s", "sg",   var.nn)
 }
 
 
@@ -20,11 +21,23 @@ provider "aws" {
   region  = var.rgn
 }
 
+resource "aws_default_vpc" "default" {
+}
+
+resource "aws_security_group" "sg" {
+  name = local.sg
+  vpc_id = aws_default_vpc.default.id
+  tags = {
+    Name = local.sg
+  }
+}
+
 resource "aws_instance"  "node" {
   ami           = var.image
   instance_type = var.type
   availability_zone = var.az
   key_name = var.key
+  vpc_security_group_ids = [aws_security_group.sg.id]
   tags = {
     Name = local.node
   }
@@ -57,6 +70,7 @@ resource "aws_instance" "driver" {
   instance_type = var.type
   availability_zone = var.az
   key_name = var.key
+  vpc_security_group_ids = [aws_security_group.sg.id]
   tags = {
     Name = local.driver
   }
