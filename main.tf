@@ -16,7 +16,6 @@ locals {
   sg     = format("%s%s", "sg",   var.nn)
 }
 
-
 provider "aws" {
   region  = var.rgn
 }
@@ -29,6 +28,40 @@ resource "aws_security_group" "sg" {
   vpc_id = aws_default_vpc.default.id
   tags = {
     Name = local.sg
+  }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+  ingress {
+    description      = "SSH"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+  ingress {
+    description      = "prompgexp"
+    from_port        = 9187
+    to_port          = 9187
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+  ingress {
+    description      = "sql"
+    from_port        = 5432
+    to_port          = 5432
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+  ingress {
+    description      = "icmp"
+    from_port        = -1
+    to_port          = -1
+    protocol         = "icmp"
+    cidr_blocks      = ["0.0.0.0/0"]
   }
 }
 
