@@ -5,6 +5,7 @@ os=`uname -s`
 if [ "$os" == "Darwin" ]; then
   brew install terraform
   brew install ansible
+  brew install pv
   exit $?
 else
   yum --version > /dev/null 2>&1
@@ -20,3 +21,4 @@ sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashi
 sudo yum install -y terraform
 sudo dnf install -y epel-release
 sudo dnf install -y ansible
+sudo dnf install -y pv

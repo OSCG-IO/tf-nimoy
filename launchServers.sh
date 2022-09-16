@@ -103,11 +103,14 @@ echo "configuring localhost"
 ./updateLocalhost.sh
 
 echo ""
-echo "standing by before reboot..."
-echo "  run './configServers.sh' after the reboot of this localhost"
+echo "  run './configServers.sh' next"
 
 echo "sleeping for a couple mins so servers can init & reboot"
-yes | pv -SL1 -F 'Resuming in %e' -s 120 > /dev/null
+yes | pv -SL1 -F 'Resuming in %e' -s 150 > /dev/null
 
-sudo reboot
+
+os=`uname -s`
+if [ "$os" == "Darwin" ]; then
+  sudo reboot
+fi
 

@@ -10,7 +10,6 @@ python3 make_hosts_file.py
 cp hosts.base.osx hosts.new
 cat hosts >> hosts.new
 sudo cp hosts.new  /etc/hosts
-sudo dscacheutil -flushcache
 sudo touch /etc/hosts
 
 rm -f ~/.ssh/known_hosts
