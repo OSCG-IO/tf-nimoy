@@ -14,6 +14,7 @@ locals {
   driver = format("%s%s", "driver", var.nn)
   node   = format("%s%s", "node",   var.nn)
   sg     = format("%s%s", "demo-sg",   var.nn)
+  sub    = format("%s%s", "demo-sn",   var.nn)
 }
 
 provider "aws" {
@@ -22,6 +23,17 @@ provider "aws" {
 
 resource "aws_default_vpc" "default" {
 }
+
+resource "aws_subnet" "sub" {
+  count = var.grp!="none" ? 1 : 0
+  vpc_id = aws_default_vpc.default.id
+  availability_zone = "us-east-1-dfw-1a" 
+  cidr_block = "172.31.96.0/20"
+  tags = {
+    Name = local.sub
+  }
+}
+  
 
 resource "aws_security_group" "sg" {
   name = local.sg
