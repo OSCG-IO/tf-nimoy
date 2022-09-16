@@ -13,7 +13,7 @@ terraform {
 locals {
   driver = format("%s%s", "driver", var.nn)
   node   = format("%s%s", "node",   var.nn)
-  sg     = format("%s%s", "sg",   var.nn)
+  sg     = format("%s%s", "demo-sg",   var.nn)
 }
 
 provider "aws" {
@@ -50,14 +50,14 @@ resource "aws_security_group" "sg" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
   ingress {
-    description      = "sql"
+    description      = "postgres"
     from_port        = 5432
     to_port          = 5432
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
   }
   ingress {
-    description      = "icmp"
+    description      = "ping"
     from_port        = -1
     to_port          = -1
     protocol         = "icmp"
