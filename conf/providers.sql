@@ -49,4 +49,5 @@ INSERT INTO countries VALUES ('hk', 'ap', 'Hong Kong');
 INSERT INTO countries VALUES ('sg', 'ap', 'Singapore');
 INSERT INTO countries VALUES ('kr', 'ap', 'South Korea');
 INSERT INTO countries VALUES ('id', 'ap', 'Indonesia');
+INSERT INTO countries VALUES ('in', 'ap', 'India');
 

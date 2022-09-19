@@ -48,26 +48,29 @@ INSERT INTO locations VALUES ('cgk', 'Indonesia',          'id',  -6.125567,  10
 INSERT INTO locations VALUES ('hkg', 'Hong Kong',          'hk',  22.308046,  113.918480);
 INSERT INTO locations VALUES ('icn', 'Seoul',              'kr',  37.460191,  126.440696);
 INSERT INTO locations VALUES ('sin', 'Singapore',          'sg',   1.420181,  103.864555);
+INSERT INTO locations VALUES ('bom', 'Mumbai',             'in',  19.090176,   72.868739);
 
 
 CREATE TABLE regions (
   provider      TEXT       NOT NULL REFERENCES providers(provider),
   location      TEXT       NOT NULL REFERENCES locations(location),
+  parent_region TEXT       NOT NULL,
   region        TEXT       NOT NULL,
   avail_zones   TEXT       NOT NULL,
   PRIMARY KEY (provider, location)
 );
-INSERT INTO regions VALUES ('aws', 'iad', 'us-east-1',      'a, b, c, d, e, f');
-INSERT INTO regions VALUES ('aws', 'cmh', 'us-east-2',      'a, b, c');
-INSERT INTO regions VALUES ('aws', 'sfo', 'us-west-1',      'a, b, c');
-INSERT INTO regions VALUES ('aws', 'pdt', 'us-west-2',      'a, b, c, d');
-INSERT INTO regions VALUES ('aws', 'mtl', 'ca-central-1',   'a, b, c');
-INSERT INTO regions VALUES ('aws', 'sin', 'ap-southeast-1', 'a, b, c');
-INSERT INTO regions VALUES ('aws', 'icn', 'ap-northeast-2', 'a, b, c');
-INSERT INTO regions VALUES ('aws', 'hkg', 'ap-east-1',      'a, b, c');
-INSERT INTO regions VALUES ('aws', 'itm', 'ap-northeast-3', 'a, b, c');
-INSERT INTO regions VALUES ('aws', 'nrt', 'ap-northeast-1', 'a, b, c');
-INSERT INTO regions VALUES ('aws', 'bom', 'ap-south-1',     'a, b, c');
+INSERT INTO regions VALUES ('aws', 'iad', 'us-east-1',      'us-east-1',      'a, b, c, d, e, f');
+INSERT INTO regions VALUES ('aws', 'cmh', 'us-east-2',      'us-east-2',      'a, b, c');
+INSERT INTO regions VALUES ('aws', 'sfo', 'us-west-1',      'us-west-1',      'a, b, c');
+INSERT INTO regions VALUES ('aws', 'pdt', 'us-west-2',      'us-west-2',      'a, b, c, d');
+INSERT INTO regions VALUES ('aws', 'mtl', 'ca-central-1',   'ca-central-1',   'a, b, c');
+INSERT INTO regions VALUES ('aws', 'sin', 'ap-southeast-1', 'ap-southeast-1', 'a, b, c');
+INSERT INTO regions VALUES ('aws', 'icn', 'ap-northeast-2', 'ap-northeast-2', 'a, b, c');
+INSERT INTO regions VALUES ('aws', 'hkg', 'ap-east-1',      'ap-east-1',      'a, b, c');
+INSERT INTO regions VALUES ('aws', 'itm', 'ap-northeast-3', 'ap-northeast-3', 'a, b, c');
+INSERT INTO regions VALUES ('aws', 'nrt', 'ap-northeast-1', 'ap-northeast-1', 'a, b, c');
+INSERT INTO regions VALUES ('aws', 'bom', 'ap-south-1',     'ap-south-1',     'a, b, c');
+
 
 CREATE VIEW v_regions AS
 SELECT g.geo, l.country, l.location, r.provider, r.region, l.location_nm, r.avail_zones, l.lattitude, l.longitude
