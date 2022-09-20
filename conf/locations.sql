@@ -11,14 +11,13 @@ DROP TABLE IF EXISTS providers;
 CREATE TABLE providers (
   provider      TEXT     NOT NULL PRIMARY KEY,
   sort_order    SMALLINT NOT NULL,
-  status        TEXT     NOT NULL,
   short_name    TEXT     NOT NULL,
   disp_name     TEXT     NOT NULL,
   image_file    TEXT     NOT NULL
 );
-INSERT INTO providers VALUES ('aws',     1, 'prod', 'AWS',         'Amazon Web Services',   'aws.png');
-INSERT INTO providers VALUES ('gcp',     2, 'test', 'GCP',         'Google Cloud Platform', 'gcp.png');
-INSERT INTO providers VALUES ('azure',   3, 'test', 'Azure',       'Microsoft Azure',       'azure.png');
+INSERT INTO providers VALUES ('aws',   1, 'AWS',   'Amazon Web Services',   'aws.png');
+INSERT INTO providers VALUES ('gcp',   2, 'GCP',   'Google Cloud Platform', 'gcp.png');
+INSERT INTO providers VALUES ('azr',   3, 'Azure', 'Microsoft Azure',       'azure.png');
 
 CREATE TABLE geos (
   geo    TEXT     NOT NULL,

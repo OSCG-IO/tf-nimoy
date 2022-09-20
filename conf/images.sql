@@ -42,15 +42,21 @@ CREATE TABLE flavors (
   size          TEXT     NOT NULL,
   v_cpu         INTEGER  NOT NULL,
   mem_gb        INTEGER  NOT NULL,
-  das_gb        INTEGER  NOT NULL,
+  das_gb        FLOAT    NOT NULL,
   network_gbps  TEXT     NOT NULL,
   PRIMARY KEY (provider, flavor)
 );
-INSERT INTO flavors VALUES ('aws', 'm',    'c6gd.medium',    1,   2,   59, 'Up to 10');
-INSERT INTO flavors VALUES ('aws', 'l',    'c6gd.large',     2,   4,  118, 'Up to 10');
-INSERT INTO flavors VALUES ('aws', 'xl',   'c6gd.xlarge',    4,   8,  237, 'Up to 10');
-INSERT INTO flavors VALUES ('aws', '2xl',  'c6gd.2xlarge',   8,  16,  474, 'Up to 10');
-INSERT INTO flavors VALUES ('aws', '4xl',  'c6gd.4xlarge',  16,  32,  950, 'Up to 10');
-INSERT INTO flavors VALUES ('aws', '8xl',  'c6gd.8xlarge',  32,  64, 1900, '12');
-INSERT INTO flavors VALUES ('aws', '12xl', 'c6gd.12xlarge', 48,  96, 2850, '20');
-INSERT INTO flavors VALUES ('aws', '16xl', 'c6gd.16xlarge', 64, 128, 3800, '25');
+INSERT INTO flavors VALUES ('aws', 'm',    'r6gd.medium',        1,   8,    59, 'Up to 10');
+INSERT INTO flavors VALUES ('aws', 'l',    'r6gd.large',         2,  16,   118, 'Up to 10');
+INSERT INTO flavors VALUES ('aws', 'xl',   'r6gd.xlarge',        4,  32,   237, 'Up to 10');
+INSERT INTO flavors VALUES ('aws', '2xl',  'r6gd.2xlarge',       8,  64,   474, 'Up to 10');
+INSERT INTO flavors VALUES ('aws', '4xl',  'r6gd.4xlarge',      16, 128,   950, 'Up to 10');
+INSERT INTO flavors VALUES ('aws', '8xl',  'r6gd.8xlarge',      32, 256,  1900, '12');
+INSERT INTO flavors VALUES ('aws', '12xl', 'r6gd.12xlarge',     48, 384,  2850, '20');
+INSERT INTO flavors VALUES ('aws', '16xl', 'r6gd.16xlarge',     64, 512,  3800, '25');
+INSERT INTO flavors VALUES ('azr', '2xl',  'Standard_L8s_v2',    8,  64,  1.92, '3.2');
+INSERT INTO flavors VALUES ('azr', '4xl',  'Standard_L16s_v2',  16, 128,  3.84, '6.4');
+INSERT INTO flavors VALUES ('azr', '8xl',  'Standard_L32s_v2',  32, 256,  7.68, '12.8');
+INSERT INTO flavors VALUES ('azr', '12xl', 'Standard_L48s_v2',  48, 384, 11.52, '16+');
+INSERT INTO flavors VALUES ('azr', '16xl', 'Standard_L64s_v2',  64, 512, 15.36, '16+');
+INSERT INTO flavors VALUES ('azr', '20xl', 'Standard_L80s_v2',  80, 640, 19.20, '16+');
