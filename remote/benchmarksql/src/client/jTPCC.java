@@ -145,7 +145,7 @@ public class jTPCC implements jTPCCConfig
 	    limPerMin_Terminal = -1;
 	}
 
-        if(homeWarehouseID is not null){
+        if(homeWarehouseID != null){
             homeWarehouseID_Terminal =  Integer.parseInt(homeWarehouseID);
         }
 
@@ -555,7 +555,7 @@ public class jTPCC implements jTPCCConfig
 					loadWarehouses,
 					numWarehouses,
 					numTerminals,
-					Integer.parseInt(limPerMin)
+					Integer.parseInt(limPerMin),
                                         Integer.parseInt(homeWarehouseID));
 			    runInfoCSV.write(infoSB.toString());
 			    runInfoCSV.close();
