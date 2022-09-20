@@ -61,7 +61,7 @@ CREATE TABLE locations (
   location      TEXT     NOT NULL NOT NULL PRIMARY KEY,
   location_nm   TEXT     NOT NULL,
   country       TEXT     NOT NULL REFERENCES countries(country),
-  lattitude     FLOAT    NOT NULL,
+  latitude      FLOAT    NOT NULL,
   longitude     FLOAT    NOT NULL
 );
 INSERT INTO locations VALUES ('iad', 'Northern Virginia',  'us',  38.951944,  -77.448055);
