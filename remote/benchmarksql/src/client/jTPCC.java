@@ -479,8 +479,15 @@ public class jTPCC implements jTPCCConfig
 		    String username = iUser;
 		    String password = iPassword;
 
-		    int[][] usedTerminals = new int[numWarehouses][10];
-		    for(int i = 0; i < numWarehouses; i++)
+		    if(homeWarehouseID_Terminal==0 || homeWarehouseID_Terminal > numWarehouses)
+                    {
+                       int[][] usedTerminals = new int[numWarehouses][10];
+                    }
+                    else
+                    {
+                       int[][] usedTerminals = new int[1][10];
+                    }
+                    for(int i = 0; i < numWarehouses; i++)
 			for(int j = 0; j < 10; j++)
 			    usedTerminals[i][j] = 0;
 
@@ -490,8 +497,13 @@ public class jTPCC implements jTPCCConfig
 			int terminalDistrictID;
 			do
 			{
-			    terminalWarehouseID = rnd.nextInt(1, numWarehouses);
-			    terminalDistrictID = rnd.nextInt(1, 10);
+			    if(homeWarehouseID_Terminal==0 || homeWarehouseID_Terminal > numWarehouses)
+                            {
+                               terminalWarehouseID = rnd.nextInt(1, numWarehouses);
+			    } else {
+                               terminalWarehouseID=homeWarehouseID_Terminal;
+                            }
+                            terminalDistrictID = rnd.nextInt(1, 10);
 			}
 			while(usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] == 1);
 			usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] = 1;
