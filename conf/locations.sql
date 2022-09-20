@@ -1,7 +1,61 @@
+.output
 
 DROP TABLE IF EXISTS locations;
 DROP VIEW IF EXISTS v_regions;
 DROP TABLE IF EXISTS regions;
+
+DROP TABLE IF EXISTS countries;
+DROP TABLE IF EXISTS geos;
+DROP TABLE IF EXISTS providers;
+
+CREATE TABLE providers (
+  provider      TEXT     NOT NULL PRIMARY KEY,
+  sort_order    SMALLINT NOT NULL,
+  status        TEXT     NOT NULL,
+  short_name    TEXT     NOT NULL,
+  disp_name     TEXT     NOT NULL,
+  image_file    TEXT     NOT NULL
+);
+INSERT INTO providers VALUES ('aws',     1, 'prod', 'AWS',         'Amazon Web Services',   'aws.png');
+INSERT INTO providers VALUES ('gcp',     2, 'test', 'GCP',         'Google Cloud Platform', 'gcp.png');
+INSERT INTO providers VALUES ('azure',   3, 'test', 'Azure',       'Microsoft Azure',       'azure.png');
+
+CREATE TABLE geos (
+  geo    TEXT     NOT NULL,
+  geo_nm TEXT     NOT NULL
+);
+INSERT INTO geos VALUES ('na', 'North America');
+INSERT INTO geos VALUES ('sa', 'South America');
+INSERT INTO geos VALUES ('eu', 'Europe');
+INSERT INTO geos VALUES ('ap', 'Asia Pacific');
+INSERT INTO geos VALUES ('me', 'Middle East');
+INSERT INTO geos VALUES ('au', 'Australia');
+INSERT INTO geos VALUES ('af', 'Africa');
+
+CREATE TABLE countries (
+  country      TEXT     NOT NULL PRIMARY KEY,
+  geo          TEXT     NOT NULL REFERENCES geos(geo),
+  country_nm   TEXT     NOT NULL
+);
+INSERT INTO countries VALUES ('us', 'na', 'United States');
+INSERT INTO countries VALUES ('ca', 'na', 'Canada');
+INSERT INTO countries VALUES ('br', 'sa', 'Brazil');
+INSERT INTO countries VALUES ('ir', 'eu', 'Ireland');
+INSERT INTO countries VALUES ('gb', 'eu', 'Great Britain');
+INSERT INTO countries VALUES ('de', 'eu', 'Germany');
+INSERT INTO countries VALUES ('fr', 'eu', 'France');
+INSERT INTO countries VALUES ('it', 'eu', 'Italy');
+INSERT INTO countries VALUES ('se', 'eu', 'Sweden');
+INSERT INTO countries VALUES ('bh', 'me', 'Bahrain');
+INSERT INTO countries VALUES ('ae', 'me', 'UAE');
+INSERT INTO countries VALUES ('au', 'au', 'Australia');
+INSERT INTO countries VALUES ('za', 'af', 'South Africa');
+INSERT INTO countries VALUES ('jp', 'ap', 'Japan');
+INSERT INTO countries VALUES ('hk', 'ap', 'Hong Kong');
+INSERT INTO countries VALUES ('sg', 'ap', 'Singapore');
+INSERT INTO countries VALUES ('kr', 'ap', 'South Korea');
+INSERT INTO countries VALUES ('id', 'ap', 'Indonesia');
+INSERT INTO countries VALUES ('in', 'ap', 'India');
 
 CREATE TABLE locations (
   location      TEXT     NOT NULL NOT NULL PRIMARY KEY,
@@ -10,7 +64,7 @@ CREATE TABLE locations (
   lattitude     FLOAT    NOT NULL,
   longitude     FLOAT    NOT NULL
 );
-INSERT INTO locations VALUES ('iad', 'Northen Virginia',   'us',  38.951944,  -77.448055);
+INSERT INTO locations VALUES ('iad', 'Northern Virginia',  'us',  38.951944,  -77.448055);
 INSERT INTO locations VALUES ('cmh', 'Ohio',               'us',  39.995000,  -82.889166);
 INSERT INTO locations VALUES ('pdt', 'Oregon',             'us',  45.694765, -118.843008);
 INSERT INTO locations VALUES ('sfo', 'Northern California','us',  37.621312, -122.378955);
@@ -73,9 +127,8 @@ INSERT INTO regions VALUES ('aws', 'bom', 'ap-south-1',     'ap-south-1',     'a
 
 
 CREATE VIEW v_regions AS
-SELECT g.geo, l.country, l.location, r.provider, r.region, l.location_nm, r.avail_zones, l.lattitude, l.longitude
-  FROM locations l, countries c, geos g, regions r 
- WHERE l.country = c.country 
-   AND c.geo = g.geo 
+SELECT g.geo, c.country, l.location, l.country, r.provider, r.region, l.location_nm, l.latitude, l.longitude
+  FROM geos g, countries c, regions r, locations l
+ WHERE g.geo = c.geo 
+   AND c.country = l.country 
    AND l.location = r.location;
-
