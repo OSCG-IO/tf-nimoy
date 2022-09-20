@@ -155,7 +155,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 	     *if(!terminalWarehouseFixed)
 	     *	terminalWarehouseID = rnd.nextInt(1, numWarehouses); 
              */
-            terminalWarehouseID = 1;
+            terminalWarehouseID = conn.substring(conn.lastIndexOf("node") + 1);
 
 	    if(transactionType <= paymentWeight)
 	    {
