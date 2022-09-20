@@ -84,7 +84,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 	this.numWarehouses = numWarehouses;
 	this.newOrderCounter = 0;
 	this.limPerMin_Terminal = limPerMin_Terminal;
-        this.homeWarehouseID = homeWarehouseID_Terminal;
+        this.homeWarehouseID_Terminal = homeWarehouseID_Terminal;
 
 	this.db = new jTPCCConnection(conn, dbType);
 
@@ -156,7 +156,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 	     */
 	    if(!terminalWarehouseFixed)
 	     	terminalWarehouseID = rnd.nextInt(1, numWarehouses); 
-            if(homeWarehouseID!=nul)
+            if(homeWarehouseID!=null)
                 terminalWarehouseID = homeWarehouseID;
 
 	    if(transactionType <= paymentWeight)
