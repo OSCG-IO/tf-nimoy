@@ -4,7 +4,7 @@ copy bmsql_config
   from '/tmp/csv/config.csv' WITH CSV;
 
 copy bmsql_warehouse
-  (w_id, w_ytd, w_tax, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_location, w_az)
+  (w_id, w_ytd, w_tax, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_location)
   from '/tmp/csv/warehouse.csv' WITH CSV;
 
 copy bmsql_item

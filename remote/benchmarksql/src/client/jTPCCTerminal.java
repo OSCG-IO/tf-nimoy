@@ -32,6 +32,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
     private double deliveryWeight;
     private double stockLevelWeight;
     private int limPerMin_Terminal;
+    private int homeWarehouseID_Terminal;
     private jTPCC parent;
     private jTPCCRandom rnd;
 
@@ -57,7 +58,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
        boolean useStoredProcedures,
        double paymentWeight, double orderStatusWeight,
        double deliveryWeight, double stockLevelWeight,
-       int numWarehouses, int limPerMin_Terminal, jTPCC parent) throws SQLException
+       int numWarehouses, int limPerMin_Terminal, int homeWarehouseID_Terminal,  jTPCC parent) throws SQLException
     {
 	this.terminalName = terminalName;
 	this.conn = conn;
@@ -83,6 +84,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 	this.numWarehouses = numWarehouses;
 	this.newOrderCounter = 0;
 	this.limPerMin_Terminal = limPerMin_Terminal;
+        this.homeWarehouseID = homeWarehouseID_Terminal;
 
 	this.db = new jTPCCConnection(conn, dbType);
 
@@ -152,8 +154,10 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 	     * significant traffic, changing the overall database
 	     * access pattern significantly.
 	     */
-	     if(!terminalWarehouseFixed)
+	    if(!terminalWarehouseFixed)
 	     	terminalWarehouseID = rnd.nextInt(1, numWarehouses); 
+            if(homeWarehouseID!=nul)
+                terminalWarehouseID = homeWarehouseID;
 
 	    if(transactionType <= paymentWeight)
 	    {

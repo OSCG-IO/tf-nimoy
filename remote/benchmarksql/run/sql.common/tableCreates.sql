@@ -13,8 +13,7 @@ create table bmsql_warehouse (
   w_city      varchar(20),
   w_state     char(2),
   w_zip       char(9),
-  w_location  char(3),
-  w_az        char(1)
+  w_location  char(3)
 );
 
 create table bmsql_district (
