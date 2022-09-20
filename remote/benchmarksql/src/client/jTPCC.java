@@ -109,6 +109,8 @@ public class jTPCC implements jTPCCConfig
 	};
 	String  limPerMin           = getProp(ini,"limitTxnsPerMin");
 	String  iTermWhseFixed      = getProp(ini,"terminalWarehouseFixed");
+        String  whseReg             = getProp(ini,"warehouseLocation");
+        String  whseAZ              = getProp(ini,"warehouseAZ");
 	String  iUseStoredProcs     = getProp(ini,"useStoredProcedures");
 	log.info("Term-00, ");
 
@@ -418,6 +420,8 @@ public class jTPCC implements jTPCCConfig
 		}
 
 		terminalWarehouseFixed = Boolean.parseBoolean(iTermWhseFixed);
+                warehouseLocation = whseLoc;
+                warehouseAZ = whseAZ; 
 		useStoredProcedures = Boolean.parseBoolean(iUseStoredProcs);
 
 		try

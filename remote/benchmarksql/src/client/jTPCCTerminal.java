@@ -151,9 +151,11 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 	     * leaves the warehouses without a client without any
 	     * significant traffic, changing the overall database
 	     * access pattern significantly.
-	     */
-	    if(!terminalWarehouseFixed)
-		terminalWarehouseID = rnd.nextInt(1, numWarehouses);
+	     *
+	     *if(!terminalWarehouseFixed)
+	     *	terminalWarehouseID = rnd.nextInt(1, numWarehouses); 
+             */
+            terminalWarehouseID = 1;
 
 	    if(transactionType <= paymentWeight)
 	    {
