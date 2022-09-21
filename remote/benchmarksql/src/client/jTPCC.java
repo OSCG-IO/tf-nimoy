@@ -558,8 +558,7 @@ public class jTPCC implements jTPCCConfig
 					loadWarehouses,
 					numWarehouses,
 					numTerminals,
-					Integer.parseInt(limPerMin),
-                                        Integer.parseInt(homeWarehouseID));
+					Integer.parseInt(limPerMin));
 			    runInfoCSV.write(infoSB.toString());
 			    runInfoCSV.close();
 			}
