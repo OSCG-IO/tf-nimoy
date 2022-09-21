@@ -15,6 +15,7 @@ locals {
   node   = format("%s%s", "node",   var.nn)
   sg     = format("%s%s", "demo-sg",   var.nn)
   sub    = format("%s%s", "demo-sn",   var.nn)
+  cdr    = format("%s%s%s", "172.31.",  80+(tonumber(substr(var.nn,0,1)) * 16), ".0/20")
 }
 
 provider "aws" {
@@ -25,10 +26,9 @@ resource "aws_default_vpc" "default" {
 }
 
 resource "aws_subnet" "sub" {
-  count = var.grp!="none" ? 1 : 0
   vpc_id = aws_default_vpc.default.id
-  availability_zone = "us-east-1-dfw-1a" 
-  cidr_block = "172.31.96.0/20"
+  availability_zone = var.az 
+  cidr_block = local.cdr
   tags = {
     Name = local.sub
   }
@@ -83,6 +83,7 @@ resource "aws_instance"  "node" {
   availability_zone = var.az
   key_name = var.key
   vpc_security_group_ids = [aws_security_group.sg.id]
+  subnet_id = aws_subnet.sub.id
   tags = {
     Name = local.node
   }
@@ -116,6 +117,7 @@ resource "aws_instance" "driver" {
   availability_zone = var.az
   key_name = var.key
   vpc_security_group_ids = [aws_security_group.sg.id]
+  subnet_id = aws_subnet.sub.id
   tags = {
     Name = local.driver
   }
