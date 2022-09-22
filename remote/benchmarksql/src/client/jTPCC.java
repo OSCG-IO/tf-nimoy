@@ -41,7 +41,7 @@ public class jTPCC implements jTPCCConfig
     private PrintStream printStreamReport;
     private String sessionStart, sessionEnd;
     private int limPerMin_Terminal;
-    private int homeWarehouseID_Terminal;
+    private int homeWarehouseID;
 
     private double tpmC;
     private jTPCCRandom rnd;
@@ -109,7 +109,7 @@ public class jTPCC implements jTPCCConfig
 	    errorMessage("Term-00, Must indicate either transactions per terminal or number of run minutes!");
 	};
 	String  limPerMin           = getProp(ini,"limitTxnsPerMin");
-	String  homeWarehouseID     = getProp(ini,"homeWarehouseID");
+	String  ihomeWarehouseID    = getProp(ini,"homeWarehouseID");
         String  iTermWhseFixed      = getProp(ini,"terminalWarehouseFixed");
 	String  iUseStoredProcs     = getProp(ini,"useStoredProcedures");
 	log.info("Term-00, ");
@@ -145,9 +145,7 @@ public class jTPCC implements jTPCCConfig
 	    limPerMin_Terminal = -1;
 	}
 
-        if(homeWarehouseID != null){
-            homeWarehouseID_Terminal =  Integer.parseInt(homeWarehouseID);
-        }
+        homeWarehouseID =  Integer.parseInt(ihomeWarehouseID);
 
 	boolean iRunMinsBool=false;
 
@@ -480,17 +478,10 @@ public class jTPCC implements jTPCCConfig
 		    String password = iPassword;
                     int[][] usedTerminals;
 
-		    if(homeWarehouseID_Terminal==0 || homeWarehouseID_Terminal > numWarehouses)
-                    {
-                       usedTerminals = new int[numWarehouses][10];
-                    }
-                    else
-                    {
-                       usedTerminals = new int[1][10];
-                    }
+                    usedTerminals = new int[numWarehouses][10];
                     for(int i = 0; i < numWarehouses; i++)
-			for(int j = 0; j < 10; j++)
-			    usedTerminals[i][j] = 0;
+                      for(int j = 0; j < 10; j++)
+                         usedTerminals[i][j] = 0;
 
 		    for(int i = 0; i < numTerminals; i++)
 		    {
@@ -498,11 +489,11 @@ public class jTPCC implements jTPCCConfig
 			int terminalDistrictID;
 			do
 			{
-			    if(homeWarehouseID_Terminal==0 || homeWarehouseID_Terminal > numWarehouses)
+			    if(homeWarehouseID == 0 || homeWarehouseID > numWarehouses)
                             {
                                terminalWarehouseID = rnd.nextInt(1, numWarehouses);
 			    } else {
-                               terminalWarehouseID = homeWarehouseID_Terminal;
+                               terminalWarehouseID = homeWarehouseID;
                             }
                             terminalDistrictID = rnd.nextInt(1, 10);
 			}
@@ -521,8 +512,7 @@ public class jTPCC implements jTPCCConfig
 			 transactionsPerTerminal, terminalWarehouseFixed,
 			 useStoredProcedures,
 			 paymentWeightValue, orderStatusWeightValue,
-			 deliveryWeightValue, stockLevelWeightValue, numWarehouses, limPerMin_Terminal, 
-                         homeWarehouseID_Terminal, this);
+			 deliveryWeightValue, stockLevelWeightValue, numWarehouses, limPerMin_Terminal, this);
 
 			terminals[i] = terminal;
 			terminalNames[i] = terminalName;
@@ -568,8 +558,7 @@ public class jTPCC implements jTPCCConfig
 					loadWarehouses,
 					numWarehouses,
 					numTerminals,
-					Integer.parseInt(limPerMin),
-                                        Integer.parseInt(homeWarehouseID));
+					Integer.parseInt(limPerMin));
 			    runInfoCSV.write(infoSB.toString());
 			    runInfoCSV.close();
 			}
