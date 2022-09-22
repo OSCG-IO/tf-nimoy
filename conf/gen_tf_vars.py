@@ -43,13 +43,11 @@ print('variable "provider"    { default = "' + provider + '" }')
 print('variable "location"    { default = "' + loct + '" }')
 print('variable "location_nm" { default = "' + location_nm + '" }')
 
-if region == parent_region:
-  print('variable "region"      { default = "' + region + '" }')
-else:
-  print('variable "region"      { default = "' + parent_region + '" }')
-  print('variable "group"       { default = "' + region + '" }')
+print('variable "region"      { default = "' + parent_region + '" }')
+if region != parent_region:
+  print('variable "group"       { default = "' + az + '" }')
 
 print('variable "az"          { default = "' + az + '" }')
 print('variable "image"       { default = "' + image_id + '" }')
-print('variable "key"         { default="dl-m1book-key" }')
+print('variable "key"         { default = "dl-m1book-key" }')
 

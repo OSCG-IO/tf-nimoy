@@ -127,8 +127,8 @@ INSERT INTO regions VALUES ('aws', 'dfw', 'us-east-1',      'us-east-1-dfw-1','a
 
 
 CREATE VIEW v_regions AS
-SELECT g.geo, c.country, l.location, l.country, r.provider, r.region, l.location_nm, l.latitude, l.longitude,
-       r.parent_region, r.avail_zones, i.image_id
+SELECT g.geo, c.country, l.location, l.country, r.provider, r.region, l.location_nm, 
+       l.latitude, l.longitude, r.parent_region, r.avail_zones, i.image_id
   FROM geos g, countries c, regions r, locations l, images i
  WHERE g.geo = c.geo 
    AND c.country = l.country 
@@ -136,4 +136,4 @@ SELECT g.geo, c.country, l.location, l.country, r.provider, r.region, l.location
    AND i.image_type = 'ubu22'
    AND i.platform = 'arm'
    AND r.provider = i.provider
-   AND r.region = i.region;
+   AND r.parent_region = i.region;
