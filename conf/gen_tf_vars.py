@@ -35,13 +35,21 @@ avail_zones = str(row[3])
 image_id = str(row[4])
 
 if zone == "":
-  az = region + 'a'
+  zone = "a"
+
+az = (region + zone)
+
+print('variable "provider"    { default = "' + provider + '" }')
+print('variable "location"    { default = "' + loct + '" }')
+print('variable "location_nm" { default = "' + location_nm + '" }')
+
+if region == parent_region:
+  print('variable "region"      { default = "' + region + '" }')
 else:
-  az = (region + zone)
+  print('variable "region"      { default = "' + parent_region + '" }')
+  print('variable "group"       { default = "' + region + '" }')
 
-
-print('variable "rgn" { default = "' + region + '" }')
-print('variable "az" { default = "' + az + '" }')
-print('variable "image" { default = "' + image_id + '" }')
-print('variable "key" { default="dl-m1book-key" }')
+print('variable "az"          { default = "' + az + '" }')
+print('variable "image"       { default = "' + image_id + '" }')
+print('variable "key"         { default="dl-m1book-key" }')
 
