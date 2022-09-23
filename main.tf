@@ -29,6 +29,7 @@ resource "aws_subnet" "sub" {
   vpc_id = aws_default_vpc.default.id
   availability_zone = var.az 
   cidr_block = local.cdr
+  map_public_ip_on_launch = true
   tags = {
     Name = local.sub
   }
