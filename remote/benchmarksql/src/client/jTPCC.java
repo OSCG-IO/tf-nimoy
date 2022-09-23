@@ -534,7 +534,7 @@ public class jTPCC implements jTPCCConfig
 					}
 					while(usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] == 1);
 					usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] = 1;
-					log.info("terminalWarehouseID=" +terminalWarehouseID + " terminalDistrictID=" terminalDistrictID );
+					log.info("terminalWarehouseID=" +terminalWarehouseID + " terminalDistrictID=" + terminalDistrictID );
 
 					String terminalName = "Term-" + (i>=9 ? ""+(i+1) : "0"+(i+1));
 					Connection conn = null;
