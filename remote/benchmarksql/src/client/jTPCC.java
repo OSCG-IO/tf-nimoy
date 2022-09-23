@@ -41,7 +41,7 @@ public class jTPCC implements jTPCCConfig
     private PrintStream printStreamReport;
     private String sessionStart, sessionEnd;
     private int limPerMin_Terminal;
-    private int homeWarehouseID;
+    private int homeWarehouseID = 0;
 
     private double tpmC;
     private jTPCCRandom rnd;
@@ -110,7 +110,7 @@ public class jTPCC implements jTPCCConfig
 	};
 	String  limPerMin           = getProp(ini,"limitTxnsPerMin");
 	String  ihomeWarehouseID    = getProp(ini,"homeWarehouseID");
-        String  iTermWhseFixed      = getProp(ini,"terminalWarehouseFixed");
+   String  iTermWhseFixed      = getProp(ini,"terminalWarehouseFixed");
 	String  iUseStoredProcs     = getProp(ini,"useStoredProcedures");
 	log.info("Term-00, ");
 
@@ -516,8 +516,8 @@ public class jTPCC implements jTPCCConfig
 			} 
 		   else 
 		   {
-		   	usedTerminals = new int[numWarehouses][10];
-				for(int i = 0; i < numWarehouses; i++)
+		   	usedTerminals = new int[1][10];
+				for(int i = 0; i < 1; i++)
 					for(int j = 0; j < 10; j++)
 						usedTerminals[i][j] = 0;
 
@@ -527,7 +527,7 @@ public class jTPCC implements jTPCCConfig
 					int terminalDistrictID;
 					do
 					{
-						terminalWarehouseID = rnd.nextInt(1, numWarehouses);
+						terminalWarehouseID = homeWarehouseID;
 						terminalDistrictID = rnd.nextInt(1, 10);
 					}
 					while(usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] == 1);
