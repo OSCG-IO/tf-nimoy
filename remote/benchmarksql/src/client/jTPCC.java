@@ -479,6 +479,7 @@ public class jTPCC implements jTPCCConfig
          int[][] usedTerminals;
 
 			if(homeWarehouseID == 0 || homeWarehouseID > numWarehouses)
+			{
 				usedTerminals = new int[numWarehouses][10];
 				for(int i = 0; i < numWarehouses; i++)
 					for(int j = 0; j < 10; j++)
@@ -575,7 +576,8 @@ public class jTPCC implements jTPCCConfig
 		      	throw new Exception();
 		      }
 		   } 
-		   else {
+		   else 
+		   {
 		   	usedTerminals = new int[1][10];
 				for(int i = 0; i < 1; i++)
 					for(int j = 0; j < 10; j++)
@@ -594,7 +596,7 @@ public class jTPCC implements jTPCCConfig
 
 						String terminalName = "Term-" + (i>=9 ? ""+(i+1) : "0"+(i+1));
 						Connection conn = null;
-						printMessage("Creating database connection for " + terminalName + "...");
+						printMessage("Creating database connection for " + terminalName + "... and w_id 1");
 						conn = DriverManager.getConnection(database, dbProps);
 						conn.setAutoCommit(false);
 
