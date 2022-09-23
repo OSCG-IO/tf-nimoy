@@ -493,196 +493,141 @@ public class jTPCC implements jTPCCConfig
 					{
 						terminalWarehouseID = rnd.nextInt(1, numWarehouses);
 						terminalDistrictID = rnd.nextInt(1, 10);
-						while(usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] == 1);
-						usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] = 1;
-
-						String terminalName = "Term-" + (i>=9 ? ""+(i+1) : "0"+(i+1));
-						Connection conn = null;
-						printMessage("Creating database connection for " + terminalName + "...");
-						conn = DriverManager.getConnection(database, dbProps);
-						conn.setAutoCommit(false);
-
-						jTPCCTerminal terminal = new jTPCCTerminal
-							(terminalName, terminalWarehouseID, terminalDistrictID,
-							conn, dbType, transactionsPerTerminal, terminalWarehouseFixed,
-							useStoredProcedures, paymentWeightValue, orderStatusWeightValue,
-							deliveryWeightValue, stockLevelWeightValue, numWarehouses, limPerMin_Terminal, this);
-
-						terminals[i] = terminal;
-						terminalNames[i] = terminalName;
-						printMessage(terminalName + "\t" + terminalWarehouseID);
 					}
+					while(usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] == 1);
+					usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] = 1;
 
-					sessionEndTargetTime = executionTimeMillis;
-					signalTerminalsRequestEndSent = false;
+					String terminalName = "Term-" + (i>=9 ? ""+(i+1) : "0"+(i+1));
+					Connection conn = null;
+					printMessage("Creating database connection for " + terminalName + "...");
+					conn = DriverManager.getConnection(database, dbProps);
+					conn.setAutoCommit(false);
 
-		         printMessage("Transaction\tWeight");
-		         printMessage("% New-Order\t" + newOrderWeightValue);
-		         printMessage("% Payment\t" + paymentWeightValue);
-		         printMessage("% Order-Status\t" + orderStatusWeightValue);
-		         printMessage("% Delivery\t" + deliveryWeightValue);
-		         printMessage("% Stock-Level\t" + stockLevelWeightValue);
+					jTPCCTerminal terminal = new jTPCCTerminal
+						(terminalName, terminalWarehouseID, terminalDistrictID,
+						conn, dbType, transactionsPerTerminal, terminalWarehouseFixed,
+						useStoredProcedures, paymentWeightValue, orderStatusWeightValue,
+						deliveryWeightValue, stockLevelWeightValue, numWarehouses, limPerMin_Terminal, this);
 
-		         printMessage("Transaction Number\tTerminal\tType\tExecution Time (ms)\t\tComment");
-
-		         printMessage("Created " + numTerminals + " terminal(s) successfully!");
-		         boolean dummvar = true;
-
-		         // Create Terminals, Start Transactions
-		         sessionStart = getCurrentTime();
-		         sessionStartTimestamp = System.currentTimeMillis();
-		         sessionNextTimestamp = sessionStartTimestamp;
-		         if(sessionEndTargetTime != -1)
-		         	sessionEndTargetTime += sessionStartTimestamp;
-
-		         	// Record run parameters in runInfo.csv
-		         if (runInfoCSV != null)
-		         {
-		         	try
-		         	{
-		         		StringBuffer infoSB = new StringBuffer();
-		         		Formatter infoFmt = new Formatter(infoSB);
-		         		infoFmt.format("%d,simple,%s,%s,%s,%s,%d,%d,%d,%d,1.0,1.0\n",
-		         			runID, JTPCCVERSION, iDB,
-		         			new java.sql.Timestamp(sessionStartTimestamp).toString(),
-		         			iRunMins,
-		         			loadWarehouses,
-		         			numWarehouses,
-		         			numTerminals,
-		         			Integer.parseInt(limPerMin));
-		         		runInfoCSV.write(infoSB.toString());
-		         		runInfoCSV.close();
-		         	}
-		         	catch (Exception e)
-		         	{
-		         		log.error(e.getMessage());
-		         		System.exit(1);
-		         	}
-		         }
-		         synchronized(terminals)
-		         {
-		         	printMessage("Starting all terminals...");
-		         	transactionCount = 1;
-		         	for(int i = 0; i < terminals.length; i++)
-		         		(new Thread(terminals[i])).start();
-		         }
-		         printMessage("All terminals started executing " + sessionStart);
-		      }
-		      catch(Exception e1)
-		      {
-		      	errorMessage("This session ended with errors!");
-		      	printStreamReport.close();
-		      	fileOutputStream.close();
-		      	throw new Exception();
-		      }
-		   } 
+					terminals[i] = terminal;
+					terminalNames[i] = terminalName;
+					printMessage(terminalName + "\t" + terminalWarehouseID);
+				}
+			} 
 		   else 
 		   {
-		   	usedTerminals = new int[1][10];
-				for(int i = 0; i < 1; i++)
+		   	usedTerminals = new int[numWarehouses][10];
+				for(int i = 0; i < numWarehouses; i++)
 					for(int j = 0; j < 10; j++)
 						usedTerminals[i][j] = 0;
 
-				for(int i = 0; i < 1; i++)
+				for(int i = 0; i < numTerminals; i++)
 				{
 					int terminalWarehouseID;
 					int terminalDistrictID;
 					do
 					{
-						terminalWarehouseID = homeWarehouseID;
+						terminalWarehouseID = rnd.nextInt(1, numWarehouses);
 						terminalDistrictID = rnd.nextInt(1, 10);
-						while(usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] == 1);
-						usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] = 1;
-
-						String terminalName = "Term-" + (i>=9 ? ""+(i+1) : "0"+(i+1));
-						Connection conn = null;
-						printMessage("Creating database connection for " + terminalName + "... and w_id 1");
-						conn = DriverManager.getConnection(database, dbProps);
-						conn.setAutoCommit(false);
-
-						jTPCCTerminal terminal = new jTPCCTerminal
-							(terminalName, terminalWarehouseID, terminalDistrictID,
-							conn, dbType, transactionsPerTerminal, terminalWarehouseFixed,
-							useStoredProcedures, paymentWeightValue, orderStatusWeightValue,
-							deliveryWeightValue, stockLevelWeightValue, numWarehouses, limPerMin_Terminal, this);
-
-						terminals[i] = terminal;
-						terminalNames[i] = terminalName;
-						printMessage(terminalName + "\t" + terminalWarehouseID);
 					}
+					while(usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] == 1);
+					usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] = 1;
 
-					sessionEndTargetTime = executionTimeMillis;
-					signalTerminalsRequestEndSent = false;
+					String terminalName = "Term-" + (i>=9 ? ""+(i+1) : "0"+(i+1));
+					Connection conn = null;
+					printMessage("Creating database connection for " + terminalName + "...");
+					conn = DriverManager.getConnection(database, dbProps);
+					conn.setAutoCommit(false);
 
-		         printMessage("Transaction\tWeight");
-		         printMessage("% New-Order\t" + newOrderWeightValue);
-		         printMessage("% Payment\t" + paymentWeightValue);
-		         printMessage("% Order-Status\t" + orderStatusWeightValue);
-		         printMessage("% Delivery\t" + deliveryWeightValue);
-		         printMessage("% Stock-Level\t" + stockLevelWeightValue);
+					jTPCCTerminal terminal = new jTPCCTerminal
+						(terminalName, terminalWarehouseID, terminalDistrictID,
+						conn, dbType, transactionsPerTerminal, terminalWarehouseFixed,
+						useStoredProcedures, paymentWeightValue, orderStatusWeightValue,
+						deliveryWeightValue, stockLevelWeightValue, numWarehouses, limPerMin_Terminal, this);
 
-		         printMessage("Transaction Number\tTerminal\tType\tExecution Time (ms)\t\tComment");
+					terminals[i] = terminal;
+					terminalNames[i] = terminalName;
+					printMessage(terminalName + "\t" + terminalWarehouseID);
+				}
+			}
 
-		         printMessage("Created " + numTerminals + " terminal(s) successfully!");
-		         boolean dummvar = true;
+			sessionEndTargetTime = executionTimeMillis;
+			signalTerminalsRequestEndSent = false;
 
-		         // Create Terminals, Start Transactions
-		         sessionStart = getCurrentTime();
-		         sessionStartTimestamp = System.currentTimeMillis();
-		         sessionNextTimestamp = sessionStartTimestamp;
-		         if(sessionEndTargetTime != -1)
-		         	sessionEndTargetTime += sessionStartTimestamp;
+         printMessage("Transaction\tWeight");
+         printMessage("% New-Order\t" + newOrderWeightValue);
+         printMessage("% Payment\t" + paymentWeightValue);
+         printMessage("% Order-Status\t" + orderStatusWeightValue);
+         printMessage("% Delivery\t" + deliveryWeightValue);
+         printMessage("% Stock-Level\t" + stockLevelWeightValue);
 
-		         	// Record run parameters in runInfo.csv
-		         if (runInfoCSV != null)
-		         {
-		         	try
-		         	{
-		         		StringBuffer infoSB = new StringBuffer();
-		         		Formatter infoFmt = new Formatter(infoSB);
-		         		infoFmt.format("%d,simple,%s,%s,%s,%s,%d,%d,%d,%d,1.0,1.0\n",
-		         			runID, JTPCCVERSION, iDB,
-		         			new java.sql.Timestamp(sessionStartTimestamp).toString(),
-		         			iRunMins,
-		         			loadWarehouses,
-		         			numWarehouses,
-		         			numTerminals,
-		         			Integer.parseInt(limPerMin));
-		         		runInfoCSV.write(infoSB.toString());
-		         		runInfoCSV.close();
-		         	}
-		         	catch (Exception e)
-		         	{
-		         		log.error(e.getMessage());
-		         		System.exit(1);
-		         	}
-		         }
-		         synchronized(terminals)
-		         {
-		         	printMessage("Starting all terminals with w_id = 1 %s...");
-		         	transactionCount = 1;
-		         	for(int i = 0; i < terminals.length; i++)
-		         		(new Thread(terminals[i])).start();
-		         }
-		         printMessage("All terminals started executing " + sessionStart);
-		      }
-		      catch(Exception e1)
-		      {
-		      	errorMessage("This session ended with errors! - here");
-		      	printStreamReport.close();
-		      	fileOutputStream.close();
-		      	throw new Exception();
-		      }
-		   }
-		}
-		catch(Exception ex)
-		{
-		}
-		updateStatusLine();
-    }
+         printMessage("Transaction Number\tTerminal\tType\tExecution Time (ms)\t\tComment");
 
-    private void signalTerminalsRequestEnd(boolean timeTriggered)
-    {
+         printMessage("Created " + numTerminals + " terminal(s) successfully!");
+         boolean dummvar = true;
+
+         // Create Terminals, Start Transactions
+         sessionStart = getCurrentTime();
+         sessionStartTimestamp = System.currentTimeMillis();
+         sessionNextTimestamp = sessionStartTimestamp;
+         if(sessionEndTargetTime != -1)
+         	sessionEndTargetTime += sessionStartTimestamp;
+
+         	// Record run parameters in runInfo.csv
+         if (runInfoCSV != null)
+         {
+         	try
+         	{
+         		StringBuffer infoSB = new StringBuffer();
+         		Formatter infoFmt = new Formatter(infoSB);
+         		infoFmt.format("%d,simple,%s,%s,%s,%s,%d,%d,%d,%d,1.0,1.0\n",
+         			runID, JTPCCVERSION, iDB,
+         			new java.sql.Timestamp(sessionStartTimestamp).toString(),
+         			iRunMins,
+         			loadWarehouses,
+         			numWarehouses,
+         			numTerminals,
+         			Integer.parseInt(limPerMin));
+         		runInfoCSV.write(infoSB.toString());
+         		runInfoCSV.close();
+         	}
+         	catch (Exception e)
+         	{
+         		log.error(e.getMessage());
+         		System.exit(1);
+         	}
+         }
+         synchronized(terminals)
+         {
+         	printMessage("Starting all terminals...");
+         	transactionCount = 1;
+         	for(int i = 0; i < terminals.length; i++)
+         		(new Thread(terminals[i])).start();
+         }
+         printMessage("All terminals started executing " + sessionStart);
+      }
+      catch(Exception e1)
+      {
+      	errorMessage("This session ended with errors!");
+      	printStreamReport.close();
+      	fileOutputStream.close();
+      	throw new Exception();
+      }
+
+	}
+	catch(Exception ex)
+	{}
+}
+updateStatusLine();
+}
+		   
+
+
+
+
+
+private void signalTerminalsRequestEnd(boolean timeTriggered)
+{
 	synchronized(terminals)
 	{
 	    if(!signalTerminalsRequestEndSent)
