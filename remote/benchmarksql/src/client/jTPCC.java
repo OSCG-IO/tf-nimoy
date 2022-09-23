@@ -41,7 +41,7 @@ public class jTPCC implements jTPCCConfig
     private PrintStream printStreamReport;
     private String sessionStart, sessionEnd;
     private int limPerMin_Terminal;
-    private int homeWarehouseID = 0;
+    private int homeWarehouseID;
 
     private double tpmC;
     private jTPCCRandom rnd;
@@ -145,7 +145,7 @@ public class jTPCC implements jTPCCConfig
 	    limPerMin_Terminal = -1;
 	}
 
-        homeWarehouseID =  Integer.parseInt(ihomeWarehouseID);
+   homeWarehouseID =  Integer.parseInt(ihomeWarehouseID);
 
 	boolean iRunMinsBool=false;
 
@@ -480,6 +480,7 @@ public class jTPCC implements jTPCCConfig
 
 			if(homeWarehouseID == 0 || homeWarehouseID > numWarehouses)
 			{
+				log.info("Term-00, if statement")
 				usedTerminals = new int[numWarehouses][10];
 				for(int i = 0; i < numWarehouses; i++)
 					for(int j = 0; j < 10; j++)
@@ -516,6 +517,7 @@ public class jTPCC implements jTPCCConfig
 			} 
 		   else 
 		   {
+		   	log.info("Term-00, else statement")
 		   	usedTerminals = new int[1][10];
 				for(int i = 0; i < 1; i++)
 					for(int j = 0; j < 10; j++)
@@ -532,6 +534,7 @@ public class jTPCC implements jTPCCConfig
 					}
 					while(usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] == 1);
 					usedTerminals[terminalWarehouseID-1][terminalDistrictID-1] = 1;
+					log.info("terminalWarehouseID=" +terminalWarehouseID + " terminalDistrictID=" terminalDistrictID )
 
 					String terminalName = "Term-" + (i>=9 ? ""+(i+1) : "0"+(i+1));
 					Connection conn = null;
