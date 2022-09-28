@@ -1,7 +1,7 @@
 
 source env.sh 
 
-psql=$HOME/oscg/pg14/bin/psql
+psql=$HOME/oscg/pg15/bin/psql
 
 SELECT="select pg_size_pretty(pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn)) from pg_stat_replication"
 sleep 2

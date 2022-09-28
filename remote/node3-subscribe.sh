@@ -5,7 +5,7 @@ echo " "
 echo "## node3-subscribe.sh on `hostname` ############"
 
 
-PSQL="$HOME/oscg/pg14/bin/psql -U postgres  -h node3-1 demo"
+PSQL="$HOME/oscg/pg15/bin/psql -U postgres  -h node3-1 demo"
 
 $PSQL -c "SELECT spock.create_subscription( \
     subscription_name := 'subscription1c', \
