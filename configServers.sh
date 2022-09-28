@@ -4,6 +4,12 @@ setupEtcHosts () {
   $SSH $usr@$1 'sudo ./catHosts.sh'
 }
 
+if [ ! -f "env.sh" ]; then
+  echo "FATAL ERROR: missing env.sh file"
+  exit 1
+fi
+source env.sh
+
 set -x
 
 d1=driver1-1
@@ -31,7 +37,9 @@ $SSH -i $key $usr@$d1 'ansible-playbook add-key.yml -i ansible_hosts --user ubun
 $SSH -i $key $usr@$d1 'sudo ./catHosts.sh'
 
 bs='cd test/tf-nimoy/remote/benchmarksql; /home/ubuntu/apache-ant-1.9.16/bin/ant'
-io='python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; cd oscg; ./io install pg15; echo "*:5432:*:postgres:password" >> /home/ubuntu/.pgpass; chmod 600 /home/ubuntu/.pgpass'
+io='python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; cd oscg; ./io install pg'
+io+=$PGV
+io+='; echo "*:5432:*:postgres:password" >> /home/ubuntu/.pgpass; chmod 600 /home/ubuntu/.pgpass'
 
 $SSH $usr@driver1-1 "$bs"
 $SSH $usr@driver1-1 "$io"

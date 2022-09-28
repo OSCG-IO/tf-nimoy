@@ -1,7 +1,7 @@
 
 source env.sh
 
-PGBIN="$HOME/oscg/pg15/bin"
+PGBIN="$HOME/oscg/$pgXX/bin"
 
 echo " "
 echo "## bms_restore.sh on `hostname` ############"

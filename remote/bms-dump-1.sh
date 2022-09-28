@@ -37,7 +37,7 @@ fi
 
 echo ""
 echo "$DUMP"
-$HOME/oscg/pg15/bin/$DUMP
+$HOME/oscg/$pgXX/bin/$DUMP
 rc=$?
 echo ""
 ls -sh $dumper

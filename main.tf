@@ -103,7 +103,7 @@ resource "aws_instance"  "node" {
   sudo chown ubuntu:ubuntu /db
 
   echo "### Configure .bashrc"
-  echo 'export PATH=$PATH:/db/oscg/pg15/bin'     >> /home/ubuntu/.bashrc
+  echo 'export PATH=$PATH:/db/oscg/var.pg_v/bin'     >> /home/ubuntu/.bashrc
 
   echo "### rebooting to get new HOSTNAME"
   sudo reboot
@@ -161,7 +161,7 @@ resource "aws_instance" "driver" {
   echo 'export ANT_HOME=$HOME/apache-ant-1.9.16' >> /home/ubuntu/.bashrc
   echo 'export PATH=$ANT_HOME/bin:$PATH'         >> /home/ubuntu/.bashrc
   echo 'export RMT=$HOME/test/tf-nimoy/remote'   >> /home/ubuntu/.bashrc
-  echo 'export PATH=$PATH:$HOME/oscg/pg15/bin'   >> /home/ubuntu/.bashrc
+  echo 'export PATH=$PATH:$HOME/oscg/var.pg_v/bin'   >> /home/ubuntu/.bashrc
 
   echo "### rebooting to get new HOSTNAME"
   sudo reboot

@@ -4,7 +4,7 @@ source env.sh
 echo " "
 echo "## bms-spock-create-node.sh on `hostname`  for node $1 ####"
 
-psql="$HOME/oscg/pg15/bin/psql -U postgres "
+psql="$HOME/oscg/$pgXX/bin/psql -U postgres "
 
 function add_table {
   table="public.bmsql_$1"

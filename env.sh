@@ -5,6 +5,8 @@
 #N2=oregon
 #N3=oregon
 
+## postgreSQL Version, 14 or 15
+PGV=14
 
 ## arm64 w/ 2 vcpu, 4 GB Memory
 TYPE=c6g.large 

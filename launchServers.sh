@@ -19,7 +19,6 @@ setNodesVars () {
   echo "variable \"type\" { default = \"$TYPE\" }" >> $NN3/variables.node.tf
 }
 
-
 copyLocation() {
   echo "## copyLocation($1, $2, $3)"
   cld="$1" 
