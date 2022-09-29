@@ -1,2 +1,2 @@
 variable "io_dir" { default = "/db/oscg" }
-variable "pg_v"   { default = "pg15" }
+variable "pg_v"   { default = "14" }
