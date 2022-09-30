@@ -7,3 +7,5 @@ ansible_hosts
 hosts.new
 log
 .DS_Store
+conf/sample.html
+conf/stelthy.db
