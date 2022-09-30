@@ -151,7 +151,6 @@ arrowSeries.bullets.push(function() {
   });
 });
 
-var cities = [
 """
   )
 
@@ -164,7 +163,7 @@ def print_bottom():
 citySeries.data.setAll(cities);
 
 // prepare line series data
-var destinations = ["mtl", "dub", "syd"];
+var destinations = ["mtl", "dub", "iad"];
 // Montreal coordinates
 var originLongitude = -73.5617;
 var originLatitude = 45.5089;
@@ -209,23 +208,30 @@ def print_location(p_loct, p_loct_nm, p_lat, p_lon):
   print('}')
 
 
+def print_cities():
+  print ('var cities = [')
+
+  for i in range(1,len(sys.argv)):
+    cursor = connection.cursor()
+    loct = sys.argv[i]
+
+    row = cursor.execute( \
+      "SELECT location_nm, latitude, longitude \
+         FROM locations \
+        WHERE location = ?", (loct,)).fetchone()
+
+    if not row:
+      print("ERROR: '" + loct + "' is not valid")
+      sys.exit(1)
+
+    print_location(loct, row[0], row[1], row[2])
+
+
+
 ############### MAINLINE ######################
 print_top()
 
-for i in range(1,len(sys.argv)):
-  cursor = connection.cursor()
-  loct = sys.argv[i]
-
-  row = cursor.execute( \
-    "SELECT location_nm, latitude, longitude \
-       FROM locations \
-      WHERE location = ?", (loct,)).fetchone()
-
-  if not row:
-    print("ERROR: '" + loct + "' is not valid")
-    sys.exit(1)
-
-  print_location(loct, row[0], row[1], row[2])
+print_cities()
 
 print_bottom()
 
