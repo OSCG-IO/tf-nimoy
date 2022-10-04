@@ -12,3 +12,4 @@
 ./setupSpock.sh node2-1
 ./setupSpock.sh node3-1
 
+sed -i "1s/^/*:5432:postgres:/" ~/.pgpass
