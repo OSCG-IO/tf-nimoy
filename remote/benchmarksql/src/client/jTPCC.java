@@ -294,7 +294,6 @@ public class jTPCC implements jTPCCConfig
 
 		Properties dbProps = new Properties();
 		dbProps.setProperty("user", iUser);
-		dbProps.setProperty("password", iPassword);
 
 		/*
 		 * Fine tuning of database conneciton parameters if needed.
