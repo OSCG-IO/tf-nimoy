@@ -105,7 +105,7 @@ echo ""
 echo "  run './configServers.sh' next"
 
 echo "sleeping for a couple mins so servers can init & reboot"
-yes | pv -SL1 -F 'Resuming in %e' -s 150 > /dev/null
+yes | pv -SL1 -F 'Resuming in %e' -s 210 > /dev/null
 
 
 os=`uname -s`
