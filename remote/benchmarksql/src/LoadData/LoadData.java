@@ -84,7 +84,6 @@ public class LoadData
 	db = iniGetString("conn");
 	dbProps = new Properties();
 	dbProps.setProperty("user", iniGetString("user"));
-	dbProps.setProperty("password", iniGetString("password"));
 
 	/*
 	 * Parse other vital information from the props file.

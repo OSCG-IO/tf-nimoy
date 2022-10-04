@@ -33,7 +33,7 @@ public class ExecJDBC {
 
     // make connection
     conn = DriverManager.getConnection(ini.getProperty("conn"),
-      ini.getProperty("user"),ini.getProperty("password"));
+      ini.getProperty("user"));
     conn.setAutoCommit(true);
 
     // Retrieve datbase type
