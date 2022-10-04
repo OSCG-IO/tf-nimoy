@@ -1,21 +1,21 @@
 
 ## arm64 w/ 1 vcpu, 2 GB Memory
-#TYPE=c6g.medium
-#N1=oregon
-#N2=oregon
-#N3=oregon
+TYPE=c6g.medium
+N1=oregon
+N2=oregon
+N3=oregon
 
 ## postgreSQL Version, 14 or 15
 PGV=15
 
 ## arm64 w/ 2 vcpu, 4 GB Memory
-TYPE=c6g.large 
+#TYPE=c6g.large 
 
 ## now:    oregon, montreal, dublin, sydney
 ## soon:   dallas, osaka
-N1=montreal
-N2=dublin
-N3=sydney
+#N1=montreal
+#N2=dublin
+#N3=sydney
 
 creds="./aws-creds.sh"
 if [ -f "$creds" ]; then
