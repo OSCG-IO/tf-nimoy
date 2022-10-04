@@ -1,5 +1,6 @@
 
 source env.sh
+sed -i "1s/^/*:5432:postgres:/" ~/.pgpass
 
 ./bms-restore.sh node1-1
 ./bms-spock-create-node.sh node1-1
@@ -9,6 +10,10 @@ source env.sh
 
 ./bms-restore.sh node3-1
 ./bms-spock-create-node.sh node3-1 
+
+scp ~/.pgpass node1-1:.
+scp ~/.pgpass node2-1:.
+scp ~/.pgpass node3-1:.
 
 ./node1-subscribe.sh
 ./node2-subscribe.sh

@@ -24,9 +24,11 @@ echo "RESTORE=$RESTORE"
 $RESTORE
 rc=$?
 
-##REPL="$PGBIN/psql -U postgres -h $node demo -f create-replication-role.sql"
-##echo "REPL=$REPL"
-##$REPL
+PASS=$(openssl rand -base64 12;)
+REPL="$PGBIN/psql -U postgres -h $node demo -f create-replication-role.sql -v mypass='$PASS'"
+echo "$node:5432:*:replication:$PASS" >> ~/.pgpass
+echo "REPL=$REPL"
+$REPL
 
 echo ""
 $PGBIN/psql -U postgres -h $node -c "select count(*) from bmsql_oorder" demo
