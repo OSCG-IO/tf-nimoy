@@ -27,7 +27,7 @@ echo ""
 $psql -h $node demo -c "SELECT
   spock.create_node(
     node_name := '$node',
-    dsn := 'host=$node port=5432 user=replication password=password dbname=demo')"
+    dsn := 'host=$node port=5432 user=replication dbname=demo')"
 
 $psql -h $node demo -c "SELECT
   spock.create_replication_set('bmsql_set', true, true, true, true);"

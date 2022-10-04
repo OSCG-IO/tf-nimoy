@@ -9,7 +9,7 @@ PSQL="$HOME/oscg/$pgXX/bin/psql -U postgres  -h node3-1 demo"
 
 $PSQL -c "SELECT spock.create_subscription( \
     subscription_name := 'subscription1c', \
-    provider_dsn := 'host=node1-1  port=5432 user=replication password=password dbname=demo', \
+    provider_dsn := 'host=node1-1  port=5432 user=replication dbname=demo', \
     forward_origins := '{}', \
     synchronize_data := false \
 );"
@@ -22,7 +22,7 @@ $PSQL -c "SELECT spock.alter_subscription_add_replication_set( \
 
 $PSQL -c "SELECT spock.create_subscription( \
     subscription_name := 'subscription2c', \
-    provider_dsn := 'host=node2-1 port=5432 user=replication password=password dbname=demo', \
+    provider_dsn := 'host=node2-1 port=5432 user=replication dbname=demo', \
     forward_origins := '{}', \
     synchronize_data := false \
 );"

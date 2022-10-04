@@ -24,9 +24,9 @@ echo "RESTORE=$RESTORE"
 $RESTORE
 rc=$?
 
-REPL="$PGBIN/psql -U postgres -h $node demo -f create-replication-role.sql"
-echo "REPL=$REPL"
-$REPL
+##REPL="$PGBIN/psql -U postgres -h $node demo -f create-replication-role.sql"
+##echo "REPL=$REPL"
+##$REPL
 
 echo ""
 $PGBIN/psql -U postgres -h $node -c "select count(*) from bmsql_oorder" demo
