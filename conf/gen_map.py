@@ -3,10 +3,12 @@
 import sys, sqlite3
 
 kount = 0
+origin_lat = 0
+origin_lon = 0
 connection = sqlite3.connect("stelthy.db")
 
-if len(sys.argv) != 4:
-  print("ERROR: Three locations must be specified")
+if len(sys.argv) < 2:
+  print("ERROR: At least one location must be specified", file=sys.stderr)
   sys.exit(1)
 
 
@@ -158,15 +160,6 @@ arrowSeries.bullets.push(function() {
 def print_bottom():
   print(
 """
-];
-
-citySeries.data.setAll(cities);
-
-// prepare line series data
-var destinations = ["mtl", "dub", "iad"];
-// Montreal coordinates
-var originLongitude = -73.5617;
-var originLatitude = 45.5089;
 
 am5.array.each(destinations, function (did) {
   var destinationDataItem = citySeries.getDataItemById(did);
@@ -197,9 +190,15 @@ chart.appear(1000, 100);
 
 def print_location(p_loct, p_loct_nm, p_lat, p_lon):
   global kount
+  global origin_lat
+  global origin_lon
+
   kount = kount + 1
 
-  if kount > 1:
+  if kount == 1:
+    origin_lat = p_lat
+    origin_lon = p_lon
+  else:
     print(",")
 
   print('{')
@@ -209,6 +208,9 @@ def print_location(p_loct, p_loct_nm, p_lat, p_lon):
 
 
 def print_cities():
+  global origin_lat
+  global origin_lon
+
   print ('var cities = [')
 
   for i in range(1,len(sys.argv)):
@@ -221,10 +223,40 @@ def print_cities():
         WHERE location = ?", (loct,)).fetchone()
 
     if not row:
-      print("ERROR: '" + loct + "' is not valid")
+      print("ERROR: '" + loct + "' is not valid", file=sys.stderr)
       sys.exit(1)
 
     print_location(loct, row[0], row[1], row[2])
+
+  print(
+"""
+];
+
+citySeries.data.setAll(cities);
+
+// prepare line series data
+var destinations = [
+"""
+  )
+
+  k = 0
+  for i in range(1,len(sys.argv)):
+    k = k + 1
+    if k > 1:
+      print(' ,')
+    print('"' + str(sys.argv[i]) + '"')
+
+  print(
+"""
+];
+
+// Origin Coordinates 
+"""
+  )
+
+  print(" var originLongitude = " + str(origin_lon) + ";")
+  print(" var originLatitude  = " + str(origin_lat) + ";")
+
 
 
 
