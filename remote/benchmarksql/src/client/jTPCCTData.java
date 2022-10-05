@@ -632,7 +632,7 @@ public class jTPCCTData
 		    updateStockBatch.setInt(3, 0);
 		else
 		    updateStockBatch.setInt(3, 1);
-		updateStockBatch.setInt(4, newOrder.ol_supply_w_id[seq]);
+		updateStockBatch.setInt(4, newOrder.w_id);
 		updateStockBatch.setInt(5, newOrder.ol_i_id[seq]);
 		updateStockBatch.addBatch();
 
