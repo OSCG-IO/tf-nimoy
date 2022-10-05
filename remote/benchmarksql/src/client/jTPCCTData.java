@@ -1080,8 +1080,8 @@ public class jTPCCTData
 	if (rnd.nextInt(1, 100) > 85)
 	{
 	    payment.c_d_id = rnd.nextInt(1, 10);
-	    while (payment.c_w_id == payment.w_id && numWarehouses > 1)
-		payment.c_w_id = rnd.nextInt(1, numWarehouses);
+	    // while (payment.c_w_id == payment.w_id && numWarehouses > 1)
+	    // payment.c_w_id = rnd.nextInt(1, numWarehouses);
 	}
 	if (rnd.nextInt(1, 100) <= 60)
 	{
