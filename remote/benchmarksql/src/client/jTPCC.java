@@ -515,7 +515,8 @@ public class jTPCC implements jTPCCConfig
 			} 
 		   else 
 		   {
-		   	usedTerminals = new int[1][10];
+		   		numWarehouses=1;
+				usedTerminals = new int[1][10];
 				for(int i = 0; i < 1; i++)
 					for(int j = 0; j < 10; j++)
 						usedTerminals[i][j] = 0;
