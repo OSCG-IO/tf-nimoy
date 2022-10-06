@@ -632,7 +632,7 @@ public class jTPCCTData
 		    updateStockBatch.setInt(3, 0);
 		else
 		    updateStockBatch.setInt(3, 1);
-		updateStockBatch.setInt(4, newOrder.ol_supply_w_id[seq]);
+		updateStockBatch.setInt(4, newOrder.w_id);
 		updateStockBatch.setInt(5, newOrder.ol_i_id[seq]);
 		updateStockBatch.addBatch();
 
@@ -1080,8 +1080,8 @@ public class jTPCCTData
 	if (rnd.nextInt(1, 100) > 85)
 	{
 	    payment.c_d_id = rnd.nextInt(1, 10);
-	    while (payment.c_w_id == payment.w_id && numWarehouses > 1)
-		payment.c_w_id = rnd.nextInt(1, numWarehouses);
+	    // while (payment.c_w_id == payment.w_id && numWarehouses > 1)
+	    // payment.c_w_id = rnd.nextInt(1, numWarehouses);
 	}
 	if (rnd.nextInt(1, 100) <= 60)
 	{
