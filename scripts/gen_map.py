@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
-import sys, sqlite3
+import sys, sqlite3, os
+
+os.chdir(sys.path[0])
 
 kount = 0
 origin_lat = 0

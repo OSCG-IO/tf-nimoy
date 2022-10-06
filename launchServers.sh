@@ -24,9 +24,15 @@ copyLocation() {
   cld="$1" 
   n="$2"
   nn="$3"
-  
+
   lctn=$cld-$n.tf
-  cp locations/$lctn  $nn/variables.$lctn
+  out=$nn/variables.$lctn
+  scripts/gen_tf_vars.py $cld $n > $out
+  rc=$?
+  cat $out
+  if [ ! "$rc" == "0" ]; then
+    exit 1
+  fi
 }
 
 cpNodes () {
@@ -105,7 +111,7 @@ echo ""
 echo "  run './configServers.sh' next"
 
 echo "sleeping for a couple mins so servers can init & reboot"
-yes | pv -SL1 -F 'Resuming in %e' -s 210 > /dev/null
+yes | pv -SL1 -F 'Resuming in %e' -s 180 > /dev/null
 
 
 os=`uname -s`

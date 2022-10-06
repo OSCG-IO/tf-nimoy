@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
-import sys, sqlite3
+import sys, sqlite3, os
+
+os.chdir(sys.path[0])
 
 kount = 0
 connection = sqlite3.connect("../conf/stelthy.db")
@@ -25,7 +27,7 @@ row = cursor.execute( \
     WHERE provider = ? and location = ?", [provider, loct]).fetchone()
 
 if not row:
-  print("ERROR: provider/location combo is not valid")
+  print("ERROR: provider/location (" + str(provider) + "/" + str(loct) + ") combo is not valid")
   sys.exit(1)
 
 region = str(row[0])
@@ -39,11 +41,11 @@ if zone == "":
 
 az = (region + zone)
 
-print('variable "provider"    { default = "' + provider + '" }')
+print('variable "pvdr"        { default = "' + provider + '" }')
 print('variable "location"    { default = "' + loct + '" }')
 print('variable "location_nm" { default = "' + location_nm + '" }')
 
-print('variable "region"      { default = "' + parent_region + '" }')
+print('variable "rgn"         { default = "' + parent_region + '" }')
 if region != parent_region:
   print('variable "group"       { default = "' + az + '" }')
 
