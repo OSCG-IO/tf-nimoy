@@ -519,19 +519,15 @@ public class jTPCC implements jTPCCConfig
 				usedTerminals = new int[1][10];
 				for(int i = 0; i < 1; i++)
 					for(int j = 0; j < 10; j++)
-						usedTerminals[i][j] = 0;
+						usedTerminals[i][j] = 1;
 
 				for(int i = 0; i < numTerminals; i++)
 				{
 					int terminalWarehouseID;
 					int terminalDistrictID;
-					do
-					{
-						terminalWarehouseID = homeWarehouseID;
-						terminalDistrictID = rnd.nextInt(1, 10);
-					}
-					// while(usedTerminals[0][terminalDistrictID-1] == 1);
-					// usedTerminals[0][terminalDistrictID-1] = 1;
+			 		
+					terminalWarehouseID = homeWarehouseID;
+					terminalDistrictID = i+1;
 
 					String terminalName = "Term-" + (i>=9 ? ""+(i+1) : "0"+(i+1));
 					Connection conn = null;
