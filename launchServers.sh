@@ -41,28 +41,8 @@ cpNodes () {
   cp $1 $NN3
 }
 
-destroyNodes () {
-  echo ""
-  echo "# destroy any nodes that may be present"
-  destroy="destroy -auto-approve"
-  if [ -d $NN1 ]; then
-     echo "## destroy n1 $N1"  
-    ./TF.sh n1 "$destroy" 2> /dev/null
-  fi
-  if [ -d $NN2 ]; then
-     echo "## destroy n2 $N2" 
-    ./TF.sh n2 "$destroy" 2> /dev/null
-  fi
-  if [ -d $NN3 ]; then
-     echo "## destroy n3 $N3" 
-    ./TF.sh n3 "$destroy" 2> /dev/null
-  fi
-  sleep 1
-
-}
 
 setupNodesDir () {
-  ##destroyNodes
 
   echo ""
   echo "# create new nodes/nn directory tree" 
