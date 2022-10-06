@@ -88,6 +88,16 @@ echo "# n1: $N1"
 echo "# n2: $N2"
 echo "# n3: $N3"
 
+map="demo-nodes.html"
+echo ""
+echo "generate the geo map ($map)"
+scripts/gen_map.py $N1 $N2 $N3 > $map
+rc=$?
+if [ ! "$rc" == "0" ]; then
+  exit 1
+fi
+
+
 setupNodesDir
 
 echo ""
