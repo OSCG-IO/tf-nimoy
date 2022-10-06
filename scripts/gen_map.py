@@ -5,7 +5,7 @@ import sys, sqlite3
 kount = 0
 origin_lat = 0
 origin_lon = 0
-connection = sqlite3.connect("stelthy.db")
+connection = sqlite3.connect("../conf/stelthy.db")
 
 if len(sys.argv) < 2:
   print("ERROR: At least one location must be specified", file=sys.stderr)

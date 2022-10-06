@@ -1,4 +1,3 @@
-.output
 
 DROP TABLE IF EXISTS locations;
 DROP VIEW IF EXISTS v_regions;
@@ -55,6 +54,9 @@ INSERT INTO countries VALUES ('sg', 'ap', 'Singapore');
 INSERT INTO countries VALUES ('kr', 'ap', 'South Korea');
 INSERT INTO countries VALUES ('id', 'ap', 'Indonesia');
 INSERT INTO countries VALUES ('in', 'ap', 'India');
+INSERT INTO countries VALUES ('nz', 'ap', 'New Zealand');
+INSERT INTO countries VALUES ('cn', 'ap', 'China');
+INSERT INTO countries VALUES ('es', 'eu', 'Spain');
 
 CREATE TABLE locations (
   location      TEXT     NOT NULL NOT NULL PRIMARY KEY,
@@ -102,6 +104,14 @@ INSERT INTO locations VALUES ('hkg', 'Hong Kong',          'hk',  22.3080,  113.
 INSERT INTO locations VALUES ('icn', 'Seoul',              'kr',  37.4601,  126.4406);
 INSERT INTO locations VALUES ('sin', 'Singapore',          'sg',   1.4201,  103.8645);
 INSERT INTO locations VALUES ('bom', 'Mumbai',             'in',  19.0901,   72.8687);
+INSERT INTO locations VALUES ('yys', 'Calgary',            'ca',  51.1215, -114.0078);
+INSERT INTO locations VALUES ('mad', 'Madrid',             'es',  40.4839,   -3.5679);
+INSERT INTO locations VALUES ('zrh', 'Zurich',             'se',  47.4515,    8.5645);
+INSERT INTO locations VALUES ('akl', 'Auckland',           'nz', -36.9992,  174.7879);
+INSERT INTO locations VALUES ('hyd', 'Hyderabad',          'in',  17.2402,   78.4293);
+INSERT INTO locations VALUES ('mel', 'Melbourne',          'au', -37.6637,  144.8447);
+INSERT INTO locations VALUES ('pek', 'Beijing',            'cn',  40.0724,  116.5975);
+INSERT INTO locations VALUES ('csx', 'Changsha',           'cn',  28.1913,  113.2192);
 
 
 CREATE TABLE regions (
@@ -123,7 +133,18 @@ INSERT INTO regions VALUES ('aws', 'hkg', 'ap-east-1',      'ap-east-1',      'a
 INSERT INTO regions VALUES ('aws', 'itm', 'ap-northeast-3', 'ap-northeast-3', 'a, b, c');
 INSERT INTO regions VALUES ('aws', 'nrt', 'ap-northeast-1', 'ap-northeast-1', 'a, b, c');
 INSERT INTO regions VALUES ('aws', 'bom', 'ap-south-1',     'ap-south-1',     'a, b, c');
+
 INSERT INTO regions VALUES ('aws', 'dfw', 'us-east-1',      'us-east-1-dfw-1','a');
+
+INSERT INTO regions VALUES ('aws', 'cgk', 'ap-southeast-3', 'ap-southeast-3', 'a, b, c');
+INSERT INTO regions VALUES ('aws', 'syd', 'ap-southeast-2', 'ap-southeast-2', 'a, b, c');
+INSERT INTO regions VALUES ('aws', 'gru', 'sa-east-1',      'sa-east-1',      'a, b, c');
+INSERT INTO regions VALUES ('aws', 'fra', 'eu-central-1',   'eu-central-1',   'a, b, c');
+
+INSERT INTO regions VALUES ('aws', 'yyc', 'ca-west-1',      'ca-central-1',   'a, b, c');
+INSERT INTO regions VALUES ('aws', 'akl', 'ap-southeast-5', 'ap-southeast-5', 'a, b, c');
+INSERT INTO regions VALUES ('aws', 'mel', 'ap-southeast-4', 'ap-southeast-4', 'a, b, c');
+INSERT INTO regions VALUES ('aws', 'hyd', 'ap-south-2',     'ap-south-2',     'a, b, c');
 
 
 CREATE VIEW v_regions AS

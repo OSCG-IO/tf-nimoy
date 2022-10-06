@@ -3,7 +3,7 @@
 import sys, sqlite3
 
 kount = 0
-connection = sqlite3.connect("stelthy.db")
+connection = sqlite3.connect("../conf/stelthy.db")
 
 if len(sys.argv) < 3 or len(sys.argv) > 4:
   print("ERROR: Two or three parms must be specified: provider location [zone]")
