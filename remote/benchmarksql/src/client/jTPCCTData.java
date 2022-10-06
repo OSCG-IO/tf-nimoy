@@ -387,10 +387,7 @@ public class jTPCCTData
 	while (i < o_ol_cnt)                    // 2.4.1.5
 	{
 	    newOrder.ol_i_id[i]         = rnd.getItemID();
-	        //if (rnd.nextInt(1, 100) <= 99)
 	    newOrder.ol_supply_w_id[i] = terminalWarehouse;
-	        //else
-		// newOrder.ol_supply_w_id[i] = rnd.nextInt(1, numWarehouses);
 	    newOrder.ol_quantity[i] = rnd.nextInt(1, 10);
 	    i++;
 	}
@@ -405,7 +402,7 @@ public class jTPCCTData
 	while (i < 15)
 	{
 	    newOrder.ol_i_id[i]         = 0;
-	    newOrder.ol_supply_w_id[i]  = 0;
+	    newOrder.ol_supply_w_id[i]  = terminalWarehouse;
 	    newOrder.ol_quantity[i]     = 0;
 	    i++;
 	}
