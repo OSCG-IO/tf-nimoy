@@ -530,8 +530,8 @@ public class jTPCC implements jTPCCConfig
 						terminalWarehouseID = homeWarehouseID;
 						terminalDistrictID = rnd.nextInt(1, 10);
 					}
-					while(usedTerminals[0][terminalDistrictID-1] == 1);
-					usedTerminals[0][terminalDistrictID-1] = 1;
+					// while(usedTerminals[0][terminalDistrictID-1] == 1);
+					// usedTerminals[0][terminalDistrictID-1] = 1;
 
 					String terminalName = "Term-" + (i>=9 ? ""+(i+1) : "0"+(i+1));
 					Connection conn = null;
