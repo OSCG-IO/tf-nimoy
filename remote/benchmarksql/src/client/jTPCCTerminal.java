@@ -155,7 +155,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 	    /*if(!terminalWarehouseFixed)
 	     	terminalWarehouseID = rnd.nextInt(1, numWarehouses);*/ 
 
-	    if(transactionType <= paymentWeight)
+	    /* if(transactionType <= paymentWeight)
 	    {
 		jTPCCTData      term = new jTPCCTData();
 		term.setNumWarehouses(numWarehouses);
@@ -265,7 +265,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 		transactionTypeName = "Delivery";
 	    }
 	    else
-	    {
+	    { */
 		jTPCCTData      term = new jTPCCTData();
 		term.setNumWarehouses(numWarehouses);
 		term.setWarehouse(terminalWarehouseID);
@@ -289,7 +289,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 		transactionTypeName = "New-Order";
 		newOrderCounter++;
 		newOrder = 1;
-	    }
+	    /*}*/
 
 	    long transactionEnd = System.currentTimeMillis();
 
