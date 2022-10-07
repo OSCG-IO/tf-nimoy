@@ -248,7 +248,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 		     * background queue, so we have to execute that
 		     * part here as well.
 		     */
-		    jTPCCTData  bg = term.getDeliveryBG();
+		    /* jTPCCTData  bg = term.getDeliveryBG();
 		    bg.traceScreen(log);
 		    bg.execute(log, db);
 		    parent.resultAppend(bg);
