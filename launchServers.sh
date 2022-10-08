@@ -6,6 +6,7 @@ fi
 
 source env.sh
 
+
 setNodesVars () {
   echo "## setNodesVar() for NN & TYPE=$TYPE"
 
@@ -18,6 +19,7 @@ setNodesVars () {
   echo "variable \"nn\" { default = \"3-1\" }"     >  $NN3/variables.node.tf
   echo "variable \"type\" { default = \"$TYPE\" }" >> $NN3/variables.node.tf
 }
+
 
 copyLocation() {
   echo "## copyLocation($1, $2, $3)"
@@ -34,6 +36,7 @@ copyLocation() {
     exit 1
   fi
 }
+
 
 cpNodes () {
   cp $1 $NN1
@@ -68,7 +71,9 @@ echo "# n1: $N1"
 echo "# n2: $N2"
 echo "# n3: $N3"
 
-map="demo-nodes.html"
+setupNodesDir
+
+map="$NN/demo-nodes.html"
 echo ""
 echo "generate the geo map ($map)"
 scripts/gen_map.py $N1 $N2 $N3 > $map
@@ -77,8 +82,6 @@ if [ ! "$rc" == "0" ]; then
   exit 1
 fi
 
-
-setupNodesDir
 
 echo ""
 echo "# copy location files"

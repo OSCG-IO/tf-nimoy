@@ -6,6 +6,7 @@ On OSX run:
 
   brew install terraform
   brew install ansible
+  brew install pv
 
 ## steps to run
 
@@ -17,22 +18,15 @@ On OSX run:
 ### 2.) Configure the top of the 'env.sh' with the machine type and locations
 
     TYPE=c6g.medium
-    N1=oregon
-    N2=dublin
-    N3=sydney
+    N1=pdt
+    N2=dub
+    N3=syd
 
-### 3.) Add more Region Location config files as needed such as 'locations/aws-syndey.tf'
+### 3.) Change the version of pgXX to use in 'variables.IO.tf'
 
-    variable "rgn" { default = "ap-southeast-2" }
-    variable "az" { default = "ap-southeast-2a" }
-    variable "image" { default = "ami-0ec6a2b0e8862d01e" }
-    variable "key" { default=dl-m1-book.key" }
+### 4.) The provisioning & cloud-init info for setting up the 'driver' & 'node' vm's is in 'main.tf'
 
-### 4.) Change the version of pgXX to use in 'variables.IO.tf'
-
-### 5.) The provisioning & cloud-init info for setting up the 'driver' & 'node' vm's is in 'main.tf'
-
-### 6.) run './launchServers.sh' and it will setupp a multi-region demo cluster as follows:
+### 5.) run './launchServers.sh' and it will setupp a multi-region demo cluster as follows:
 
      # create new nodes/nn directory tree
         ## copying common terraform files
@@ -49,10 +43,10 @@ On OSX run:
     # generate an ssh key pair on driver1-1
     # use ansible playbook 'add-key.yml' to allow for passwordless ssh between 'driver1-1' and all other drivers & nodes.
 
-### 7.) run './configServers.sh' to further setup the servers
+### 6.) run './configServers.sh' to further setup the servers
 
 
-### 8.) SSH to driver1-1; cd $RMT; cat README.md
+### 7.) SSH to driver1-1; cd $RMT; cat README.md
     
 
 ### ![spock2](https://user-images.githubusercontent.com/1664798/186249698-08853672-a72e-4e39-b236-ad020faa9f94.png)

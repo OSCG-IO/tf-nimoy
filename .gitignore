@@ -7,5 +7,3 @@ ansible_hosts
 hosts.new
 log
 .DS_Store
-demo-nodes.html
-prometheus.yml
