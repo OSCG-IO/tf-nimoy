@@ -14,7 +14,7 @@ set -x
 
 d1=driver1-1
 
-key="~/keys/dl-m1book-key.pem"
+key="keys/dl-m1book-key.pem"
 usr=ubuntu
 SSH="ssh -o StrictHostKeyChecking=no"
 SCP="scp -o StrictHostKeyChecking=no"
@@ -31,10 +31,10 @@ setupEtcHosts driver3-1
 setupEtcHosts node3-1
 
 $SSH -i $key $usr@$d1 'mkdir keys'
-$SCP -i $key ~/keys/dl-m1book-key.pem  $usr@$d1:keys/.
+$SCP -i $key $key  $usr@$d1:keys/.
 $SSH -i $key $usr@$d1 'echo -e "\n\n\n" | ssh-keygen -t rsa'
 
-$SSH -i $key $usr@$d1 'ansible-playbook add-key.yml -i ansible_hosts --user ubuntu --key-file ~/keys/dl-m1book-key.pem  -e "key=/home/ubuntu/.ssh/id_rsa.pub"'
+$SSH -i $key $usr@$d1 'ansible-playbook add-key.yml -i ansible_hosts --user ubuntu --key-file $key  -e "key=/home/ubuntu/.ssh/id_rsa.pub"'
 $SSH -i $key $usr@$d1 'sudo ./catHosts.sh'
 
 bs='cd test/tf-nimoy/remote/benchmarksql; /home/ubuntu/apache-ant-1.9.16/bin/ant'
