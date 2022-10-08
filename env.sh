@@ -1,7 +1,7 @@
 
 ## arm64 w/ 1 vcpu, 2 GB Memory
 TYPE=c6g.medium
-N1=pdt
+N1=pdt	
 N2=pdt
 N3=pdt
 
@@ -15,7 +15,7 @@ PGV=15
 #N2=dub
 #N3=syd
 
-creds="./aws-creds.sh"
+creds="keys/aws-creds.sh"
 if [ -f "$creds" ]; then
   source "$creds"
 else

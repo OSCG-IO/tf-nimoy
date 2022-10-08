@@ -10,7 +10,7 @@ On OSX run:
 
 ## steps to run
 
-### 1.) Add your AWS credentials to a local file called 'aws-creds.sh' to look like this:
+### 1.) Add your AWS credentials to a local secure file called 'keys/aws-creds.sh' to look like this:
 
     export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
     export AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

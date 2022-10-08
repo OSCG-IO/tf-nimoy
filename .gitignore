@@ -1,9 +1,9 @@
-aws-creds.sh
 nodes
+keys
+log
 .terraform
 my.out
 hosts
 ansible_hosts
 hosts.new
-log
 .DS_Store
