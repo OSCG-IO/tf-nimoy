@@ -7,9 +7,15 @@ set -x
 python3 scripts/make_hosts_file.py
 
 ## create a new local hosts file with all the new machines
-cp conf/hosts.base.osx hosts.new
+os=`uname`
+if [ "$os" == "Darwin" ]; then
+  cp conf/hosts.base.osx   hosts.new
+else
+  cp conf/hosts.base.linux hosts.new
+fi
 cat hosts >> hosts.new
 sudo cp hosts.new  /etc/hosts
 sudo touch /etc/hosts
+rm hosts.new
 
 rm -f ~/.ssh/known_hosts
