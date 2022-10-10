@@ -190,7 +190,7 @@ chart.appear(1000, 100);
 """
   )
 
-def print_location(p_loct, p_loct_nm, p_lat, p_lon):
+def print_location(p_loct, p_loct_nm, p_lat, p_lon, p_az):
   global kount
   global origin_lat
   global origin_lon
@@ -203,32 +203,54 @@ def print_location(p_loct, p_loct_nm, p_lat, p_lon):
   else:
     print(",")
 
+  lat = float(p_lat)
+  lon = float(p_lon)
+  az  = p_az.upper()
+  id  = p_loct + p_az.lower()
+  if az == "B":
+    lon = lon - 0.01
+  elif az == "C":
+    lat = lat + 0.01
+
+  loct_zn = p_loct_nm + " " + az
+
   print('{')
-  print('  id: "' + p_loct.strip() + '",\n  title: "' + p_loct_nm.strip() + '",')
-  print('  geometry: { type: "Point", coordinates: [' + str(p_lon) + ', ' + str(p_lat) + '] },')
+  print('  id: "' + id + '",\n  title: "' + loct_zn + '",')
+  print('  geometry: { type: "Point", coordinates: [' + str(lon) + ', ' + str(lat) + '] },')
   print('}')
 
 
-def print_cities():
+def print_locations():
   global origin_lat
   global origin_lon
 
   print ('var cities = [')
 
-  for i in range(1,len(sys.argv)):
+  for i in range(1, len(sys.argv)):
     cursor = connection.cursor()
+
     loct = sys.argv[i]
+    loct_arr = sys.argv[i].split(":")
+    loct = loct_arr[0]
+    if len(loct_arr) == 2:
+      az = loct_arr[1].upper()
+    else:
+      az = "A"
 
     row = cursor.execute( \
       "SELECT location_nm, latitude, longitude \
          FROM locations \
         WHERE location = ?", (loct,)).fetchone()
 
+    loc_nm = str(row[0])
+    lat = str(row[1])
+    lon = str(row[2])
+
     if not row:
       print("ERROR: '" + loct + "' is not valid", file=sys.stderr)
       sys.exit(1)
 
-    print_location(loct, row[0], row[1], row[2])
+    print_location(loct, loc_nm, lat, lon, az)
 
   print(
 """
@@ -242,11 +264,15 @@ var destinations = [
   )
 
   k = 0
-  for i in range(1,len(sys.argv)):
+  for i in range(1, len(sys.argv)):
     k = k + 1
     if k > 1:
       print(' ,')
-    print('"' + str(sys.argv[i]) + '"')
+
+    dest = str(sys.argv[i])
+    dest = dest.replace(":", "")
+
+    print('"' + dest + '"')
 
   print(
 """
@@ -255,6 +281,7 @@ var destinations = [
 // Origin Coordinates 
 """
   )
+
 
   print(" var originLongitude = " + str(origin_lon) + ";")
   print(" var originLatitude  = " + str(origin_lat) + ";")
@@ -265,7 +292,7 @@ var destinations = [
 ############### MAINLINE ######################
 print_top()
 
-print_cities()
+print_locations()
 
 print_bottom()
 
