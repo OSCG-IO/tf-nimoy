@@ -264,9 +264,9 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 		}
 		transactionTypeName = "Delivery";
 	    }
-	    else
+	    /* else
 	    {
-		/* jTPCCTData      term = new jTPCCTData();
+		jTPCCTData      term = new jTPCCTData();
 		term.setNumWarehouses(numWarehouses);
 		term.setWarehouse(terminalWarehouseID);
 		term.setDistrict(terminalDistrictID);
@@ -288,8 +288,8 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 		}
 		transactionTypeName = "New-Order";
 		newOrderCounter++;
-		newOrder = 1; */
-	    }
+		newOrder = 1;
+	    } */
 
 	    long transactionEnd = System.currentTimeMillis();
 
