@@ -31,10 +31,10 @@ setupEtcHosts driver3-1
 setupEtcHosts node3-1
 
 $SSH $usr@$d1 'mkdir keys'
-$SCP $usr@$d1:keys/.
+$SCP $key $usr@$d1:keys/.
 $SSH $usr@$d1 'echo -e "\n\n\n" | ssh-keygen -t rsa'
 
-$SSH $usr@$d1 'ansible-playbook add-key.yml -i ansible_hosts --user ubuntu --key-file $key  -e "key=/home/ubuntu/.ssh/id_rsa.pub"'
+$SSH $usr@$d1 'ansible-playbook add-key.yml -i ansible_hosts --user ubuntu --key-file keys/dl-m1book-key.pem  -e "key=/home/ubuntu/.ssh/id_rsa.pub"'
 $SSH $usr@$d1 'sudo ./catHosts.sh'
 
 bs='cd test/tf-nimoy/remote/benchmarksql; /home/ubuntu/apache-ant-1.9.16/bin/ant'
