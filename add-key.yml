@@ -1,5 +1,5 @@
 ---
-- name: "Playbook to Add Key to EC2 Instances"
+- name: "Playbook to Add Key to VM's"
   hosts: hosts_to_add_key
   vars:
     - status : "present"
