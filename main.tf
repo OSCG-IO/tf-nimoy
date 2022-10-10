@@ -94,7 +94,7 @@ resource "aws_instance"  "node" {
   echo "### Set HOSTNAME"
   echo "${local.node}" > /etc/hostname
 
-  echo "### Update the OS w/ Git & Python3"
+  echo "### Update the OS w/ Python3 & Go"
   sudo apt update -y
   sudo apt upgrade -y
   sudo apt install -y wget curl python3 net-tools golang
@@ -128,8 +128,9 @@ resource "aws_instance" "driver" {
   echo "### Set HOSTNAME"
   echo "${local.driver}" > /etc/hostname
 
-  echo "### Update the OS w/ Git, Java & Python3"
+  echo "### Update the OS w/ Git, Java, Python3 & Ansible"
   sudo apt update -y
+  sudo apt upgrade -y
   sudo apt install -y wget git openjdk-11-jdk python3 python3-dev python3-pip net-tools ansible
   j_home=/usr/lib/jvm/java-11-openjdk
   arch=`arch`
