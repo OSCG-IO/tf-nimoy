@@ -402,7 +402,7 @@ public class jTPCCTData
 	while (i < 15)
 	{
 	    newOrder.ol_i_id[i]         = 0;
-	    newOrder.ol_supply_w_id[i]  = terminalWarehouse;
+	    newOrder.ol_supply_w_id[i]  = 0;
 	    newOrder.ol_quantity[i]     = 0;
 	    i++;
 	}
