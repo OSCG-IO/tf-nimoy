@@ -21,15 +21,17 @@ setNodesVars () {
 }
 
 
-copyLocation() {
-  echo "## copyLocation($1, $2, $3)"
+genTFvars() {
+  echo "## genTFvars($1, $2, $3, $4)"
   cld="$1" 
-  n="$2"
-  nn="$3"
+  regn="$2"
+  zone="$3"
+  dir="$4"
 
-  lctn=$cld-$n.tf
-  out=$nn/variables.$lctn
-  scripts/gen_tf_vars.py $cld $n > $out
+  lctn=$cld-$regn.tf
+  out=$dir/variables.$lctn
+
+  scripts/gen_tf_vars.py $cld $regn $zone > $out
   rc=$?
   cat $out
   if [ ! "$rc" == "0" ]; then
@@ -67,9 +69,9 @@ setupNodesDir () {
 
 
 echo "###### Setup Multi-Region Demo Cluster ######"
-echo "# n1: $N1"
-echo "# n2: $N2"
-echo "# n3: $N3"
+echo "# n1: $N1 $N1Z"
+echo "# n2: $N2 $N2Z"
+echo "# n3: $N3 $N3Z"
 
 setupNodesDir
 
@@ -85,9 +87,9 @@ fi
 
 echo ""
 echo "# copy location files"
-copyLocation aws $N1 $NN1
-copyLocation aws $N2 $NN2
-copyLocation aws $N3 $NN3
+genTFvars  aws $N1 $N1Z $NN1
+genTFvars  aws $N2 $N2Z $NN2
+genTFvars  aws $N3 $N3Z $NN3
 
 echo ""
 echo "# create node specfic variables"

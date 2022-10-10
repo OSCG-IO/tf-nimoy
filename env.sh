@@ -1,19 +1,21 @@
 
-## arm64 w/ 1 vcpu, 2 GB Memory
-TYPE=c6g.medium
-N1=pdt	
-N2=pdt
-N3=pdt
+TYPE=c6g.large
 
-## postgreSQL Version, 14 or 15
+N1=pdt
+N1Z=a
+N2=pdt
+N2Z=b
+N3=pdt
+N3Z=c
+
 PGV=15
 
-## arm64 w/ 2 vcpu, 4 GB Memory
-#TYPE=c6g.large 
-
 #N1=mtl
+#N1Z=a
 #N2=dub
+#N2Z=a
 #N3=syd
+#N2Z=a
 
 creds="keys/aws-creds.sh"
 if [ -f "$creds" ]; then
