@@ -382,7 +382,7 @@ public class jTPCCTData
 	newOrder.w_id   = terminalWarehouse;    // 2.4.1.1
 	newOrder.d_id   = rnd.nextInt(1, 10);   // 2.4.1.2
 	newOrder.c_id   = rnd.getCustomerID();
-	o_ol_cnt        = rnd.nextInt(1, 10);   // 2.4.1.3
+	o_ol_cnt        = rnd.nextInt(5, 15);   // 2.4.1.3
 
 	while (i < o_ol_cnt)                    // 2.4.1.5
 	{
@@ -399,13 +399,13 @@ public class jTPCCTData
 	}
 
 	// Zero out the remaining lines
-	/* while (i < 15)
+	while (i < 15)
 	{
 	    newOrder.ol_i_id[i]         = 0;
 	    newOrder.ol_supply_w_id[i]  = 0;
 	    newOrder.ol_quantity[i]     = 0;
 	    i++;
-	} */
+	}
     }
 
     private void executeNewOrder(Logger log, jTPCCConnection db)

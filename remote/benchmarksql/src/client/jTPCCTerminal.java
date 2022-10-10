@@ -155,6 +155,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 	    /*if(!terminalWarehouseFixed)
 	     	terminalWarehouseID = rnd.nextInt(1, numWarehouses);*/ 
 
+	    numWarehouses=1;
 	    if(transactionType <= paymentWeight)
 	    {
 		jTPCCTData      term = new jTPCCTData();
@@ -267,7 +268,7 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 	    else
 	    {
 		jTPCCTData      term = new jTPCCTData();
-		term.setNumWarehouses(1);
+		term.setNumWarehouses(numWarehouses);
 		term.setWarehouse(terminalWarehouseID);
 		term.setDistrict(terminalDistrictID);
 		term.setUseStoredProcedures(useStoredProcedures);
