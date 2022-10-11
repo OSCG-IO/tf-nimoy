@@ -18,7 +18,7 @@ key="keys/dl-m1book-key.pem"
 usr=ubuntu
 SSH="ssh -i $key -o StrictHostKeyChecking=no"
 SCP="scp -i $key -o StrictHostKeyChecking=no"
-PASS=$(openssl rand -base64 12;)
+PASS=$(openssl rand -hex 8;)
 
 $SCP ansible_hosts  $usr@$d1:.
 $SCP add-key.yml    $usr@$d1:.
