@@ -10,6 +10,10 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
+data "http" "myip" {
+  url = "http://ipv4.icanhazip.com"
+}
+
 locals {
   driver = format("%s%s", "driver", var.nn)
   node   = format("%s%s", "node",   var.nn)
@@ -36,47 +40,30 @@ resource "aws_subnet" "sub" {
   }
 }
   
-
 resource "aws_security_group" "sg" {
   name = local.sg
   vpc_id = aws_default_vpc.default.id
   tags = {
     Name = local.sg
   }
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-  ingress {
-    description      = "SSH"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-  ingress {
-    description      = "prompgexp"
-    from_port        = 9187
-    to_port          = 9187
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-  ingress {
-    description      = "postgres"
-    from_port        = 5432
-    to_port          = 5432
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-  ingress {
-    description      = "ping"
-    from_port        = -1
-    to_port          = -1
-    protocol         = "icmp"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
+}
+
+resource "aws_security_group_rule" "egress" {
+  type              = "egress"
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  from_port         = 0
+  security_group_id = aws_security_group.sg.id
+}
+
+resource "aws_security_group_rule" "local-ssh" {
+  type              = "ingress"
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  from_port         = 22
+  security_group_id = aws_security_group.sg.id
 }
 
 resource "aws_instance"  "node" {
