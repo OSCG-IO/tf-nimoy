@@ -102,6 +102,10 @@ echo " "
 echo "configuring localhost"
 ./updateLocalhost.sh
 
+echo " "
+echo "configure security groups"
+./sgUpdate.sh
+
 echo ""
 echo "  run './configServers.sh' next"
 
