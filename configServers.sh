@@ -40,12 +40,15 @@ $SSH $usr@$d1 'sudo ./catHosts.sh'
 bs='cd test/tf-nimoy/remote/benchmarksql; /home/ubuntu/apache-ant-1.9.16/bin/ant'
 io='python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; cd oscg; ./io install pg'
 io+=$PGV
-io+='; echo '
-io+=$PASS
-io+=' >> /home/ubuntu/.pgpass; chmod 600 /home/ubuntu/.pgpass'
+io+='; touch /home/ubuntu/.pgpass; chmod 600 /home/ubuntu/.pgpass'
+pw='echo '
+pw+=$PASS
+pw+=' >> test/tf-nimoy/remote/.pword'
+
 
 $SSH $usr@driver1-1 "$bs"
 $SSH $usr@driver1-1 "$io"
+$SSH $usr@driver1-1 "$pw"
 
 $SSH $usr@driver2-1 "$bs"
 $SSH $usr@driver2-1 "$io"

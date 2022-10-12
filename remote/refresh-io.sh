@@ -1,3 +1,7 @@
+if  [ ! -f .pword ]; then
+   PASS=$(openssl rand -hex 8;)
+   echo $PASS >> .pword
+fi
 
 # delete and re-installthe database
 ./remove-io.sh node1-1
@@ -12,4 +16,6 @@
 ./setupSpock.sh node2-1
 ./setupSpock.sh node3-1
 
-sed -i "1s/^/*:5432:*:postgres:/" ~/.pgpass
+SCP="scp -o StrictHostKeyChecking=accept-new"
+$SCP node1-1:/home/ubuntu/.pgpass /home/ubuntu/.pgpass
+rm .pword
