@@ -19,9 +19,8 @@ for sg in $sg_id; do
     for ip in $ip_list; do
         ip=`echo $ip | sed 's/\.[^.]*$//'`.0/32
         aws configure set region "us-west-2"
-        aws ec2 authorize-security-group-ingress --group-id $sg --protocol tcp --port 22 --cidr $ip
-        aws ec2 authorize-security-group-ingress --group-id $sg --protocol tcp --port 5432 --cidr $ip
-        aws ec2 authorize-security-group-ingress --group-id $sg --protocol tcp --port 9187 --cidr $ip
-        aws ec2 authorize-security-group-ingress --group-id $sg --protocol icmp --port -1 --cidr $ip
+        aws ec2 authorize-security-group-ingress --group-id $sg --protocol tcp --port 22 --cidr 0.0.0.0/0
+        aws ec2 authorize-security-group-ingress --group-id $sg --protocol tcp --port 5432 --cidr 0.0.0.0/0
+        aws ec2 authorize-security-group-ingress --group-id $sg --protocol icmp --port -1 --cidr 0.0.0.0/0
     done
 done

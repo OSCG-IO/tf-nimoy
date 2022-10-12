@@ -66,6 +66,15 @@ resource "aws_security_group_rule" "local-ssh" {
   security_group_id = aws_security_group.sg.id
 }
 
+resource "aws_security_group_rule" "local-prompgexp" {
+  type              = "ingress"
+  to_port           = 9187
+  protocol          = "tcp"
+  cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  from_port         = 9187
+  security_group_id = aws_security_group.sg.id
+}
+
 resource "aws_instance"  "node" {
   ami           = var.image
   instance_type = var.type
