@@ -13,6 +13,8 @@ $SSH $HOST "$io install $pgXX"
 $SCP .pword $HOST:$PG/.pgpass
 $SSH $HOST "$io start $pgXX -y -d demo : tune $pgXX : install spock -d demo : install prompgexp --start"
 
+set +x
+
 PASS=`cat .pword`
 echo "$HOST:5432:*:postgres:$PASS" >> ~/.pgpass
 $SCP pg_hba.conf $HOST:$PG/.

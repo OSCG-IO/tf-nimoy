@@ -1,6 +1,9 @@
 if  [ ! -f ".pword" ]; then
    PASS=$(openssl rand -hex 8;)
    echo $PASS >> .pword
+   rm -f ~/.pgpass
+   touch ~/.pgpass
+   chmod 600 ~/.pgpass
 fi
 
 # delete and re-installthe database
