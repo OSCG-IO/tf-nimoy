@@ -238,7 +238,7 @@ def print_locations():
       az = "A"
 
     row = cursor.execute( \
-      "SELECT location_nm, latitude, longitude \
+      "SELECT location_nm, lattitude, longitude \
          FROM locations \
         WHERE location = ?", (loct,)).fetchone()
 
