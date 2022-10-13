@@ -16,6 +16,4 @@ fi
 ./setupSpock.sh node2-1
 ./setupSpock.sh node3-1
 
-SCP="scp -o StrictHostKeyChecking=accept-new"
-$SCP node1-1:/home/ubuntu/.pgpass /home/ubuntu/.pgpass
 rm .pword
