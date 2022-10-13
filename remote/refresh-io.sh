@@ -1,4 +1,4 @@
-if  [ ! -f .pword ]; then
+if  [ ! -f ".pword" ]; then
    PASS=$(openssl rand -hex 8;)
    echo $PASS >> .pword
 fi

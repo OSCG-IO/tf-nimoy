@@ -26,7 +26,8 @@ rc=$?
 
 PASS=$(openssl rand -base64 12;)
 REPL="$PGBIN/psql -U postgres -h $node demo -f create-replication-role.sql -v mypass='$PASS'"
-echo "$node:5432:*:replication:$PASS" >> ~/.pgpass
+sed -i '1s;^;$node:5432:*:replication:$PASS\n;' ~/.pgpass
+##echo "$node:5432:*:replication:$PASS" >> ~/.pgpass
 echo "REPL=$REPL"
 $REPL
 
