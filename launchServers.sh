@@ -68,10 +68,25 @@ setupNodesDir () {
 }
 
 
-echo "###### Setup Multi-Region Demo Cluster ######"
-echo "# n1: $N1 $N1Z"
-echo "# n2: $N2 $N2Z"
-echo "# n3: $N3 $N3Z"
+echo "######### Launch PGE Cluster ##########"
+echo "#"
+echo "####### Default Settings ##############"
+echo "#         Cloud: $CLOUD"
+echo "#  Machine Type: $TYPE"
+echo "#       Version: $PGV"
+echo "#"
+echo "####### Database Nodes ################"
+echo "   Cluster Name: $CLUSTER_NM"
+echo "#         Count: $NODE_KOUNT"
+echo "#            n1: $N1 $N1Z"
+if [ ! "$N2" ==  "" ]; then
+  echo "#            n2: $N2 $N2Z"
+fi
+if [ ! "$N3" == "" ]; then
+  echo "#            n3: $N3 $N3Z"
+fi
+
+exit 1
 
 setupNodesDir
 
