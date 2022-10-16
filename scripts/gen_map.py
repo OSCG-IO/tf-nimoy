@@ -14,6 +14,110 @@ if len(sys.argv) < 2:
   sys.exit(1)
 
 
+################ print_locations() ##################################
+def print_location(p_loct, p_loct_nm, p_lat, p_lon, p_az):
+  global kount
+  global origin_lat
+  global origin_lon
+
+  kount = kount + 1
+
+  if kount == 1:
+    origin_lat = p_lat
+    origin_lon = p_lon
+  else:
+    print(",")
+
+  lat = float(p_lat)
+  lon = float(p_lon)
+  az  = p_az.upper()
+  id  = p_loct + p_az.lower()
+  if az == "B":
+    lon = lon - 0.01
+  elif az == "C":
+    lat = lat + 0.01
+
+  loct_zn = p_loct_nm + " " + az
+
+  print('{')
+  print('  id: "' + id + '",\n  title: "' + loct_zn + '",')
+  print('  geometry: { type: "Point", coordinates: [' + str(lon) + ', ' + str(lat) + '] },')
+  print('}')
+
+
+################ print_locations() ##################################
+def print_locations():
+  global origin_lat
+  global origin_lon
+
+  print ('var cities = [')
+
+  for i in range(1, len(sys.argv)):
+    cursor = connection.cursor()
+
+    loct = sys.argv[i]
+    loct_arr = sys.argv[i].split(":")
+    loct = loct_arr[0]
+    if len(loct_arr) == 2:
+      az = loct_arr[1].upper()
+    else:
+      az = "A"
+
+    row = cursor.execute( \
+      "SELECT location_nm, lattitude, longitude \
+         FROM locations \
+        WHERE location = ?", (loct,)).fetchone()
+
+    if row == None:
+      print("\nERROR: invalid loct '" + str(loct) + "', , file=sys.stderr")
+      sys.exit(1)
+
+    loc_nm = str(row[0])
+    lat = str(row[1])
+    lon = str(row[2])
+
+    if not row:
+      print("ERROR: '" + loct + "' is not valid", file=sys.stderr)
+      sys.exit(1)
+
+    print_location(loct, loc_nm, lat, lon, az)
+
+  print(
+"""
+];
+
+citySeries.data.setAll(cities);
+
+// prepare line series data
+var destinations = [
+"""
+  )
+
+  k = 0
+  for i in range(1, len(sys.argv)):
+    k = k + 1
+    if k > 1:
+      print(' ,')
+
+    dest = str(sys.argv[i])
+    dest = dest.replace(":", "")
+
+    print('"' + dest + '"')
+
+  print(
+"""
+];
+
+// Origin Coordinates
+"""
+  )
+
+
+  print(" var originLongitude = " + str(origin_lon) + ";")
+  print(" var originLatitude  = " + str(origin_lat) + ";")
+
+
+################## print_top() #####################################
 def print_top():
   print(
 """
@@ -190,106 +294,9 @@ chart.appear(1000, 100);
 """
   )
 
-def print_location(p_loct, p_loct_nm, p_lat, p_lon, p_az):
-  global kount
-  global origin_lat
-  global origin_lon
-
-  kount = kount + 1
-
-  if kount == 1:
-    origin_lat = p_lat
-    origin_lon = p_lon
-  else:
-    print(",")
-
-  lat = float(p_lat)
-  lon = float(p_lon)
-  az  = p_az.upper()
-  id  = p_loct + p_az.lower()
-  if az == "B":
-    lon = lon - 0.01
-  elif az == "C":
-    lat = lat + 0.01
-
-  loct_zn = p_loct_nm + " " + az
-
-  print('{')
-  print('  id: "' + id + '",\n  title: "' + loct_zn + '",')
-  print('  geometry: { type: "Point", coordinates: [' + str(lon) + ', ' + str(lat) + '] },')
-  print('}')
 
 
-def print_locations():
-  global origin_lat
-  global origin_lon
-
-  print ('var cities = [')
-
-  for i in range(1, len(sys.argv)):
-    cursor = connection.cursor()
-
-    loct = sys.argv[i]
-    loct_arr = sys.argv[i].split(":")
-    loct = loct_arr[0]
-    if len(loct_arr) == 2:
-      az = loct_arr[1].upper()
-    else:
-      az = "A"
-
-    row = cursor.execute( \
-      "SELECT location_nm, lattitude, longitude \
-         FROM locations \
-        WHERE location = ?", (loct,)).fetchone()
-
-    loc_nm = str(row[0])
-    lat = str(row[1])
-    lon = str(row[2])
-
-    if not row:
-      print("ERROR: '" + loct + "' is not valid", file=sys.stderr)
-      sys.exit(1)
-
-    print_location(loct, loc_nm, lat, lon, az)
-
-  print(
-"""
-];
-
-citySeries.data.setAll(cities);
-
-// prepare line series data
-var destinations = [
-"""
-  )
-
-  k = 0
-  for i in range(1, len(sys.argv)):
-    k = k + 1
-    if k > 1:
-      print(' ,')
-
-    dest = str(sys.argv[i])
-    dest = dest.replace(":", "")
-
-    print('"' + dest + '"')
-
-  print(
-"""
-];
-
-// Origin Coordinates 
-"""
-  )
-
-
-  print(" var originLongitude = " + str(origin_lon) + ";")
-  print(" var originLatitude  = " + str(origin_lat) + ";")
-
-
-
-
-############### MAINLINE ######################
+########################### MAINLINE ###############################
 print_top()
 
 print_locations()
