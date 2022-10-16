@@ -1,5 +1,7 @@
 
+CLOUD=aws
 TYPE=c6g.large
+PGV=15
 
 N1=pdt
 N1Z=a
@@ -8,14 +10,12 @@ N2Z=b
 N3=pdt
 N3Z=c
 
-PGV=15
-
 #N1=mtl
 #N1Z=a
 #N2=dub
 #N2Z=a
 #N3=syd
-#N2Z=a
+#N3Z=a
 
 creds="keys/aws-creds.sh"
 if [ -f "$creds" ]; then
