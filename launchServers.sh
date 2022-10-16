@@ -86,8 +86,6 @@ if [ ! "$N3" == "" ]; then
   echo "#            n3: $N3 $N3Z"
 fi
 
-exit 1
-
 setupNodesDir
 
 map="$NN/demo-nodes.html"
