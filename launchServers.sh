@@ -50,8 +50,15 @@ cpNodes () {
 setupNodesDir () {
 
   echo ""
-  echo "# create new nodes/nn directory tree" 
-  rm -rf $NN
+  echo "# checking that cluster directory does not exist"
+  if [ -d "$NN" ]; then
+    echo "ERROR: Cluster definition directory exists: $NN"
+    exit 1
+  fi
+
+  echo ""
+  echo "# create new cluster directory tree" 
+  mkdir -p $NN
   mkdir -p $NN1
   mkdir -p $NN2
   mkdir -p $NN3

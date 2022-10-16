@@ -28,7 +28,7 @@ else
 fi
 
 DIR=$PWD
-NN=$DIR/nodes
+NN=$DIR/nodes/$CLUSTER_NM
 NN1=$NN/n1
 NN2=$NN/n2
 NN3=$NN/n3
