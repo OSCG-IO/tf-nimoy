@@ -11,12 +11,15 @@ setNodesVars () {
   echo "## setNodesVar() for NN & TYPE=$TYPE"
 
   echo "variable \"nn\" { default = \"1-1\" }"     >  $NN1/variables.node.tf
+  echo "variable \"cluster_nm\" { default = \"$CLUSTER_NM\" }" >> $NN1/variables.node.tf
   echo "variable \"type\" { default = \"$TYPE\" }" >> $NN1/variables.node.tf
 
   echo "variable \"nn\" { default = \"2-1\" }"     >  $NN2/variables.node.tf
+  echo "variable \"cluster_nm\" { default = \"$CLUSTER_NM\" }" >> $NN2/variables.node.tf
   echo "variable \"type\" { default = \"$TYPE\" }" >> $NN2/variables.node.tf
 
   echo "variable \"nn\" { default = \"3-1\" }"     >  $NN3/variables.node.tf
+  echo "variable \"cluster_nm\" { default = \"$CLUSTER_NM\" }" >> $NN3/variables.node.tf
   echo "variable \"type\" { default = \"$TYPE\" }" >> $NN3/variables.node.tf
 }
 

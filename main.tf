@@ -17,8 +17,8 @@ data "http" "myip" {
 locals {
   driver = format("%s%s", "driver", var.nn)
   node   = format("%s%s", "node",   var.nn)
-  sg     = format("%s%s", "demo-sg",   var.nn)
-  sub    = format("%s%s", "demo-sn",   var.nn)
+  sg     = format("%s%s%s", var.cluster_nm, "-sg",  var.nn)
+  sub    = format("%s%s%s", var.cluster_nm, "-sn",   var.nn)
   cdr    = format("%s%s%s", "172.31.",  80+(tonumber(substr(var.nn,0,1)) * 16), ".0/20")
   pgv    = format("%s%s", "pg", var.pg_v)
 }
