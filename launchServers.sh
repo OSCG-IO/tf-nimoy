@@ -95,15 +95,14 @@ fi
 
 setupNodesDir
 
-map="$NN/demo-nodes.html"
+map="$NN/nodes.html"
 echo ""
 echo "generate the geo map ($map)"
-scripts/gen_map.py $N1:$N1Z $N2:$N2Z $N3:$N3Z > $map
+python3 scripts/generate.py map --provider aws --location "$N1, $N2, $N3" > $map
 rc=$?
 if [ ! "$rc" == "0" ]; then
   exit 1
 fi
-
 
 echo ""
 echo "# copy location files"

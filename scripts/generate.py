@@ -2,6 +2,8 @@
 
 import sys, sqlite3, os
 
+import fire
+
 os.chdir(sys.path[0])
 
 kount = 0
@@ -9,13 +11,44 @@ origin_lat = 0
 origin_lon = 0
 connection = sqlite3.connect("../conf/stelthy.db")
 
-if len(sys.argv) < 2:
-  print("ERROR: At least one location must be specified", file=sys.stderr)
-  sys.exit(1)
+
+def print_map(geo=None, country=None, provider=None, location=None):
+  g_whr = ""
+
+  if geo:
+    if isinstance(geo, str):
+      g_whr = g_whr + " AND geo = '" + geo + "'"
+    else:
+      g_whr = g_whr + " AND geo IN " + str(geo)
+
+  if country:
+    if isinstance(country, str):
+      g_whr = g_whr + " AND country = '" + country + "'"
+    else:
+      g_whr = g_whr + " AND country IN " + str(country)
+
+  if provider:
+    if isinstance(provider, str):
+      g_whr = g_whr + " AND provider = '" + provider + "'"
+    else:
+      g_whr = g_whr + " AND provider IN " + str(provider)
+
+  if location:
+    if isinstance(location, str):
+      g_whr = g_whr + " AND location = '" + location + "'"
+    else:
+      g_whr = g_whr + " AND location IN " + str(location)
+
+  
+  print_top()
+
+  print_locations(g_whr)
+
+  print_bottom()
 
 
 ################ print_locations() ##################################
-def print_location(p_loct, p_loct_nm, p_lat, p_lon, p_az):
+def print_location(p_loct, p_loct_nm, p_lat, p_lon, p_az=""):
   global kount
   global origin_lat
   global origin_lon
@@ -40,47 +73,41 @@ def print_location(p_loct, p_loct_nm, p_lat, p_lon, p_az):
   loct_zn = p_loct_nm + " " + az
 
   print('{')
-  print('  id: "' + id + '",\n  title: "' + loct_zn + '",')
+  print('  id: "' + id + '",\n  title: "' + p_loct_nm + '",')
   print('  geometry: { type: "Point", coordinates: [' + str(lon) + ', ' + str(lat) + '] },')
   print('}')
 
 
 ################ print_locations() ##################################
-def print_locations():
+def print_locations(p_where):
   global origin_lat
   global origin_lon
 
+
+  c = connection.cursor()
+
+  sql = "SELECT location, location_nm, lattitude, longitude \
+           FROM v_locations \
+          WHERE 1=1 " + p_where
+
+  c.execute(sql )
+
+  rows = c.fetchall()
+
+  if not rows:
+    print("ERROR: no locations for : " + str(p_where), file=sys.stderr)
+    sys.exit(1)
+
+
   print ('var cities = [')
 
-  for i in range(1, len(sys.argv)):
-    cursor = connection.cursor()
+  for row in rows:
+    loct = str(row[0])
+    loc_nm = str(row[1])
+    lat = str(row[2])
+    lon = str(row[3])
 
-    loct = sys.argv[i]
-    loct_arr = sys.argv[i].split(":")
-    loct = loct_arr[0]
-    if len(loct_arr) == 2:
-      az = loct_arr[1].upper()
-    else:
-      az = "A"
-
-    row = cursor.execute( \
-      "SELECT location_nm, lattitude, longitude \
-         FROM locations \
-        WHERE location = ?", (loct,)).fetchone()
-
-    if row == None:
-      print("\nERROR: invalid loct '" + str(loct) + "', , file=sys.stderr")
-      sys.exit(1)
-
-    loc_nm = str(row[0])
-    lat = str(row[1])
-    lon = str(row[2])
-
-    if not row:
-      print("ERROR: '" + loct + "' is not valid", file=sys.stderr)
-      sys.exit(1)
-
-    print_location(loct, loc_nm, lat, lon, az)
+    print_location(loct, loc_nm, lat, lon)
 
   print(
 """
@@ -294,12 +321,8 @@ chart.appear(1000, 100);
 """
   )
 
-
-
-########################### MAINLINE ###############################
-print_top()
-
-print_locations()
-
-print_bottom()
+if __name__ == '__main__':
+  fire.Fire({
+      'map': print_map,
+  })
 
