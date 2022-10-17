@@ -23,7 +23,7 @@ cursor = connection.cursor()
 
 row = cursor.execute( \
   "SELECT region, location_nm, parent_region, avail_zones, image_id \
-     FROM v_regions \
+     FROM v_images \
     WHERE provider = ? and location = ?", [provider, loct]).fetchone()
 
 if not row:

@@ -1,6 +1,5 @@
 
 DROP TABLE IF EXISTS flavors;
-DROP VIEW  IF EXISTS v_images;
 DROP TABLE IF EXISTS images;
 
 CREATE TABLE images (
@@ -54,9 +53,9 @@ INSERT INTO flavors VALUES ('aws', '4xl',  'r6gd.4xlarge',      16, 128,   950, 
 INSERT INTO flavors VALUES ('aws', '8xl',  'r6gd.8xlarge',      32, 256,  1900, '12');
 INSERT INTO flavors VALUES ('aws', '12xl', 'r6gd.12xlarge',     48, 384,  2850, '20');
 INSERT INTO flavors VALUES ('aws', '16xl', 'r6gd.16xlarge',     64, 512,  3800, '25');
-INSERT INTO flavors VALUES ('azr', '2xl',  'Standard_L8s_v2',    8,  64,  1.92, '3.2');
-INSERT INTO flavors VALUES ('azr', '4xl',  'Standard_L16s_v2',  16, 128,  3.84, '6.4');
-INSERT INTO flavors VALUES ('azr', '8xl',  'Standard_L32s_v2',  32, 256,  7.68, '12.8');
-INSERT INTO flavors VALUES ('azr', '12xl', 'Standard_L48s_v2',  48, 384, 11.52, '16+');
-INSERT INTO flavors VALUES ('azr', '16xl', 'Standard_L64s_v2',  64, 512, 15.36, '16+');
-INSERT INTO flavors VALUES ('azr', '20xl', 'Standard_L80s_v2',  80, 640, 19.20, '16+');
+INSERT INTO flavors VALUES ('az',  '2xl',  'Standard_L8s_v2',    8,  64,  1.92, '3.2');
+INSERT INTO flavors VALUES ('az',  '4xl',  'Standard_L16s_v2',  16, 128,  3.84, '6.4');
+INSERT INTO flavors VALUES ('az',  '8xl',  'Standard_L32s_v2',  32, 256,  7.68, '12.8');
+INSERT INTO flavors VALUES ('az',  '12xl', 'Standard_L48s_v2',  48, 384, 11.52, '16+');
+INSERT INTO flavors VALUES ('az',  '16xl', 'Standard_L64s_v2',  64, 512, 15.36, '16+');
+INSERT INTO flavors VALUES ('az',  '20xl', 'Standard_L80s_v2',  80, 640, 19.20, '16+');

@@ -1,5 +1,3 @@
-select * from v_regions;
+select * from v_locations;
 
-select * from images;
-
-select * from flavors;
+select * from v_images;
