@@ -50,7 +50,6 @@ resource "aws_security_group" "sg" {
 }
 
 resource "aws_security_group_rule" "egress" {
-  count = 0
   type              = "egress"
   to_port           = 0
   protocol          = "-1"
@@ -60,7 +59,6 @@ resource "aws_security_group_rule" "egress" {
 }
 
 resource "aws_security_group_rule" "local-ssh" {
-  count = 0
   type              = "ingress"
   to_port           = 22
   protocol          = "tcp"
@@ -70,7 +68,6 @@ resource "aws_security_group_rule" "local-ssh" {
 }
 
 resource "aws_security_group_rule" "local-prompgexp" {
-  count = 0
   type              = "ingress"
   to_port           = 9187
   protocol          = "tcp"
@@ -80,7 +77,6 @@ resource "aws_security_group_rule" "local-prompgexp" {
 }
 
 resource "aws_security_group_rule" "net-pg" {
-  count = 0
   type              = "ingress"
   to_port           = 5432
   protocol          = "tcp"
@@ -90,7 +86,6 @@ resource "aws_security_group_rule" "net-pg" {
 }
 
 resource "aws_security_group_rule" "net-ssh" {
-  count = 0
   type              = "ingress"
   to_port           = 22
   protocol          = "tcp"
