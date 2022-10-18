@@ -6,6 +6,8 @@ fi
 source env.sh
 mkdir -p log
 
+trap ' ' INT
+
 echo ""
 echo "# destroy any nodes that may be present"
 destroy="destroy -auto-approve"
