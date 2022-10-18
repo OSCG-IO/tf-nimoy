@@ -105,7 +105,6 @@ resource "aws_instance"  "node" {
   availability_zone = var.az
   key_name = var.key
   vpc_security_group_ids = [aws_security_group.sg.id]
-  subnet_id = aws_subnet.sub.id
   tags = {
     Name = local.node
   }
@@ -139,7 +138,6 @@ resource "aws_instance" "driver" {
   availability_zone = var.az
   key_name = var.key
   vpc_security_group_ids = [aws_security_group.sg.id]
-  subnet_id = aws_subnet.sub.id
   tags = {
     Name = local.driver
   }
