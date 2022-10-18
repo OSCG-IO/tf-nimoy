@@ -16,5 +16,6 @@ $SSH $HOST "$io start $pgXX -y -d demo : tune $pgXX : install spock -d demo : in
 set +x
 
 PASS=`cat .pword`
+echo "localhost:5432:*:postgres:$PASS" >> ~/.pgpass
 echo "$HOST:5432:*:postgres:$PASS" >> ~/.pgpass
 $SCP pg_hba.conf $HOST:$PG/.
