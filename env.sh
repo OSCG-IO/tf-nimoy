@@ -1,5 +1,5 @@
 
-CLUSTER_NM=demo
+CLUSTER_NM=dumo
 CLOUD=aws
 TYPE=c6g.large
 PGV=15

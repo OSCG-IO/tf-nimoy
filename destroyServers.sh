@@ -22,7 +22,12 @@ if [ -d $NN3 ]; then
   n3log=log/tf-destroy-n3.log
   ./TF.sh n3 "$destroy" >> $n3log 2>&1 &
 fi
+
 echo "# destroy nodes in progress..."
-sleep 3
+sleep 2
 echo "# tail n3 log file : $n3log"
 tail -f $n3log
+
+echo ""
+echo "whacking $NN"
+rm -rf $NN
