@@ -1,7 +1,7 @@
 
-CLUSTER_NM=dumo
+CLUSTER_NM=domo
 CLOUD=aws
-TYPE=c6g.large
+TYPE=c6g.medium
 PGV=15
 NODE_KOUNT=3
 

@@ -6,6 +6,18 @@ fi
 source env.sh
 mkdir -p log
 
+if [ ! -d "$NN" ]; then
+  echo "ERROR: cluster not found: $NN"
+  exit 1
+fi
+
+echo "cluster = $NN"
+read -n1 -s -r -p $'press Y to destroy cluster' key
+if [ ! "$key" == "Y" ]; then
+  echo "see ya. :-)"
+  exit 1
+fi
+
 trap ' ' INT
 
 echo ""
