@@ -159,6 +159,7 @@ resource "aws_instance" "driver" {
   mkdir -p test/data
   cd test
   git clone https://github.com/OSCG-IO/tf-nimoy
+  git checkout dev
   cd /home/ubuntu
   chown -R ubuntu:ubuntu test
 
