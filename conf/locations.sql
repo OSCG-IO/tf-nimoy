@@ -1,5 +1,4 @@
 DROP VIEW IF EXISTS v_locations;
-DROP VIEW IF EXISTS v_images;
 
 DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS regions;
@@ -292,12 +291,3 @@ SELECT g.geo, c.country, l.location, r.provider, r.region, l.location_nm,
    AND c.country = l.country 
    AND l.location = r.location;
 
-
-CREATE VIEW v_images AS
-SELECT l.geo, l.country, l.location, l.provider, l.region, l.location_nm, 
-       l.lattitude, l.longitude, l.parent_region, l.avail_zones, i.image_id
-  FROM v_locations l, images i
- WHERE l.provider = i.provider
-   AND l.parent_region = i.region
-   AND i.image_type = 'ubu22'
-   AND i.platform = 'arm';

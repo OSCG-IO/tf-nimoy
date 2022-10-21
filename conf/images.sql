@@ -1,15 +1,38 @@
 
+DROP VIEW  IF EXISTS v_images;
 DROP TABLE IF EXISTS flavors;
 DROP TABLE IF EXISTS images;
 
 CREATE TABLE images (
-  image_type         TEXT  NOT NULL,
+  os                 TEXT  NOT NULL,
   platform           TEXT  NOT NULL,
   provider           TEXT  NOT NULL,
   region             TEXT  NOT NULL,
   image_id           TEXT  NOT NULL,
-  PRIMARY KEY (image_type, platform, provider, region)
+  PRIMARY KEY (os, platform, provider, region)
 );
+
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'us-east-2',      'ami-0efb26624e3465a3f');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'us-east-1',      'ami-09243ba0df36156d9');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'us-west-1',      'ami-05ddb2c6c5af83038');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'us-west-2',      'ami-03c611a7139a5fb3d');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'af-south-1',     'ami-0eed8584ea715b9ca');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'ap-east-1',      'ami-019ace0ca713bd120');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'ap-south-1',     'ami-0943603e22819c718');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'ap-northeast-1', 'ami-04faacd6a54412896');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'ap-northeast-2', 'ami-018912c905c087bbd');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'ap-southeast-1', 'ami-06dcc555ddfc2f735');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'ap-southeast-2', 'ami-0ae3420fe1e837f9c');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'ca-central-1',   'ami-05343c8a47bdd7aac');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'eu-central-1',   'ami-0b227c6aa1ee894c7');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'eu-west-1',      'ami-0abb61cf5e7190a62');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'eu-west-2',      'ami-03ab419be154d7234');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'eu-west-3',      'ami-01fd5c10205501702');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'eu-south-1',     'ami-09ca6473e02894a46');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'eu-north-1',     'ami-04a86dd9bcd579a84');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'me-south-1',     'ami-02d75b05b991c759c');
+INSERT INTO images VALUES ('cos8', 'arm', 'aws', 'sa-east-1',      'ami-051a6f18b3af1792d');
+
 INSERT INTO images VALUES ('ubu22', 'arm', 'aws', 'af-south-1',     'ami-01b703fbb001d2dae');
 INSERT INTO images VALUES ('ubu22', 'arm', 'aws', 'ap-east-1',      'ami-0932c85be19891d3e');
 INSERT INTO images VALUES ('ubu22', 'arm', 'aws', 'ap-northeast-1', 'ami-0be7fb7ee5cff3b58');
@@ -33,6 +56,14 @@ INSERT INTO images VALUES ('ubu22', 'arm', 'aws', 'us-east-1',      'ami-0f69dd1
 INSERT INTO images VALUES ('ubu22', 'arm', 'aws', 'us-east-2',      'ami-0a9790c5a531163ee');
 INSERT INTO images VALUES ('ubu22', 'arm', 'aws', 'us-west-1',      'ami-0ccc14818d8c254d6');
 INSERT INTO images VALUES ('ubu22', 'arm', 'aws', 'us-west-2',      'ami-0db84aebfa8d17e23');
+
+
+CREATE VIEW v_images AS
+SELECT l.geo, l.country, l.location, l.provider, l.region, l.location_nm, 
+       l.lattitude, l.longitude, l.parent_region, l.avail_zones, i.os, i.platform, i.image_id
+  FROM v_locations l, images i
+ WHERE l.provider = i.provider
+   AND l.parent_region = i.region;
 
 
 CREATE TABLE flavors (
