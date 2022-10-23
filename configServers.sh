@@ -15,7 +15,7 @@ set -x
 d1=driver1-1
 
 key="keys/dl-m1book-key.pem"
-usr=ubuntu
+usr=centos
 SSH="ssh -i $key -o StrictHostKeyChecking=no"
 SCP="scp -i $key -o StrictHostKeyChecking=no"
 PASS=$(openssl rand -hex 8;)
@@ -34,13 +34,13 @@ $SSH $usr@$d1 'mkdir keys'
 $SCP $key $usr@$d1:keys/.
 $SSH $usr@$d1 'echo -e "\n\n\n" | ssh-keygen -t rsa'
 
-$SSH $usr@$d1 'ansible-playbook add-key.yml -i ansible_hosts --user ubuntu --key-file keys/dl-m1book-key.pem  -e "key=/home/ubuntu/.ssh/id_rsa.pub"'
+$SSH $usr@$d1 'ansible-playbook add-key.yml -i ansible_hosts --user centos --key-file keys/dl-m1book-key.pem  -e "key=/home/centos/.ssh/id_rsa.pub"'
 $SSH $usr@$d1 'sudo ./catHosts.sh'
 
-bs='cd test/tf-nimoy/remote/benchmarksql; /home/ubuntu/apache-ant-1.9.16/bin/ant'
+bs='cd test/tf-nimoy/remote/benchmarksql; /home/centos/apache-ant-1.9.16/bin/ant'
 io='python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; cd oscg; ./io install pg'
 io+=$PGV
-io+='; touch /home/ubuntu/.pgpass; chmod 600 /home/ubuntu/.pgpass'
+io+='; touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass'
 pw='echo '
 pw+=$PASS
 pw+=' >> test/tf-nimoy/remote/.pword'

@@ -105,22 +105,24 @@ resource "aws_instance"  "node" {
   }
    user_data = <<EOF
 #! /bin/bash
-  echo "### Set HOSTNAME"
+  echo "### Set HOSTNAME & Disable SELINUX"
   echo "${local.node}" > /etc/hostname
+  sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 
-  echo "### Update the OS w/ Python3 & Go"
-  sudo apt update -y
-  sudo apt upgrade -y
-  sudo apt install -y wget curl python3 net-tools golang
+  echo "### Update the OS"
+  sudo yum update -y
+  sudo yum install -y wget curl net-tools
+  sudo yum install -y epel-release
+  sudo yum install -y python39
 
   echo "Setup /db"
   sudo mkdir /db
-  sudo chown ubuntu:ubuntu /db
+  sudo chown centos:centos /db
 
   echo "### Configure .bashrc"
-  echo 'export PATH=$PATH:/db/oscg/"${local.pgv}"/bin'     >> /home/ubuntu/.bashrc
+  echo 'export PATH=$PATH:/db/oscg/${local.pgv}/bin'     >> /home/centos/.bashrc
 
-  echo "### rebooting to get new HOSTNAME"
+  echo "### rebooting"
   sudo reboot
 EOF
 
@@ -138,33 +140,35 @@ resource "aws_instance" "driver" {
   }
  user_data = <<EOF
 #! /bin/bash
-  echo "### Set HOSTNAME"
+  echo "### Set HOSTNAME & Disable SELINUX"
   echo "${local.driver}" > /etc/hostname
+  sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 
-  echo "### Update the OS w/ Git, Java, Python3 & Ansible"
-  sudo apt update -y
-  sudo apt upgrade -y
-  sudo apt install -y wget git openjdk-11-jdk python3 python3-dev python3-pip net-tools ansible
-  j_home=/usr/lib/jvm/java-11-openjdk
-  arch=`arch`
-  if [ "$arch" == "aarch64" ]; then
-    j_home=$j_home-arm64
-  fi
+  echo "### Update the OS w/ Git, Java, Python39 & Ansible"
+  sudo yum update -y
+  sudo yum install -y wget curl net-tools git
+  sudo yum install -y java-11-openjdk-devel
 
-  sudo su - ubuntu
+  sudo yum install -y epel-release
+  sudo yum install -y python39
+  sudo pip3 install ansible
+
+  j_home=/etc/alternatives/jre_11_openjdk
+
+  sudo su - centos
 
   echo "Install NIMOY"
-  cd /home/ubuntu
+  cd /home/centos
   rm -rf test
   mkdir -p test/data
   cd test
   git clone https://github.com/OSCG-IO/tf-nimoy
   git checkout dev
-  cd /home/ubuntu
-  chown -R ubuntu:ubuntu test
+  cd /home/centos
+  chown -R centos:centos test
 
   echo "Install ANT"
-  cd /home/ubuntu
+  cd /home/centos
   ANT=apache-ant-1.9.16-bin
   rm -f $ANT.tar.gz
   wget http://mirror.olnevhost.net/pub/apache/ant/binaries/$ANT.tar.gz
@@ -172,14 +176,14 @@ resource "aws_instance" "driver" {
   rm $ANT.tar.gz
 
   echo "### Configure .bashrc"
-  echo "export JAVA_HOME=$j_home"                >> /home/ubuntu/.bashrc 
-  echo 'export PATH=$PATH:$JAVA_HOME/bin'        >> /home/ubuntu/.bashrc
-  echo 'export ANT_HOME=$HOME/apache-ant-1.9.16' >> /home/ubuntu/.bashrc
-  echo 'export PATH=$ANT_HOME/bin:$PATH'         >> /home/ubuntu/.bashrc
-  echo 'export RMT=$HOME/test/tf-nimoy/remote'   >> /home/ubuntu/.bashrc
-  echo 'export PATH=$PATH:$HOME/oscg/"${local.pgv}"/bin'   >> /home/ubuntu/.bashrc
+  echo "export JAVA_HOME=$j_home"                >> /home/centos/.bashrc 
+  echo 'export PATH=$PATH:$JAVA_HOME/bin'        >> /home/centos/.bashrc
+  echo 'export ANT_HOME=$HOME/apache-ant-1.9.16' >> /home/centos/.bashrc
+  echo 'export PATH=$ANT_HOME/bin:$PATH'         >> /home/centos/.bashrc
+  echo 'export RMT=$HOME/test/tf-nimoy/remote'   >> /home/centos/.bashrc
+  echo 'export PATH=$PATH:$HOME/oscg/${local.pgv}/bin'   >> /home/centos/.bashrc
 
-  echo "### rebooting to get new HOSTNAME"
+  echo "### rebooting"
   sudo reboot
 EOF
 

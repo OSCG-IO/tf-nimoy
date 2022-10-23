@@ -2,7 +2,7 @@
 export CLUSTER_NM=demo
 export CLOUD=aws
 export TYPE=c6g.medium
-export OS=ubu22
+export OS=cos8
 export PLATFORM=arm
 export PGV=15
 export NODE_KOUNT=3

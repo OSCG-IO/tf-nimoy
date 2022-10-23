@@ -28,7 +28,7 @@ if ((opsys == "") or (plat == "")):
 
 cursor = connection.cursor()
 
-print("DEBUG: " + provider + ", " + loct + ", " + opsys + ", " + plat)
+##print("DEBUG: " + provider + ", " + loct + ", " + opsys + ", " + plat)
 
 row = cursor.execute( \
   "SELECT region, location_nm, parent_region, avail_zones, image_id \

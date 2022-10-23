@@ -11,7 +11,7 @@ fi
 
 if [ ! -d $dump_dir ]; then
   sudo mkdir -p $dump_dir
-  sudo chown -R ubuntu:ubuntu /db
+  sudo chown -R centos:centos /db
 fi
 dumper=$dump_dir/$dump_file
 
