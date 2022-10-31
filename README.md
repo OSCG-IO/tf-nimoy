@@ -37,7 +37,7 @@ On OSX run:
  
     # run 'terraform init & apply' to create driver & db node in each location
     # sleep for a couple mins so servers can run init & reboot
-    # run './TF.sh all output' to show the Output variables for all the nodes in the 'my.out' file
+    # run './TF.sh all output' to show the Output variables for all the nodes in the '<cluster_name>.out' file
     # run 'python3 make_hosts_file.py' to create the 'hosts' & 'ansible_hosts' files from the 'my.out' file
     # copy ansible input files (ansible_hosts, add-key.yml, hosts, & catHosts.sh) to 'driver1-1')
     # generate an ssh key pair on driver1-1

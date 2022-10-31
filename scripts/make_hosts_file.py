@@ -1,6 +1,6 @@
 import os
 
-f = open('my.out', 'r')
+f = open('nodes/' + os.environ['CLUSTER_NM']+ '/' + os.environ['CLUSTER_NM'] + '.out', 'r')
 fa = open('ansible_hosts', 'w')
 fh = open('hosts', 'w')
 

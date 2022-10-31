@@ -122,11 +122,7 @@ setNodesVars
 
 echo " "
 echo "configuring localhost"
-./updateLocalhost.sh
-
-##echo " "
-##echo "configure security groups"
-##./sgUpdate.sh
+./../updateLocalhost.sh
 
 echo ""
 echo "  run './configServers.sh' next"

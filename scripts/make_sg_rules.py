@@ -1,14 +1,14 @@
 import boto3,sys,os
 from botocore.exceptions import ClientError
 
-f = open('my.out', 'r')
+f = open('nodes/' + os.environ['CLUSTER_NM'] + '/' + os.environ['CLUSTER_NM'] + '.out', 'r')
 Lines = f.readlines()
 cidr=[]
 nn=""
 sgid=[]
 ipval=""
 
-ec2 = boto3.client('ec2')
+ec2 = boto3.client('ec2',region_name='us-west-2')
 
 for line in Lines:
   l = line.strip()
@@ -42,6 +42,7 @@ for x in sgid:
   for y in cidr:
     try:
       ipval=y+"/32"
+      
       data = ec2.authorize_security_group_ingress( GroupId= x ,IpPermissions= [
             {'IpProtocol': 'tcp',
              'FromPort': 80,
@@ -50,8 +51,12 @@ for x in sgid:
             {'IpProtocol': 'tcp',
              'FromPort': 22,
              'ToPort': 22,
-             'IpRanges': [{'CidrIp': ipval}]}
-        ])
+             'IpRanges': [{'CidrIp': ipval}]},
+	    {'IpProtocol': 'tcp',
+             'FromPort': 5432,
+             'ToPort': 5432,
+             'IpRanges': [{'CidrIp': ipval}]}        
+	])
       print('Ingress rule set: %s' % data)
     except ClientError as e:
       print(e)

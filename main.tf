@@ -76,24 +76,6 @@ resource "aws_security_group_rule" "local-prompgexp" {
   security_group_id = aws_security_group.sg.id
 }
 
-resource "aws_security_group_rule" "net-pg" {
-  type              = "ingress"
-  to_port           = 5432
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 5432
-  security_group_id = aws_security_group.sg.id
-}
-
-resource "aws_security_group_rule" "net-ssh" {
-  type              = "ingress"
-  to_port           = 22
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 22
-  security_group_id = aws_security_group.sg.id
-}
-
 resource "aws_instance"  "node" {
   ami           = var.image
   instance_type = var.type

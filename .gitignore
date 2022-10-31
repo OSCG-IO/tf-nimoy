@@ -2,7 +2,7 @@ nodes
 keys
 log
 .terraform
-my.out
+*.out
 hosts
 ansible_hosts
 hosts.new
