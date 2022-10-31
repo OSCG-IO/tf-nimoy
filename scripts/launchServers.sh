@@ -1,26 +1,18 @@
-
-if [ ! -f "env.sh" ]; then
-  echo "FATAL ERROR: missing env.sh file"
-  exit 1
-fi
-
-source env.sh
-
+#!/bin/bash
+cd "$(dirname "$0")"
+cd ..
 
 setNodesVars () {
   echo "## setNodesVar() for NN & TYPE=$TYPE"
 
-  echo "variable \"nn\" { default = \"1-1\" }"     >  $NN1/variables.node.tf
-  echo "variable \"cluster_nm\" { default = \"$CLUSTER_NM\" }" >> $NN1/variables.node.tf
-  echo "variable \"type\" { default = \"$TYPE\" }" >> $NN1/variables.node.tf
-
-  echo "variable \"nn\" { default = \"2-1\" }"     >  $NN2/variables.node.tf
-  echo "variable \"cluster_nm\" { default = \"$CLUSTER_NM\" }" >> $NN2/variables.node.tf
-  echo "variable \"type\" { default = \"$TYPE\" }" >> $NN2/variables.node.tf
-
-  echo "variable \"nn\" { default = \"3-1\" }"     >  $NN3/variables.node.tf
-  echo "variable \"cluster_nm\" { default = \"$CLUSTER_NM\" }" >> $NN3/variables.node.tf
-  echo "variable \"type\" { default = \"$TYPE\" }" >> $NN3/variables.node.tf
+  for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
+  do
+    NNn=NN$i
+    tf=${!NNn}/variable.tf
+    echo "variable \"nn\" { default = \"${i}-1\" }" > $tf
+    echo "variable \"cluster_nm\" { default = \"$CLUSTER_NM\" }" >> $tf
+    echo "variable \"type\" { default = \"$TYPE\" }" >> $tf
+  done
 }
 
 
@@ -44,16 +36,15 @@ genTFvars() {
 
 
 cpNodes () {
-  cp $1 $NN1
-  cp $1 $NN2
-  cp $1 $NN3
+  for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
+  do
+    NNn=NN$i
+    cp $1 ${!NNn}
+  done
 }
 
 
 setupNodesDir () {
-
-  echo ""
-  echo "# checking that cluster directory does not exist"
   if [ -d "$NN" ]; then
     echo "ERROR: Cluster definition directory exists: $NN"
     exit 1
@@ -62,9 +53,13 @@ setupNodesDir () {
   echo ""
   echo "# create new cluster directory tree" 
   mkdir -p $NN
-  mkdir -p $NN1
-  mkdir -p $NN2
-  mkdir -p $NN3
+
+  for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
+  do
+    NNn=NN$i
+    mkdir -p ${!NNn}
+  done
+
   sleep 1
 
   echo "## copying common terraform files"
@@ -86,15 +81,16 @@ echo "#  Machine Type: $TYPE"
 echo "#       Version: $PGV"
 echo "#"
 echo "####### Database Nodes ################"
-echo "   Cluster Name: $CLUSTER_NM"
+echo "#  Cluster Name: $CLUSTER_NM"
 echo "#         Count: $NODE_KOUNT"
-echo "#            n1: $N1 $N1Z"
-if [ ! "$N2" ==  "" ]; then
-  echo "#            n2: $N2 $N2Z"
-fi
-if [ ! "$N3" == "" ]; then
-  echo "#            n3: $N3 $N3Z"
-fi
+
+for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
+do
+   Nn=N$i
+   Nz=N${i}Z 
+   NNn=NN$i
+   echo "#            n$i : ${!Nn} - ${!Nz} - ${!NNn}"
+done
 
 setupNodesDir
 
@@ -109,16 +105,20 @@ fi
 
 echo ""
 echo "# copy location files"
-genTFvars  aws $N1 $N1Z $NN1
-genTFvars  aws $N2 $N2Z $NN2
-genTFvars  aws $N3 $N3Z $NN3
+for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
+do
+   Nn=N$i
+   Nz=N${i}Z 
+   NNn=NN$i
+   genTFvars $CLOUD ${!Nn} ${!Nz} ${!NNn}
+done
 
 echo ""
 echo "# create node specfic variables"
 setNodesVars
 
-./TF.sh all init
-./TF.sh all "apply -auto-approve"
+./TF.sh "$CLUSTER_NM" "all" "init"
+./TF.sh "$CLUSTER_NM" "all" "apply -auto-approve"
 
 echo " "
 echo "configuring localhost"

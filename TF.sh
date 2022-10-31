@@ -1,55 +1,45 @@
 
-if [ ! -f "env.sh" ]; then
-  echo "FATAL ERROR: missing env.sh file"
-  exit 1
-fi
-
-source env.sh
-
-if [ "$#" -ne 2 ]; then
-  echo "FATAL ERROR: requires 2 parameters"
+if [ "$#" -ne 3 ]; then
+  echo "FATAL ERROR: requires 3 parms: CLUSTER NODE_NUM ACTION"
   exit 1
 fi
 
 runAction() {
-  nd="$1"
-  ndActn="$2"
-  ndDir="$3"
-  valid_action=True 
+  cl="$1"
+  nd="$2"
+  ndActn="$3"
+  ndDir="$4"
   echo " "
-  echo "## $nd ##"
+  echo "## terraform $ndDir $ndActn ##"
+  if [ ! -d $ndDir ]; then
+    echo "ERROR: Node directory not found \'$ndDir\'"
+    exit 1
+  fi
   cd $ndDir
-#  if [ "$ndActn" == "destroy" ]; then
-#    parms="-input=false -auto-approve"
-#    echo "running $ndActn $parms ASNYC"
-#    terraform $ndActn $parms >> $PWD/out.log  2>&1 &
-#  else
-    terraform $ndActn
-#  fi
+  terraform $ndActn
 }
 
+
 ############## MAINLINE ##################
-#set -x
+##set -x
 
-nn="$1"
-action="$2"
-valid_action=False
+cluster="$1"
+node="$2"
+action="$3"
 
-if [ "$nn" == "n1" ] || [ "$nn" == "all" ]; then
-  runAction n1 "$action" $NN1
+clDir=$PWD/nodes/$cluster
+if [ ! -d $clDir ]; then
+  echo "ERROR: Cluster \'$clDir\' not found"
 fi
 
-if [ "$nn" == "n2" ] || [ "$nn" == "all" ]; then
-  runAction n2 "$action" $NN2
-fi
-
-if [ "$nn" == "n3" ] || [ "$nn" == "all" ]; then
-  runAction n3 "$action" $NN3
-fi
-
-if [ "$valid_action" == "False" ]; then
-  echo "FATAL ERROR: first parm must be n1, n2, n3 or 'all'"
-  exit 1
+if [ "$node" == "all" ]; then
+  NODE_KOUNT=`find $clDir/. -mindepth 1 -maxdepth 1 -type d | wc -l`
+  for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
+  do
+     runAction "$cluster" "n$i" "$action"  "$clDir/n$i"
+  done
+else
+  runAction "$cluster" "$node" "$action"  "$clDir/$node"
 fi
 
 exit 0

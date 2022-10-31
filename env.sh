@@ -1,5 +1,5 @@
 
-export CLUSTER_NM=demo
+export CLUSTER_NM=luss
 export CLOUD=aws
 export TYPE=c6g.medium
 export OS=cos8
@@ -7,12 +7,12 @@ export PLATFORM=arm
 export PGV=15
 export NODE_KOUNT=3
 
-N1=pdt
-N1Z=a
-N2=pdt
-N2Z=b
-N3=pdt
-N3Z=c
+export N1=pdt
+export N1Z=a
+export N2=pdt
+export N2Z=b
+export N3=pdt
+export N3Z=c
 
 #N1=mtl
 #N1Z=a
@@ -30,7 +30,7 @@ else
 fi
 
 DIR=$PWD
-NN=$DIR/nodes/$CLUSTER_NM
-NN1=$NN/n1
-NN2=$NN/n2
-NN3=$NN/n3
+export NN=$DIR/nodes/$CLUSTER_NM
+export NN1=$NN/n1
+export NN2=$NN/n2
+export NN3=$NN/n3
