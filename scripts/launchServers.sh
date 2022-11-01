@@ -114,7 +114,7 @@ setNodesVars
 
 echo " "
 echo "configuring localhost"
-./../updateLocalhost.sh
+./updateLocalhost.sh
 
 echo ""
 echo "  run './configServers.sh' next"
