@@ -4,24 +4,42 @@ import sys, sqlite3, os
 import fire
 
 os.chdir(sys.path[0])
-connection = sqlite3.connect("../conf/stelthy.db")
+#connection = sqlite3.connect("../conf/stelthy.db")
 
 
 def launch(cluster_nm, nodes, cloud=None, type=None, opsys=None, platform=None, pgv=None):
-  os.environ['CLUSTER_NM'] = str(cluster_nm)
-  if cloud:
-    os.environ['CLOUD'] = str(cloud)
-  if type:
-    os.environ['TYPE'] = str(type)
-  if opsys:
-    os.environ['OS'] = str(opsys)
-  if platform:
-    os.environ['PLATFORM'] = str(platform)
-  if pgv:
-    os.environ['PGV'] = str(pgv)
 
   clusdir = os.getcwd() + "/../nodes/" + str(cluster_nm)
-  os.environ['NN'] =  clusdir
+  if os.path.isdir(clusdir):
+    print("ERROR: Cluster Directory already exists: " + clusdir, file=sys.stderr)
+    sys.exit(1)
+
+  os.mkdir(clusdir)
+  f = open(clusdir + '/env.sh', 'w')
+
+  set_environ('NN', clusdir, f)
+
+  set_environ('CLUSTER_NM', str(cluster_nm), f)
+
+  if cloud:
+    os.environ['CLOUD'] = str(cloud)
+  write_cluster_env('CLOUD', os.environ['CLOUD'], f)
+
+  if type:
+    os.environ['TYPE'] = str(type)
+  write_cluster_env('TYPE', os.environ['TYPE'], f)
+
+  if opsys:
+    os.environ['OS'] = str(opsys)
+  write_cluster_env('OS', os.environ['OS'], f)
+
+  if platform:
+    os.environ['PLATFORM'] = str(platform)
+  write_cluster_env('PLATFORM', os.environ['PLATFORM'], f)
+
+  if pgv:
+    os.environ['PGV'] = str(pgv)
+  write_cluster_env('PGV', os.environ['PGV'], f)
 
   nodes = str(nodes)
   node_arr = nodes.split(',')
@@ -36,15 +54,26 @@ def launch(cluster_nm, nodes, cloud=None, type=None, opsys=None, platform=None, 
       print("ERROR: node '" + nd + "' must contain an AZ")
       sys.exit(1)
 
-    NN = "N" + str(k)
+    set_environ('N' + str(k), str(nd_arr[0]), f)
 
-    os.environ['N' + str(k)] = str(nd_arr[0])  
-    os.environ['N' + str(k) + 'Z'] = str(nd_arr[1])  
-    os.environ['NN' + str(k)] = clusdir + "/n" + str(k)
+    set_environ('N' + str(k) + 'Z', str(nd_arr[1]), f)
 
-  os.environ['NODE_KOUNT'] = str(k)
+    set_environ('NN' + str(k), clusdir + '/n' + str(k), f)
+
+  set_environ('NODE_KOUNT', str(k), f)
+
+  f.close()
 
   os.system("./launchServers.sh")
+
+
+def set_environ(p_var, p_val, p_f):
+  os.environ[str(p_var)] = str(p_val)
+  write_cluster_env(p_var, p_val, p_f)
+
+
+def write_cluster_env(p_var, p_val, p_f):
+  p_f.write("export " + p_var + "=" + p_val + "\n")
 
 
 if __name__ == '__main__':
