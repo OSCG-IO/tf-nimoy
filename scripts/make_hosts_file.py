@@ -16,7 +16,7 @@ for line in Lines:
     continue
 
   if l.startswith("## "):
-      n=l[4:5]
+      n=l[-11]
       continue
 
   ls = l.split()

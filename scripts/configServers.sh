@@ -1,16 +1,24 @@
+#!/bin/bash
+cd "$(dirname "$0")"
+cd ..
+
+set -x
+cluster=$1
+
 setupEtcHosts () {
   $SCP hosts          $usr@$1:.
   $SCP catHosts.sh    $usr@$1:.
   $SSH $usr@$1 'sudo ./catHosts.sh'
 }
 
-if [ ! -f "env.sh" ]; then
+clDir=$PWD/nodes/$cluster
+
+if [ ! -f "$clDir/env.sh" ]; then
   echo "FATAL ERROR: missing env.sh file"
   exit 1
 fi
-source env.sh
-
-set -x
+source $clDir/env.sh
+NODE_KOUNT=`find $clDir/. -mindepth 1 -maxdepth 1 -type d | wc -l`
 
 d1=driver1-1
 
@@ -23,12 +31,11 @@ PASS=$(openssl rand -hex 8;)
 $SCP ansible_hosts  $usr@$d1:.
 $SCP add-key.yml    $usr@$d1:.
 
-setupEtcHosts driver1-1
-setupEtcHosts node1-1
-setupEtcHosts driver2-1
-setupEtcHosts node2-1
-setupEtcHosts driver3-1
-setupEtcHosts node3-1
+for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
+do
+  setupEtcHosts driver${i}-1
+  setupEtcHosts node${i}-1
+done 
 
 $SSH $usr@$d1 'mkdir keys'
 $SCP $key $usr@$d1:keys/.
@@ -45,13 +52,11 @@ pw='echo '
 pw+=$PASS
 pw+=' >> test/tf-nimoy/remote/.pword'
 
-
-$SSH $usr@driver1-1 "$bs"
-$SSH $usr@driver1-1 "$io"
-$SSH $usr@driver1-1 "$pw"
-
-$SSH $usr@driver2-1 "$bs"
-$SSH $usr@driver2-1 "$io"
-
-$SSH $usr@driver3-1 "$bs"
-$SSH $usr@driver3-1 "$io"
+for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
+do
+  $SSH $usr@driver${i}-1 "$bs"
+  $SSH $usr@driver${i}-1 "$io"
+  if [ $i==1 ]; then
+    $SSH $usr@driver1-1 "$pw"
+  fi
+done

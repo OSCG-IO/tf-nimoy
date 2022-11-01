@@ -117,7 +117,7 @@ echo "configuring localhost"
 ./updateLocalhost.sh
 
 echo ""
-echo "  run './configServers.sh' next"
+echo "  run './scripts/configServers.sh <cluster_name>' next"
 
 echo "sleeping for a couple mins so servers can init & reboot"
 yes | pv -SL1 -F 'Resuming in %e' -s 150 > /dev/null
