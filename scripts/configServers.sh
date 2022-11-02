@@ -2,7 +2,6 @@
 cd "$(dirname "$0")"
 cd ..
 
-set -x
 cluster=$1
 
 setupEtcHosts () {

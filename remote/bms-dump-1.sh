@@ -10,8 +10,9 @@ else
 fi
 
 if [ ! -d $dump_dir ]; then
+  user=`whoami`
   sudo mkdir -p $dump_dir
-  sudo chown -R centos:centos /db
+  sudo chown -R $user:$user /db
 fi
 dumper=$dump_dir/$dump_file
 
