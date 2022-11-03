@@ -3,6 +3,9 @@
 import boto3,sys,os, sqlite3
 from botocore.exceptions import ClientError
 
+connection = sqlite3.connect("conf/stelthy.db")
+cursor = connection.cursor()
+
 f = open('nodes/' + os.environ['CLUSTER_NM'] + '/' + os.environ['CLUSTER_NM'] + '.out', 'r')
 Lines = f.readlines()
 cidr=[]
@@ -38,8 +41,18 @@ for line in Lines:
         ii = i.replace('"',"")
         sgid.append(ii)
 
+i=1
 for x in sgid:
-  ec2 = boto3.client('ec2',region_name='us-west-2')
+  row = cursor.execute("SELECT parent_region FROM regions \
+    WHERE provider = ? and location = ?", [os.environ['CLOUD'], os.environ['N'+str(i)]]).fetchone()
+
+  if not row:
+    print("ERROR: provider/location (" + str(provider) + "/" + str(loct) + ") combo is not valid")
+    sys.exit(1)
+
+  i=i+1
+  region = str(row[0])
+  ec2 = boto3.client('ec2',region_name=region)
   for y in cidr:
     try:
       ipval=y+"/32"
