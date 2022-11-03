@@ -1,4 +1,6 @@
-import boto3,sys,os
+#!/usr/bin/python3
+
+import boto3,sys,os, sqlite3
 from botocore.exceptions import ClientError
 
 f = open('nodes/' + os.environ['CLUSTER_NM'] + '/' + os.environ['CLUSTER_NM'] + '.out', 'r')
@@ -7,8 +9,6 @@ cidr=[]
 nn=""
 sgid=[]
 ipval=""
-
-ec2 = boto3.client('ec2',region_name='us-west-2')
 
 for line in Lines:
   l = line.strip()
@@ -39,6 +39,7 @@ for line in Lines:
         sgid.append(ii)
 
 for x in sgid:
+  ec2 = boto3.client('ec2',region_name='us-west-2')
   for y in cidr:
     try:
       ipval=y+"/32"

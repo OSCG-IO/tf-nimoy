@@ -27,8 +27,8 @@ SSH="ssh -i $key -o StrictHostKeyChecking=no"
 SCP="scp -i $key -o StrictHostKeyChecking=no"
 PASS=$(openssl rand -hex 8;)
 
-$SCP ansible_hosts  $usr@$d1:.
-$SCP add-key.yml    $usr@$d1:.
+$SCP $clDir/ansible_hosts  $usr@$d1:.
+$SCP ansible/add-key.yml    $usr@$d1:.
 
 for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
 do
@@ -43,19 +43,9 @@ $SSH $usr@$d1 'echo -e "\n\n\n" | ssh-keygen -t rsa'
 $SSH $usr@$d1 'ansible-playbook add-key.yml -i ansible_hosts --user centos --key-file keys/dl-m1book-key.pem  -e "key=/home/centos/.ssh/id_rsa.pub"'
 $SSH $usr@$d1 'sudo ./catHosts.sh'
 
-bs='cd test/tf-nimoy/remote/benchmarksql; /home/centos/apache-ant-1.9.16/bin/ant'
-io='python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; cd oscg; ./io install pg'
-io+=$PGV
-io+='; touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass'
+ansible-playbook -i $clDir/ansible_hosts_driver --user centos --key-file keys/dl-m1book-key.pem -e "PGV=$PGV" ansible/io-install.yml
 pw='echo '
 pw+=$PASS
 pw+=' >> test/tf-nimoy/remote/.pword'
+$SSH $usr@driver1-1 "$pw"
 
-for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
-do
-  $SSH $usr@driver${i}-1 "$bs"
-  $SSH $usr@driver${i}-1 "$io"
-  if [ $i==1 ]; then
-    $SSH $usr@driver1-1 "$pw"
-  fi
-done

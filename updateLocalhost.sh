@@ -1,5 +1,3 @@
-set -x
-
 ./TF.sh ${CLUSTER_NM} all output > nodes/${CLUSTER_NM}/${CLUSTER_NM}.out
 
 ## create the 'hosts' & 'ansible_hosts' files from the 'my.out' file

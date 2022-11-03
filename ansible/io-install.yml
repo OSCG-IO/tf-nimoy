@@ -1,0 +1,14 @@
+---
+- name: "Playbook to install VM's"
+  hosts: hosts_to_io
+  vars:
+    - status : "present"
+
+  tasks:
+
+  - name: "Install io and handel pgpass"
+    shell: |
+         cd test/tf-nimoy/remote/benchmarksql; /home/centos/apache-ant-1.9.16/bin/ant;
+         python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; 
+         cd oscg; ./io install pg{{ PGV }};
+         touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass; 
