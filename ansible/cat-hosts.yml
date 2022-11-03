@@ -1,0 +1,14 @@
+---
+- name: "Playbook to Update hosts on VM's"
+  hosts: hosts_to_add_key
+  become: yes
+  vars:
+    - status : "present"
+
+  tasks:
+
+  - name: "Copy host file"
+    copy: src=../hosts dest=hosts
+
+  - name: 
+    shell: sudo cat hosts >> /etc/hosts
