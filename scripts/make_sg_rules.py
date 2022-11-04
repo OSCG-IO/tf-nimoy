@@ -71,6 +71,6 @@ for x in sgid:
              'ToPort': 5432,
              'IpRanges': [{'CidrIp': ipval}]}        
 	])
-      print('Ingress rule set: %s' % data)
+      ##print('Ingress rule set: %s' % data)
     except ClientError as e:
       print(e)

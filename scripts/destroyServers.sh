@@ -3,6 +3,10 @@ cd "$(dirname "$0")"
 cd ..
 
 cluster=$1
+force=false
+if [[ ! -z "$2" && "$2" == '--force' ]]; then
+  force=true
+fi
 
 if [ ! -d "nodes/$CLUSTER_NM" ]; then
   echo "ERROR: could not find cluster terrafrom"
@@ -34,6 +38,10 @@ do
   echo "## destroy n${i}"
   ./TF.sh $cluster n${i} "$destroy" >> log/${cluster}-n${i}.log 2>&1 &
   lastNode=$i
+  ## To Do: finish force_destory.py
+  ##if [ $force ]; then
+  ##  python3 scripts/force_destory.py $cluster $N{i}
+  ##fi
 done
 
 echo "# destroy nodes in progress..."
