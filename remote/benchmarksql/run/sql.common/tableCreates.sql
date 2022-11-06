@@ -13,6 +13,8 @@ create table bmsql_warehouse (
   w_city      varchar(20),
   w_state     char(2),
   w_zip       char(9),
+--
+  w_country   char(2),
   w_location  char(3)
 );
 
@@ -36,22 +38,29 @@ create table bmsql_customer (
   c_id           integer        not null,
   c_discount     decimal(4,4),
   c_credit       char(2),
-  c_last         varchar(16),
-  c_first        varchar(16),
   c_credit_lim   decimal(12,2),
   c_balance      decimal(12,2),
   c_ytd_payment  decimal(12,2),
   c_payment_cnt  integer,
   c_delivery_cnt integer,
+  c_since        timestamp,
+  c_data         varchar(500),
+--
+  c_last         varchar(16),
+  c_first        varchar(16),
+  c_middle       char(2),
   c_street_1     varchar(20),
   c_street_2     varchar(20),
   c_city         varchar(20),
   c_state        char(2),
   c_zip          char(9),
   c_phone        char(16),
-  c_since        timestamp,
-  c_middle       char(2),
-  c_data         varchar(500)
+  c_location     char(3),
+  c_country      char(2),
+  c_credit_card  varchar(20),
+  c_credit_exp   char(6), -- mmyyyy
+  c_pronouns     varchar(20)
+  c_gender       varchar(1) -- m, f or ?
 );
 
 create sequence bmsql_hist_id_seq;
