@@ -1,7 +1,7 @@
 
 export CLUSTER=luss
 export CLOUD=aws
-export TYPE=c6g.medium
+export MACHINE=c6g.medium
 export OPSYS=cos8
 export PLATFORM=arm
 export PGV=15

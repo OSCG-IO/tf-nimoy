@@ -8,7 +8,7 @@ os.chdir(sys.path[0])
 #connection = sqlite3.connect("../conf/stelthy.db")
 
 
-def launch(cluster, nodes, cloud=None, type=None, opsys=None, platform=None, pgv=None, key=None):
+def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, pgv=None, key=None):
 
   clusdir = os.getcwd() + "/../nodes/" + str(cluster)
   if os.path.isdir(clusdir):

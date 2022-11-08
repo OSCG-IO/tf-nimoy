@@ -17,8 +17,8 @@ data "http" "myip" {
 locals {
   driver = format("%s%s", "driver", var.nn)
   node   = format("%s%s", "node",   var.nn)
-  sg     = format("%s%s%s", var.cluster_nm, "-sg",  var.nn)
-  sub    = format("%s%s%s", var.cluster_nm, "-sn",   var.nn)
+  sg     = format("%s%s%s", var.cluster, "-sg",  var.nn)
+  sub    = format("%s%s%s", var.cluster, "-sn",   var.nn)
   cdr    = format("%s%s%s", "172.31.",  80+(tonumber(substr(var.nn,0,1)) * 16), ".0/20")
   pgv    = format("%s%s", "pg", var.pg_v)
 }
@@ -78,7 +78,7 @@ resource "aws_security_group_rule" "local-prompgexp" {
 
 resource "aws_instance"  "node" {
   ami           = var.image
-  instance_type = var.type
+  instance_type = var.machine
   availability_zone = var.az
   key_name = var.key
   vpc_security_group_ids = [aws_security_group.sg.id]
@@ -113,7 +113,7 @@ EOF
 
 resource "aws_instance" "driver" {
   ami           = var.image
-  instance_type = var.type
+  instance_type = var.machine
   availability_zone = var.az
   key_name = var.key
   vpc_security_group_ids = [aws_security_group.sg.id]
