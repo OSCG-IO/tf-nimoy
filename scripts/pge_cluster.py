@@ -4,12 +4,13 @@ import sys, sqlite3, os
 import fire
 
 os.chdir(sys.path[0])
+
 #connection = sqlite3.connect("../conf/stelthy.db")
 
 
-def launch(cluster_nm, nodes, cloud=None, type=None, opsys=None, platform=None, pgv=None):
+def launch(cluster, nodes, cloud=None, type=None, opsys=None, platform=None, pgv=None, key=None):
 
-  clusdir = os.getcwd() + "/../nodes/" + str(cluster_nm)
+  clusdir = os.getcwd() + "/../nodes/" + str(cluster)
   if os.path.isdir(clusdir):
     print("ERROR: Cluster Directory already exists: " + clusdir, file=sys.stderr)
     sys.exit(1)
@@ -19,19 +20,19 @@ def launch(cluster_nm, nodes, cloud=None, type=None, opsys=None, platform=None, 
 
   set_environ('NN', clusdir, f)
 
-  set_environ('CLUSTER_NM', str(cluster_nm), f)
+  set_environ('CLUSTER', str(cluster), f)
 
   if cloud:
     os.environ['CLOUD'] = str(cloud)
   write_cluster_env('CLOUD', os.environ['CLOUD'], f)
 
-  if type:
-    os.environ['TYPE'] = str(type)
-  write_cluster_env('TYPE', os.environ['TYPE'], f)
+  if machine:
+    os.environ['MACHINE'] = str(machine)
+  write_cluster_env('MACHINE', os.environ['MACHINE'], f)
 
   if opsys:
-    os.environ['OS'] = str(opsys)
-  write_cluster_env('OS', os.environ['OS'], f)
+    os.environ['OPSYS'] = str(opsys)
+  write_cluster_env('OPSYS', os.environ['OPSYS'], f)
 
   if platform:
     os.environ['PLATFORM'] = str(platform)

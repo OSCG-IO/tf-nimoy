@@ -8,10 +8,10 @@ if [[ ! -z "$2" && "$2" == '--force' ]]; then
   force=true
 fi
 
-if [ ! -d "nodes/$CLUSTER_NM" ]; then
+if [ ! -d "nodes/$CLUSTER" ]; then
   echo "ERROR: could not find cluster terrafrom"
   exit 1
-elif [ ! -f "nodes/$CLUSTER_NM/env.sh" ]; then
+elif [ ! -f "nodes/$CLUSTER/env.sh" ]; then
   echo "FATAL ERROR: missing env.sh file"
   exit 1
 fi

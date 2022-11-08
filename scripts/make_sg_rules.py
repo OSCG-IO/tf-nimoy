@@ -6,7 +6,7 @@ from botocore.exceptions import ClientError
 connection = sqlite3.connect("conf/stelthy.db")
 cursor = connection.cursor()
 
-f = open('nodes/' + os.environ['CLUSTER_NM'] + '/' + os.environ['CLUSTER_NM'] + '.out', 'r')
+f = open('nodes/' + os.environ['CLUSTER'] + '/' + os.environ['CLUSTER'] + '.out', 'r')
 Lines = f.readlines()
 cidr=[]
 nn=""
