@@ -7,10 +7,12 @@ os.chdir(sys.path[0])
 
 #connection = sqlite3.connect("../conf/stelthy.db")
 
+NODES_DIR = os.getcwd() + "/../nodes/"
+
 
 def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, pgv=None, key=None):
 
-  clusdir = os.getcwd() + "/../nodes/" + str(cluster)
+  clusdir = NODES_DIR + str(cluster)
   if os.path.isdir(clusdir):
     print("ERROR: Cluster Directory already exists: " + clusdir, file=sys.stderr)
     sys.exit(1)
@@ -81,8 +83,8 @@ def destroy(cluster, nodes=None):
   os.system("./destroyServers.sh " + str(cluster))
 
 
-def list(cluster):
-  print("DEBUG: Hello " + str(cluster))
+def list(cluster_pattern=""):
+  os.system("ls -l " + NODES_DIR + "/" + str(cluster_pattern))
 
 
 def keygen(key):
