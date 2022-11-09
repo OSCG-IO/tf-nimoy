@@ -76,12 +76,24 @@ def set_environ(p_var, p_val, p_f):
 def write_cluster_env(p_var, p_val, p_f):
   p_f.write("export " + p_var + "=" + p_val + "\n")
 
-def destroy(cluster_nm, nodes):
-  os.system("./destroyServers.sh " + str(cluster_nm))
+
+def destroy(cluster, nodes=None):
+  os.system("./destroyServers.sh " + str(cluster))
+
+
+def list(cluster):
+  print("DEBUG: Hello " + str(cluster))
+
+
+def keygen(key):
+  print("DEBUG: Hello " + str(key))
+
 
 if __name__ == '__main__':
   fire.Fire({
       'launch': launch,
       'destroy': destroy,
+      'list': list,
+      'keygen': keygen,
   })
 
