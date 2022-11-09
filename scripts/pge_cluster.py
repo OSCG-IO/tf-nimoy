@@ -7,7 +7,8 @@ os.chdir(sys.path[0])
 
 #connection = sqlite3.connect("../conf/stelthy.db")
 
-NODES_DIR = os.getcwd() + "/../nodes/"
+NODES_DIR = os.getcwd() + "/../nodes"
+KEYS_DIR  = os.getcwd() + "/../keys"
 
 
 def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, pgv=None, key=None):
@@ -87,8 +88,8 @@ def list(cluster_pattern=""):
   os.system("ls -l " + NODES_DIR + "/" + str(cluster_pattern))
 
 
-def keygen(key):
-  print("DEBUG: Hello " + str(key))
+def keygen(key=""):
+  os.system("ssh-keygen -t rsa -f " + KEYS_DIR + "/" + key)
 
 
 if __name__ == '__main__':
