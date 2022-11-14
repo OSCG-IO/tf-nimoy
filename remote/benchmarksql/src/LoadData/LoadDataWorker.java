@@ -133,9 +133,10 @@ public class LoadDataWorker implements Runnable
 		"  c_street_1, c_street_2, c_city, c_state, c_zip, " +
 		"  c_phone, c_since, c_credit, c_credit_lim, c_discount, " +
 		"  c_balance, c_ytd_payment, c_payment_cnt, " +
-		"  c_delivery_cnt, c_data) " +
+		"  c_delivery_cnt, c_data, c_credit_card, c_credit_exp, " +
+        "  c_pronoun, c_gender ) " +
 		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
-		"        ?, ?, ?, ?, ?, ?)"
+		"        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	    );
 	stmtHistory = dbConn.prepareStatement(
 		"INSERT INTO bmsql_history (" +
@@ -523,7 +524,7 @@ public class LoadDataWorker implements Runnable
 		{
 		    fmtCustomer.format("%d,%d,%d,%.4f,%s,%s,%s," +
 			"%.2f,%.2f,%.2f,%d,%d," +
-			"%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
+			"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
 			c_id,
 			d_id,
 			w_id,
@@ -544,7 +545,11 @@ public class LoadDataWorker implements Runnable
 			rnd.getNString(16, 16),
 			new java.sql.Timestamp(System.currentTimeMillis()).toString(),
 			"OE",
-			rnd.getAString_300_500());
+			rnd.getAString_300_500()),
+			rnd.getRandCC(),
+			rnd.getRandExpDate(),
+			rnd.getRandPronouns(),
+			rnd.getRandGender();
 		}
 		else
 		{
@@ -575,6 +580,10 @@ public class LoadDataWorker implements Runnable
 		    stmtCustomer.setInt(19, 1);
 		    stmtCustomer.setInt(20, 1);
 		    stmtCustomer.setString(21, rnd.getAString_300_500());
+		    stmtCustomer.setString(22, rnd.getRandCC());
+		   	stmtCustomer.setString(23, rnd.getRandExpDate());
+		    stmtCustomer.setString(24, rnd.getRandPronouns());
+		    stmtCustomer.setString(25, rnd.getRandGender());
 
 		    stmtCustomer.addBatch();
 		}

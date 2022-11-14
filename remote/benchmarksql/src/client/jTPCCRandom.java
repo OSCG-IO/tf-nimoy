@@ -416,4 +416,26 @@ public class jTPCCRandom
     {
 	return nURandCI_ID;
     }
+
+    public String getRandCC()
+    {
+        return java.util.Random.nextLong(111111111111111,999999999999999);
+    }
+
+    public String getRandExpDate()
+    {
+        return java.util.Random.nextInt(1,12) + java.util.Random.nextInt(2023,2026)
+    }
+
+    public String getRandPronouns()
+    {
+        String pronoun=["He/Him", "She/Her", "They/Them", "Xe/Xem", "Ze/Hir"]
+        return pronoun[java.util.Random.nextInt(0,4)];
+    }
+
+    public String getRandGender()
+    {
+        String gender=["M", "F", "O"]
+        return gender[java.util.Random.nextInt(0,2)];
+    }
 } // end jTPCCRandom
