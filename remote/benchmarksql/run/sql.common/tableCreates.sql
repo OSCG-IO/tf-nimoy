@@ -59,7 +59,7 @@ create table bmsql_customer (
   c_country      char(2),
   c_credit_card  varchar(20),
   c_credit_exp   char(6), -- mmyyyy
-  c_pronouns     varchar(20)
+  c_pronouns     varchar(20),
   c_gender       varchar(1) -- m, f or ?
 );
 
