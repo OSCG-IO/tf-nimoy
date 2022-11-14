@@ -112,7 +112,7 @@ setNodesVars
 
 echo " "
 echo "configuring localhost"
-./updateLocalhost.sh
+./updateLocalhost.sh $CLUSTER
 
 echo ""
 echo "  run './scripts/configServers.sh <cluster_name>' next"
