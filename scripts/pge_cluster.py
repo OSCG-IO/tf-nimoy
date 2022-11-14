@@ -13,7 +13,7 @@ KEYS_DIR  = os.getcwd() + "/../keys"
 
 def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, pgv=None, key=None):
 
-  clusdir = NODES_DIR + str(cluster)
+  clusdir = NODES_DIR + "/" + str(cluster)
   if os.path.isdir(clusdir):
     print("ERROR: Cluster Directory already exists: " + clusdir, file=sys.stderr)
     sys.exit(1)
