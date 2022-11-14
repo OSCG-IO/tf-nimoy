@@ -134,7 +134,7 @@ public class LoadDataWorker implements Runnable
 		"  c_phone, c_since, c_credit, c_credit_lim, c_discount, " +
 		"  c_balance, c_ytd_payment, c_payment_cnt, " +
 		"  c_delivery_cnt, c_data, c_credit_card, c_credit_exp, " +
-        "  c_pronoun, c_gender ) " +
+        "  c_pronouns, c_gender ) " +
 		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
 		"        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 	    );
@@ -545,11 +545,11 @@ public class LoadDataWorker implements Runnable
 			rnd.getNString(16, 16),
 			new java.sql.Timestamp(System.currentTimeMillis()).toString(),
 			"OE",
-			rnd.getAString_300_500()),
+			rnd.getAString_300_500(),
 			rnd.getRandCC(),
 			rnd.getRandExpDate(),
 			rnd.getRandPronouns(),
-			rnd.getRandGender();
+			rnd.getRandGender());
 		}
 		else
 		{
