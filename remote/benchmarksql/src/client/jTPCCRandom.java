@@ -419,14 +419,14 @@ public class jTPCCRandom
 
     public String getRandCC()
     {
-        return nextInt(0000,9999) + "-"
+        return "" + nextInt(0000,9999) + "-"
              + nextInt(000000,999999) + "-"
              + nextInt(00000,99999);
     }
 
     public String getRandExpDate()
     {
-        return nextInt(1,12) + nextInt(2023,2026);
+        return "" + nextInt(1,12) + nextInt(2023,2026);
     }
 
     public String getRandPronouns()
