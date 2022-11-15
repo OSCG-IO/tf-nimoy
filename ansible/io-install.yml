@@ -1,6 +1,6 @@
 ---
 - name: "Playbook to install VM's"
-  hosts: hosts_to_io
+  hosts: hosts_to_add_key
   vars:
     - status : "present"
 
