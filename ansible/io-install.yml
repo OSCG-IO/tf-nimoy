@@ -5,10 +5,14 @@
     - status : "present"
 
   tasks:
-
-  - name: "Install io and handel pgpass"
-    shell: |
-         cd test/tf-nimoy/remote/benchmarksql; /home/centos/apache-ant-1.9.16/bin/ant;
-         python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; 
-         cd oscg; ./io install pg{{ PGV }};
-         touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass; 
+  - name: "Install bmsql"
+    shell: cd test/tf-nimoy/remote/benchmarksql; /home/centos/apache-ant-1.9.16/bin/ant;
+  
+  - name: "Install io"       
+    shell: python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; 
+    
+  - name: Install pg"
+    shell: cd oscg; ./io install pg{{ PGV }};
+    
+  - name: "Set up pgpass"
+    shell: touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass; 
