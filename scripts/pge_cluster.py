@@ -4,12 +4,16 @@ import sys, sqlite3, os
 import fire
 
 os.chdir(sys.path[0])
+
 #connection = sqlite3.connect("../conf/stelthy.db")
 
+NODES_DIR = os.getcwd() + "/../nodes"
+KEYS_DIR  = os.getcwd() + "/../keys"
 
-def launch(cluster_nm, nodes, cloud=None, type=None, opsys=None, platform=None, pgv=None):
 
-  clusdir = os.getcwd() + "/../nodes/" + str(cluster_nm)
+def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, pgv=None, key=None):
+
+  clusdir = NODES_DIR + "/" + str(cluster)
   if os.path.isdir(clusdir):
     print("ERROR: Cluster Directory already exists: " + clusdir, file=sys.stderr)
     sys.exit(1)
@@ -19,19 +23,19 @@ def launch(cluster_nm, nodes, cloud=None, type=None, opsys=None, platform=None, 
 
   set_environ('NN', clusdir, f)
 
-  set_environ('CLUSTER_NM', str(cluster_nm), f)
+  set_environ('CLUSTER', str(cluster), f)
 
   if cloud:
     os.environ['CLOUD'] = str(cloud)
   write_cluster_env('CLOUD', os.environ['CLOUD'], f)
 
-  if type:
-    os.environ['TYPE'] = str(type)
-  write_cluster_env('TYPE', os.environ['TYPE'], f)
+  if machine:
+    os.environ['MACHINE'] = str(machine)
+  write_cluster_env('MACHINE', os.environ['MACHINE'], f)
 
   if opsys:
-    os.environ['OS'] = str(opsys)
-  write_cluster_env('OS', os.environ['OS'], f)
+    os.environ['OPSYS'] = str(opsys)
+  write_cluster_env('OPSYS', os.environ['OPSYS'], f)
 
   if platform:
     os.environ['PLATFORM'] = str(platform)
@@ -75,12 +79,24 @@ def set_environ(p_var, p_val, p_f):
 def write_cluster_env(p_var, p_val, p_f):
   p_f.write("export " + p_var + "=" + p_val + "\n")
 
-def destroy(cluster_nm, nodes):
-  os.system("./destroyServers.sh " + str(cluster_nm))
+
+def destroy(cluster, nodes=None):
+  os.system("./destroyServers.sh " + str(cluster))
+
+
+def list(cluster_pattern=""):
+  os.system("ls -l " + NODES_DIR + "/" + str(cluster_pattern))
+
+
+def keygen(key=""):
+  os.system("ssh-keygen -t rsa -f " + KEYS_DIR + "/" + key)
+
 
 if __name__ == '__main__':
   fire.Fire({
       'launch': launch,
       'destroy': destroy,
+      'list': list,
+      'keygen': keygen,
   })
 

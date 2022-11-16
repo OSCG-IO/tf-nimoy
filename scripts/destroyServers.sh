@@ -8,10 +8,10 @@ if [[ ! -z "$2" && "$2" == '--force' ]]; then
   force=true
 fi
 
-if [ ! -d "nodes/$CLUSTER_NM" ]; then
-  echo "ERROR: could not find cluster terrafrom"
+if [ ! -d "nodes/$cluster" ]; then
+  echo "ERROR: could not find cluster - $PWD/nodes/$cluster"
   exit 1
-elif [ ! -f "nodes/$CLUSTER_NM/env.sh" ]; then
+elif [ ! -f "nodes/$cluster/env.sh" ]; then
   echo "FATAL ERROR: missing env.sh file"
   exit 1
 fi
@@ -38,17 +38,20 @@ do
   echo "## destroy n${i}"
   ./TF.sh $cluster n${i} "$destroy" >> log/${cluster}-n${i}.log 2>&1 &
   lastNode=$i
-  ## To Do: finish force_destory.py
+  ## To Do: finish force_destroy.py
   ##if [ $force ]; then
   ##  python3 scripts/force_destory.py $cluster $N{i}
   ##fi
 done
 
 echo "# destroy nodes in progress..."
-sleep 2
-echo "# tail last node destory log"
-tail -f log/${cluster}-n${lastNode}.log
+sleep 1
+log=log/${cluster}-n${lastNode}.log
+if [ -f "$log" ]; then
+  echo "# tail last node destroy log"
+  tail -f log/${cluster}-n${lastNode}.log
+fi
 
 echo ""
-echo "whacking $cluster terraform files"
+echo "whacking cluster meta data  @ $clDir"
 rm -rf $clDir

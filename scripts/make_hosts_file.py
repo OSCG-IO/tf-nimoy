@@ -1,8 +1,8 @@
 import os
 
-f = open('nodes/' + os.environ['CLUSTER_NM']+ '/' + os.environ['CLUSTER_NM'] + '.out', 'r')
-fa = open('nodes/' + os.environ['CLUSTER_NM']+ '/' + 'ansible_hosts', 'w')
-fd = open('nodes/' + os.environ['CLUSTER_NM']+ '/' + 'ansible_hosts_driver', 'w')
+f = open('nodes/' + os.environ['CLUSTER']+ '/' + os.environ['CLUSTER'] + '.out', 'r')
+fa = open('nodes/' + os.environ['CLUSTER']+ '/' + 'ansible_hosts', 'w')
+fd = open('nodes/' + os.environ['CLUSTER']+ '/' + 'ansible_hosts_driver', 'w')
 fh = open('hosts', 'w')
 
 fh.write("" + os.linesep)

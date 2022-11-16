@@ -419,23 +419,25 @@ public class jTPCCRandom
 
     public String getRandCC()
     {
-        return java.util.Random.nextLong(111111111111111,999999999999999);
+        return "" + nextInt(0000,9999) + "-"
+             + nextInt(000000,999999) + "-"
+             + nextInt(00000,99999);
     }
 
     public String getRandExpDate()
     {
-        return java.util.Random.nextInt(1,12) + java.util.Random.nextInt(2023,2026)
+        return "" + nextInt(1,12) + nextInt(2023,2026);
     }
 
     public String getRandPronouns()
     {
-        String pronoun=["He/Him", "She/Her", "They/Them", "Xe/Xem", "Ze/Hir"]
-        return pronoun[java.util.Random.nextInt(0,4)];
+        String[] pronoun={"He/Him", "She/Her", "They/Them", "Xe/Xem", "Ze/Hir"};
+        return pronoun[nextInt(0,4)];
     }
 
     public String getRandGender()
     {
-        String gender=["M", "F", "O"]
-        return gender[java.util.Random.nextInt(0,2)];
+        String[] gender={"M", "F", "O"};
+        return gender[nextInt(0,2)];
     }
 } // end jTPCCRandom

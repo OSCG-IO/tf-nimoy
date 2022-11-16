@@ -3,15 +3,15 @@ cd "$(dirname "$0")"
 cd ..
 
 setNodesVars () {
-  echo "## setNodesVar() for NN & TYPE=$TYPE"
+  echo "## setNodesVar() for NN & MACHINE=$MACHINE"
 
   for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
   do
     NNn=NN$i
     tf=${!NNn}/variable.tf
     echo "variable \"nn\" { default = \"${i}-1\" }" > $tf
-    echo "variable \"cluster_nm\" { default = \"$CLUSTER_NM\" }" >> $tf
-    echo "variable \"type\" { default = \"$TYPE\" }" >> $tf
+    echo "variable \"cluster\" { default = \"$CLUSTER\" }" >> $tf
+    echo "variable \"machine\" { default = \"$MACHINE\" }" >> $tf
   done
 }
 
@@ -67,14 +67,12 @@ setupNodesDir () {
 
 echo "######### Launch PGE Cluster ##########"
 echo "#"
-echo "####### Default Settings ##############"
+echo "#  Cluster Name: $CLUSTER"
+echo "#         Count: $NODE_KOUNT"
 echo "#         Cloud: $CLOUD"
-echo "#  Machine Type: $TYPE"
+echo "#  Machine Type: $MACHINE"
 echo "#       Version: $PGV"
 echo "#"
-echo "####### Database Nodes ################"
-echo "#  Cluster Name: $CLUSTER_NM"
-echo "#         Count: $NODE_KOUNT"
 
 for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
 do
@@ -109,12 +107,12 @@ echo ""
 echo "# create node specfic variables"
 setNodesVars
 
-./TF.sh "$CLUSTER_NM" "all" "init"
-./TF.sh "$CLUSTER_NM" "all" "apply -auto-approve"
+./TF.sh "$CLUSTER" "all" "init"
+./TF.sh "$CLUSTER" "all" "apply -auto-approve"
 
 echo " "
 echo "configuring localhost"
-./updateLocalhost.sh
+./updateLocalhost.sh $CLUSTER
 
 echo ""
 echo "  run './scripts/configServers.sh <cluster_name>' next"

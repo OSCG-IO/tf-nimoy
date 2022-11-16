@@ -19,11 +19,11 @@ zone = ""
 if len(sys.argv) == 4:
   zone = sys.argv[3]
 
-opsys = os.getenv("OS", "")
+opsys = os.getenv("OPSYS", "")
 plat = os.getenv("PLATFORM", "")
 
 if ((opsys == "") or (plat == "")):
-  print("ERROR: The OS & PLATFORM environment variables both need to be set")
+  print("ERROR: The OPSYS & PLATFORM environment variables both need to be set")
   sys.exit(1)
 
 cursor = connection.cursor()
