@@ -62,7 +62,7 @@ resource "aws_security_group_rule" "local-ssh" {
   type              = "ingress"
   to_port           = 22
   protocol          = "tcp"
-  cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  cidr_blocks       = ["${chomp(data.http.myip.response_body)}/32"]
   from_port         = 22
   security_group_id = aws_security_group.sg.id
 }
@@ -71,7 +71,7 @@ resource "aws_security_group_rule" "local-prompgexp" {
   type              = "ingress"
   to_port           = 9187
   protocol          = "tcp"
-  cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  cidr_blocks       = ["${chomp(data.http.myip.response_body)}/32"]
   from_port         = 9187
   security_group_id = aws_security_group.sg.id
 }
