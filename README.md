@@ -17,7 +17,7 @@ On OSX run:
 
 ### 2.) Configure the top of the 'env.sh' with the machine type and locations
 
-    TYPE=c6g.medium
+    MACHINE=c6g.medium
     N1=pdt
     N2=dub
     N3=syd
