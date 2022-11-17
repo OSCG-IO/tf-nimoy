@@ -11,7 +11,6 @@ if len(sys.argv) < 3 or len(sys.argv) > 4:
   print("ERROR: Two or three parms must be specified: provider location [zone]")
   sys.exit(1)
 
-
 ############### MAINLINE ######################
 provider = sys.argv[1]
 loct = sys.argv[2]
@@ -21,6 +20,7 @@ if len(sys.argv) == 4:
 
 opsys = os.getenv("OPSYS", "")
 plat = os.getenv("PLATFORM", "")
+key_name = os.getenv("KEY_NAME", "dl-m1book-key").removesuffix(".pem")
 
 if ((opsys == "") or (plat == "")):
   print("ERROR: The OPSYS & PLATFORM environment variables both need to be set")
@@ -62,5 +62,5 @@ if region != parent_region:
 
 print('variable "az"          { default = "' + az + '" }')
 print('variable "image"       { default = "' + image_id + '" }')
-print('variable "key"         { default = "dl-m1book-key" }')
+print('variable "key"         { default = "' + key_name + '" }')
 
