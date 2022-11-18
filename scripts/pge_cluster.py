@@ -92,7 +92,13 @@ def list(cluster_pattern=""):
   os.system("ls -l " + NODES_DIR + "/" + str(cluster_pattern))
 
 
-def keygen(key=""):
+def keygen(key="",force="N"):
+  dir_key = KEYS_DIR + "/" + key
+  if force in ('Y', 'y'):
+    os.system('rm -rf ' + dir_key + '*')
+  if os.is_file(dir_key + '.pub'):
+    print("ERROR: key already exists", file=sys.stderr)
+    sys.exit(1)
   os.system("ssh-keygen -t rsa -f " + KEYS_DIR + "/" + key)
 
 

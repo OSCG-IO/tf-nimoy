@@ -91,7 +91,7 @@ setupNodesDir
 map="$NN/nodes.html"
 echo ""
 echo "generate the geo map ($map)"
-python3 scripts/generate.py map --provider aws --location "$N1,$N2,N3" > $map
+python3 scripts/generate.py map --provider aws --location "$N1,$N2,$N3" > $map
 rc=$?
 if [ ! "$rc" == "0" ]; then
   exit 1

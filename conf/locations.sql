@@ -72,8 +72,8 @@ INSERT INTO countries VALUES ('qa', 'me', 'Qatar');
 CREATE TABLE locations (
   location      TEXT     NOT NULL NOT NULL PRIMARY KEY,
   location_nm   TEXT     NOT NULL,
-  state         TEXT,
   country       TEXT     NOT NULL REFERENCES countries(country),
+  state         TEXT,
   lattitude     FLOAT    NOT NULL,
   longitude     FLOAT    NOT NULL
 );
