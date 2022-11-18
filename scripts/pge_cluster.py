@@ -11,7 +11,7 @@ NODES_DIR = os.getcwd() + "/../nodes"
 KEYS_DIR  = os.getcwd() + "/../keys"
 
 
-def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, pgv=None, key=None):
+def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, pgv=None, key=None, demo=None):
 
   clusdir = NODES_DIR + "/" + str(cluster)
   if os.path.isdir(clusdir):
@@ -32,6 +32,10 @@ def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, 
   if machine:
     os.environ['MACHINE'] = str(machine)
   write_cluster_env('MACHINE', os.environ['MACHINE'], f)
+
+  if demo:
+    os.environ['DEMO'] = "True"
+  write_cluster_env('DEMO', os.environ['DEMO'], f)
 
   if opsys:
     os.environ['OPSYS'] = str(opsys)
