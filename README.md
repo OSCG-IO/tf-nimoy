@@ -17,7 +17,7 @@ On OSX run:
 
 ### 2.) Configure the top of the 'env.sh' with the machine type and locations
 
-    TYPE=c6g.medium
+    MACHINE=c6g.medium
     N1=pdt
     N2=dub
     N3=syd
@@ -26,7 +26,7 @@ On OSX run:
 
 ### 4.) The provisioning & cloud-init info for setting up the 'driver' & 'node' vm's is in 'main.tf'
 
-### 5.) run './launchServers.sh' and it will setupp a multi-region demo cluster as follows:
+### 5.) run './pge_cluster.sh launch demo "mtl-a, dub-a, syd-a"' and it will setup a multi-region demo cluster as follows:
 
      # create new nodes/nn directory tree
         ## copying common terraform files
@@ -43,7 +43,7 @@ On OSX run:
     # generate an ssh key pair on driver1-1
     # use ansible playbook 'add-key.yml' to allow for passwordless ssh between 'driver1-1' and all other drivers & nodes.
 
-### 6.) run './configServers.sh' to further setup the servers
+### 6.) run './configServers.sh demo' to further setup the servers
 
 
 ### 7.) SSH to driver1-1; cd $RMT; cat README.md

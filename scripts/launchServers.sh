@@ -74,24 +74,31 @@ echo "#  Machine Type: $MACHINE"
 echo "#       Version: $PGV"
 echo "#"
 
+nodeList=""
 for (( i=1 ; i<=$NODE_KOUNT ; i++ ));
 do
    Nn=N$i
    Nz=N${i}Z 
    NNn=NN$i
    echo "#            n$i : ${!Nn} - ${!Nz} - ${!NNn}"
+   #nodeList=$nodeList + $Nn + " "
 done
+#nodeList=$nodeList[:-1]
+#echo $nodeList
 
 setupNodesDir
 
 map="$NN/nodes.html"
 echo ""
 echo "generate the geo map ($map)"
-python3 scripts/generate.py map --provider aws --location "$N1, $N2, $N3" > $map
+python3 scripts/generate.py map --provider aws --location "$N1,$N2,N3" > $map
 rc=$?
 if [ ! "$rc" == "0" ]; then
   exit 1
 fi
+
+demosql="$NN/demo.sql"
+python3 scripts/gen_demo_sql.py $N1 $N2 $N3 > $demosql
 
 echo ""
 echo "# copy location files"

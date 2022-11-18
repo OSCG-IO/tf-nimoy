@@ -22,6 +22,7 @@ echo "using key: $key"
 
 $SCP $clDir/ansible_hosts  $usr@$d1:.
 $SCP ansible/add-key.yml $usr@$d1:.
+$SCP $clDir/demo.sql $usr@$d1:.
 
 ## Cat hosts to /etc/hosts on each VM
 ansible-playbook -i $clDir/ansible_hosts --user centos --key-file $key ansible/cat-hosts.yml
