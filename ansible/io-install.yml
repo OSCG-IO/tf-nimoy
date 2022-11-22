@@ -1,18 +1,24 @@
 ---
 - name: "Playbook to install VM's"
-  hosts: hosts_to_io
+  hosts: hosts
   vars:
     - status : "present"
 
   tasks:
-  - name: "Install bmsql"
-    shell: cd test/tf-nimoy/remote/benchmarksql; /home/centos/apache-ant-1.9.16/bin/ant;
-  
   - name: "Install io"       
-    shell: python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; 
+    shell: cd /db; python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)" 
     
-  - name: Install pg"
-    shell: cd oscg; ./io install pg{{ PGV }};
+  - name: "Install pg"
+    shell: cd /db/oscg; ./io install pg{{ PGV }};
     
+  - name: "Create pass file"
+    shell: echo {{ PASS }} > /db/oscg/pg{{ PGV }}/.pgpass
+
+  - name: "Start io"
+    shell: cd /db/oscg; ./io start pg{{ PGV }} -y -d demo {{ ':' }} tune pg{{ PGV }} {{ ':' }} install spock -d demo {{ ':' }} install prompgexp --start
+
+  - name: "Copy final pass"
+    copy: src="{{ PGFile }}" dest=/home/centos/.pgpass
+
   - name: "Set up pgpass"
-    shell: touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass; 
+    shell: touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass;

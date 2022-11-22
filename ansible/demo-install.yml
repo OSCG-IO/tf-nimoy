@@ -1,0 +1,21 @@
+---
+- name: "Playbook to install VM's"
+  hosts: hosts
+  vars:
+    - status : "present"
+
+  tasks:
+  - name: "Install Global Pharmacy Demo"
+    shell: cd test/tf-nimoy/remote/benchmarksql; /home/centos/apache-ant-1.9.16/bin/ant;
+  
+  - name: "Install io"       
+    shell: python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; 
+    
+  - name: "Install pg"
+    shell: cd oscg; ./io install pg{{ PGV }};
+
+  - name: "Copy final pass"
+    copy: src="{{ PGFile }}" dest=/home/centos/.pgpass   
+ 
+  - name: "Set up pgpass"
+    shell: touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass; 

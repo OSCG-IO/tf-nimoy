@@ -1,6 +1,6 @@
 ---
 - name: "Playbook to Add Key to VM's"
-  hosts: hosts_to_add_key
+  hosts: hosts
   vars:
     - status : "present"
     - key : "/home/centos/.ssh/id_rsa.pub"
