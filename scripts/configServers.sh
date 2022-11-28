@@ -32,7 +32,6 @@ done < "$input"
 
 echo "using key: $key"
 echo "Configuring Nodes"
-echo -e "\n\n\n" | ssh-keygen -t rsa
 
 ## Cat hosts to /etc/hosts on each VM
 ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" ansible/cat-hosts.yml

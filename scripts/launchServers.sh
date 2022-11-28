@@ -102,8 +102,10 @@ if [ ! "$rc" == "0" ]; then
   exit 1
 fi
 
-demosql="$NN/demo.sql"
-python3 scripts/gen_demo_sql.py $N1 $N2 $N3 > $demosql
+if [[ $DEMO == "True" ]]; then
+  demosql="$NN/demo.sql"
+  python3 scripts/gen_demo_sql.py $N1 $N2 $N3 > $demosql
+fi
 
 echo ""
 echo "# copy location files"
@@ -124,7 +126,7 @@ setNodesVars
 
 echo " "
 echo "configuring localhost"
-./updateLocalhost.sh $CLUSTER
+./scripts/updateLocalhost.sh $CLUSTER
 
 echo ""
 echo "  run './scripts/configServers.sh <cluster_name>' next"

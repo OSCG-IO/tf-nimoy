@@ -12,7 +12,6 @@ KEYS_DIR  = os.getcwd() + "/../keys"
 
 
 def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, pgv=None, key=None, demo=None):
-
   clusdir = NODES_DIR + "/" + str(cluster)
   if os.path.isdir(clusdir):
     print("ERROR: Cluster Directory already exists: " + clusdir, file=sys.stderr)
@@ -33,10 +32,6 @@ def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, 
     os.environ['MACHINE'] = str(machine)
   write_cluster_env('MACHINE', os.environ['MACHINE'], f)
 
-  if demo:
-    os.environ['DEMO'] = "True"
-  write_cluster_env('DEMO', os.environ['DEMO'], f)
-
   if opsys:
     os.environ['OPSYS'] = str(opsys)
   write_cluster_env('OPSYS', os.environ['OPSYS'], f)
@@ -48,6 +43,14 @@ def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, 
   if pgv:
     os.environ['PGV'] = str(pgv)
   write_cluster_env('PGV', os.environ['PGV'], f)
+
+  if key:
+    os.environ['KEY_NAME'] = str(key)
+  write_cluster_env('KEY_NAME', os.environ['KEY_NAME'], f)
+
+  if demo:
+    os.environ['DEMO'] = "True"
+  write_cluster_env('DEMO', os.environ['DEMO'], f)
 
   nodes = str(nodes)
   node_arr = nodes.split(',')

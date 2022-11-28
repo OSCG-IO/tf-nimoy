@@ -13,6 +13,7 @@ nn=""
 sgid=[]
 ipval=""
 
+drive_ip=0
 for line in Lines:
   l = line.strip()
   if l == "":
@@ -30,11 +31,15 @@ for line in Lines:
         cidr.append(ii)
         break
   if l.startswith('driver_public_ip'):
+    drive_ip=1
+    continue
+  if drive_ip == 1:
+    drive_ip=0
     for i in ls:
-      if i.startswith('"') and i.endswith('"'):
-        ii = i.replace('"',"")
-        cidr.append(ii)  
-        break
+      ii = i.replace('"',"")
+      ii = ii.replace(",","")
+      cidr.append(ii)
+      break
   if l.startswith('sg_id'):
     for i in ls:
       if i.startswith('"') and i.endswith('"'):

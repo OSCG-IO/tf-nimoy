@@ -11,6 +11,7 @@ fd.write("[hosts]" + os.linesep)
 
 Lines = f.readlines()
 nn=""
+drive_ip=0
 
 for line in Lines:
   l = line.strip()
@@ -31,12 +32,17 @@ for line in Lines:
         break
 
   if l.startswith('driver_public_ip'):
+    drive_ip=1
+    continue
+
+  if drive_ip == 1:
+    drive_ip=0
     for i in ls:
-      if i.startswith('"') and i.endswith('"'):
-        ii = i.replace('"',"")
-        fd.write(ii + os.linesep)
-        fh.write(ii +  "   driver" + n + "-1" + os.linesep)
-        break
+      ii = i.replace('"',"")
+      ii = ii.replace(",","")
+      fd.write(ii + os.linesep)
+      fh.write(ii +  "   driver" + n + "-1" + os.linesep)
+      break
 
 fh.write("" + os.linesep)
 fn.write(os.linesep + "[hosts:vars]" + os.linesep + \
