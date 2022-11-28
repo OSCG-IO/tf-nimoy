@@ -10,16 +10,12 @@ if [ ! -f "$clDir/env.sh" ]; then
   exit 1
 fi
 source $clDir/env.sh
-d1=driver1-1
 
 key="keys/${KEY_NAME:-dl-m1book-key.pem}"
 usr=centos
-SSH="ssh -i $key -o StrictHostKeyChecking=no"
-SCP="scp -i $key -o StrictHostKeyChecking=no"
-
-
-
 PASS=$(openssl rand -hex 8;)
+
+## Construct pgpass
 echo "localhost:5432:*:postgres:$PASS" >> $clDir/.pgpass
 echo "127.0.0.1:5432:*:postgres:$PASS" >> $clDir/.pgpass
 input="$clDir/ansible_hosts_node"
@@ -35,31 +31,31 @@ do
 done < "$input"
 
 echo "using key: $key"
-##TODO: move key stuff to cat hosts ansible
-$SCP $clDir/ansible_hosts_node  $usr@$d1:.
-$SCP $clDir/ansible_hosts_driver  $usr@$d1:.
-$SCP ansible/add-key.yml $usr@$d1:.
-$SCP $clDir/demo.sql $usr@$d1:.
+echo "Configuring Nodes"
+echo -e "\n\n\n" | ssh-keygen -t rsa
 
 ## Cat hosts to /etc/hosts on each VM
-ansible-playbook -i $clDir/ansible_hosts_node --user centos --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" ansible/cat-hosts.yml
-
-## Cat hosts to /etc/hosts on each VM
-ansible-playbook -i $clDir/ansible_hosts_driver --user centos --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" ansible/cat-hosts.yml
-
-$SSH $usr@$d1 'mkdir keys'
-$SCP $key $usr@$d1:keys/.
-$SSH $usr@$d1 'echo -e "\n\n\n" | ssh-keygen -t rsa'
+ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" ansible/cat-hosts.yml
 
 ## Add keys to each VM
-$SSH $usr@$d1 "ansible-playbook -i ansible_hosts_node --user centos --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" add-key.yml"
-
-## Add keys to each VM
-$SSH $usr@$d1 "ansible-playbook -i ansible_hosts_driver --user centos --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" add-key.yml"
+ansible-playbook -i ansible_hosts_node --user $usr --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" add-key.yml
 
 ## Run io install, io start
-ansible-playbook -i $clDir/ansible_hosts_node --user centos --key-file $key -e "PGV=$PGV PASS=$PASS PGFile=$clDir/.pgpass" ansible/io-install.yml
+ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key -e "PGV=$PGV PASS=$PASS PGFile=$clDir/.pgpass" ansible/io-install.yml
 
-## Run io install, build demo, and set up password file
-ansible-playbook -i $clDir/ansible_hosts_driver --user centos --key-file $key -e "PGV=$PGV PASS=$PASS PGFile=$clDir/.pgpass" ansible/demo-install.yml
+if [[ $DEMO=="True" ]]; then
+  echo "Configuring Drivers"
+  d1=driver1-1
+  SCP="scp -i $key -o StrictHostKeyChecking=no"
+  $SCP $clDir/demo.sql $usr@$d1:.
+
+  ## Cat hosts to /etc/hosts on each VM
+  ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" ansible/cat-hosts.yml
+
+  ## Add keys to each VM
+ansible-playbook -i ansible_hosts_driver --user $usr --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" add-key.yml
+
+  ## Run io install, build demo, and set up password file
+  ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key -e "PGV=$PGV PASS=$PASS PGFile=$clDir/.pgpass" ansible/demo-install.yml
+fi
 

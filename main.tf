@@ -112,6 +112,7 @@ EOF
 
 
 resource "aws_instance" "driver" {
+  count		= var.demo=="True" ? 1 : 0
   ami           = var.image
   instance_type = var.machine
   availability_zone = var.az

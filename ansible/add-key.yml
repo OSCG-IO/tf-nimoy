@@ -7,6 +7,9 @@
 
   tasks:
 
+  - - name: "Make Keys dir"
+    shell: mkdir keys
+ 
   - name: "Copy the authorized key file from"
     authorized_key:
       user: "{{ansible_user}}"

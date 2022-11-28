@@ -12,6 +12,11 @@ setNodesVars () {
     echo "variable \"nn\" { default = \"${i}-1\" }" > $tf
     echo "variable \"cluster\" { default = \"$CLUSTER\" }" >> $tf
     echo "variable \"machine\" { default = \"$MACHINE\" }" >> $tf
+    if [[ $DEMO == "True" ]]; then
+	echo "variable \"demo\" { default = \"True\" }" >> $tf
+    else
+	echo "variable \"demo\" { default = \"False\" }" >> $tf
+    fi
   done
 }
 
