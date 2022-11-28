@@ -20,7 +20,12 @@ else
   fi
 fi
 
-sudo dnf install -y wget zip
+sudo dnf install -y epel-release
+sudo dnf install -y ansible
+sudo dnf install -y pv
+sudo dnf install -y wget zip python39 python39-devel
+
+pip3 install -r scripts/requirements.txt
 
 rm terraform*
 zip_file=terraform_1.3.5_linux_arm64.zip
@@ -30,6 +35,3 @@ sudo mv terraform /usr/local/bin/.
 sudo chmod 755 /usr/local/bin/terraform 
 rm $zip_file
 
-sudo dnf install -y epel-release
-sudo dnf install -y ansible
-sudo dnf install -y pv
