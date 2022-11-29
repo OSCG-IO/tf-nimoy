@@ -3,13 +3,10 @@
   hosts: hosts
   vars:
     - status : "present"
-    - key : "/home/centos/.ssh/id_rsa.pub"
+    - key : "../keys/pge_dev_key.pub"
 
   tasks:
 
-  - - name: "Make Keys dir"
-    shell: mkdir keys
- 
   - name: "Copy the authorized key file from"
     authorized_key:
       user: "{{ansible_user}}"

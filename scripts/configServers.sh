@@ -37,7 +37,7 @@ echo "Configuring Nodes"
 ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" ansible/cat-hosts.yml
 
 ## Add keys to each VM
-ansible-playbook -i ansible_hosts_node --user $usr --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" add-key.yml
+ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" ansible/add-key.yml
 
 ## Run io install, io start
 ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key -e "PGV=$PGV PASS=$PASS PGFile=$clDir/.pgpass" ansible/io-install.yml
@@ -52,7 +52,7 @@ if [[ $DEMO=="True" ]]; then
   ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" ansible/cat-hosts.yml
 
   ## Add keys to each VM
-ansible-playbook -i ansible_hosts_driver --user $usr --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" add-key.yml
+  ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" ansible/add-key.yml
 
   ## Run io install, build demo, and set up password file
   ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key -e "PGV=$PGV PASS=$PASS PGFile=$clDir/.pgpass" ansible/demo-install.yml
