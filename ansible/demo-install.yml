@@ -18,4 +18,7 @@
     copy: src="{{ PGFile }}" dest=/home/centos/.pgpass   
  
   - name: "Set up pgpass"
-    shell: touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass; 
+    shell: touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass;
+
+  - name: "Copy Demo sql"
+    copy: src="{{ DEMSQL }}" dest=demo.sql

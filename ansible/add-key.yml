@@ -3,7 +3,6 @@
   hosts: hosts
   vars:
     - status : "present"
-    - key : "../keys/pge_dev_key.pub"
 
   tasks:
 
@@ -11,5 +10,5 @@
     authorized_key:
       user: "{{ansible_user}}"
       state: "{{status}}"
-      key: "{{ lookup('file', '{{ key }}')}}"
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
