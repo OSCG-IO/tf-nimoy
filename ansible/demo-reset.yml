@@ -1,0 +1,9 @@
+---
+- name: "Playbook to uninstall VM's"
+  hosts: hosts
+  vars:
+    - status : "present"
+
+  tasks:
+  - name: "Remove dir"
+    shell: sudo rm -rf oscg;

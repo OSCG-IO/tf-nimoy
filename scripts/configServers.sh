@@ -4,18 +4,30 @@ cd ..
 
 cluster=$1
 clDir=$PWD/nodes/$cluster
-rm $clDir/.pgpass
 
 if [ ! -f "$clDir/env.sh" ]; then
   echo "FATAL ERROR: missing env.sh file"
   exit 1
 fi
 source $clDir/env.sh
-
 key="keys/${KEY_NAME:-dl-m1book-key.pem}"
 usr=centos
-PASS=$(openssl rand -hex 8;)
 
+if [ -f $clDir/.pgpass ]; then
+  read -p 'Do you want to reconfigure this cluster? Y or N ' reconfig
+  if [[ $reconfig=="Y" ]]; then
+    ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key ansible/io-reset.yml
+    if [[ $DEMO=="True" ]]; then
+      ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key ansible/demo-reset.yml
+    fi
+    rm $clDir/.pgpass
+  else
+    echo "FATAL ERROR: Cluster has already been configured"
+    exit 1
+  fi
+fi
+
+PASS=$(openssl rand -hex 8;)
 ## Construct pgpass
 echo "localhost:5432:*:postgres:$PASS" >> $clDir/.pgpass
 echo "127.0.0.1:5432:*:postgres:$PASS" >> $clDir/.pgpass
@@ -56,11 +68,7 @@ if [[ $DEMO=="True" ]]; then
 
   ## Run io install, build demo, and set up password file
   ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key -e "PGV=$PGV PASS=$PASS PGFile=$clDir/.pgpass DEMSQL=$clDir/demo.sql" ansible/demo-install.yml
-  rm $clDir/demo.sql
 fi
-
-##rm $clDir/.pgpass
-##rm $clDir/ansible_hosts*
 
 echo "Database Cluster Ready"
 
