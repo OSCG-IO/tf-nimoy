@@ -6,7 +6,7 @@
 
   tasks:
   - name: "Stop pg"
-    shell: ./db/oscg/io stop;
+    shell: /db/oscg/io stop;
     
   - name: "Remove dir"
     shell: sudo rm -rf /db/oscg
