@@ -137,6 +137,6 @@ yes | pv -SL1 -F 'Resuming in %e' -s 150 > /dev/null
 
 os=`uname -s`
 if [ "$os" == "Darwin" ]; then
-  sudo reboot
+  sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 fi
 
