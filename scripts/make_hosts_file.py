@@ -28,7 +28,7 @@ for line in Lines:
       if i.startswith('"') and i.endswith('"'):
         ii = i.replace('"',"")
         fn.write(ii + os.linesep)
-        fh.write(ii +  "   node" + n + "-1" + os.linesep)
+        fh.write(ii +  "   node" + n + "-1  aws-" + n + "-" +  os.environ['N'+n]  + os.linesep)
         break
 
   if l.startswith('driver_public_ip'):

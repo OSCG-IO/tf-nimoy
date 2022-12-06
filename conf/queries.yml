@@ -1,0 +1,23 @@
+pg_spock_channel:
+  query: "SELECT slotname, n_tup_ins, n_tup_upd, n_tup_del from spock.get_brief_channel_stats where slotname is not null"
+  metrics:
+    - slotname:
+        usage: "LABEL"
+        description: "Name of Channel"
+    - n_tup_ins:
+        usage: "COUNTER"
+        description: "Replicated Inserts"
+    - n_tup_upd:
+        usage: "COUNTER"
+        description: "Replicated Updates"
+    - n_tup_del:
+        usage: "COUNTER"
+        description: "Replicated Deletes"
+
+pg_spock_resolutions:
+  query: "select count(*) from spock.resolutions as res_count"
+  master: true
+  metrics:
+    - count:
+        usage: "COUNTER"
+        description: "Number of Resolutions"

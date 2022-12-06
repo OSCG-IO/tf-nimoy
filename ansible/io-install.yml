@@ -5,20 +5,26 @@
     - status : "present"
 
   tasks:
-  - name: "Install io"       
+  - name: "Install io on Database Nodes"       
     shell: cd /db; python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)" 
     
-  - name: "Install pg"
+  - name: "Install base Postgres"
     shell: cd /db/oscg; ./io install pg{{ PGV }};
     
-  - name: "Create pass file"
+  - name: "Securely Remembering PG Password"
     shell: echo {{ PASS }} > /db/oscg/pg{{ PGV }}/.pgpass
 
-  - name: "Start io"
-    shell: cd /db/oscg; ./io start pg{{ PGV }} -y -d demo {{ ':' }} tune pg{{ PGV }} {{ ':' }} install spock -d demo {{ ':' }} install prompgexp --start
+  - name: "Configure and Tune PostgreSQL. Install Spock and Friends"
+    shell: cd /db/oscg; ./io start pg{{ PGV }} -y -d demo {{ ':' }} tune pg{{ PGV }} {{ ':' }} install spock -d demo {{ ':' }} install prompgexp
 
-  - name: "Copy final pass"
+  - name: "Configure Prometheus Monitoring for Postgres"
+    copy: src=../conf/queries.yml dest=/db/oscg/prompgexp/queries.yml
+
+  - name: "Starting Monitoring Background Process"
+    shell: cd /db/oscg; ./io start prompgexp; sleep 3;
+
+  - name: "Finalize PG Password..."
     copy: src="{{ PGFile }}" dest=/home/centos/.pgpass
 
-  - name: "Set up pgpass"
+  - name: "Finalized"
     shell: touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass;

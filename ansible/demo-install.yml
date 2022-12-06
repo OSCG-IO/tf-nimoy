@@ -5,20 +5,20 @@
     - status : "present"
 
   tasks:
-  - name: "Install Global Pharmacy Demo"
+  - name: "Install Global Pharmacy Demo (GPD)"
     shell: cd test/tf-nimoy/remote/benchmarksql; /home/centos/apache-ant-1.9.16/bin/ant;
   
   - name: "Install io"       
     shell: python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; 
     
-  - name: "Install pg"
+  - name: "Install Postgres Client"
     shell: cd oscg; ./io install pg{{ PGV }};
 
-  - name: "Copy final pass"
+  - name: "Securely Saving PG Passwords from Nodes"
     copy: src="{{ PGFile }}" dest=/home/centos/.pgpass   
  
-  - name: "Set up pgpass"
+  - name: "Finalizing PG Pass"
     shell: touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass;
 
-  - name: "Copy Demo sql"
+  - name: "Regionalizing Default GPD Data"
     copy: src="{{ DEMSQL }}" dest=demo.sql
