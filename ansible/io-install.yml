@@ -21,7 +21,7 @@
     copy: src=../conf/queries.yml dest=/db/oscg/prompgexp/queries.yml
 
   - name: "Starting Monitoring Background Process"
-    shell: cd /db/oscg; ./io start prompgexp; sleep 3;
+    shell: cd /db/oscg; ./io start prompgexp > /dev/null 2>&1;
 
   - name: "Finalize PG Password..."
     copy: src="{{ PGFile }}" dest=/home/centos/.pgpass
