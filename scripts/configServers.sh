@@ -58,7 +58,7 @@ ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key -e "KE
 ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key -e "PGV=$PGV PASS=$PASS PGFile=$clDir/.pgpass" ansible/io-install.yml
 
 if [[ $DEMO=="True" ]]; then
-  echo "Configuring Drivers"
+  echo "Configuring Demo Global Pharmacy Application"
 
   ## Cat hosts to /etc/hosts on each VM
   ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key ansible/cat-hosts.yml
