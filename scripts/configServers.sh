@@ -10,34 +10,65 @@ if [ ! -f "$clDir/env.sh" ]; then
   exit 1
 fi
 source $clDir/env.sh
-d1=driver1-1
-
 key="keys/${KEY_NAME:-dl-m1book-key.pem}"
 usr=centos
-SSH="ssh -i $key -o StrictHostKeyChecking=no"
-SCP="scp -i $key -o StrictHostKeyChecking=no"
+
+if [ -f $clDir/.pgpass ]; then
+  read -p 'Do you want to reconfigure this cluster? Y or N ' reconfig
+  if [[ $reconfig=="Y" ]]; then
+    ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key ansible/io-reset.yml
+    if [[ $DEMO=="True" ]]; then
+      ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key ansible/demo-reset.yml
+    fi
+    rm $clDir/.pgpass
+  else
+    echo "FATAL ERROR: Cluster has already been configured"
+    exit 1
+  fi
+fi
+
 PASS=$(openssl rand -hex 8;)
+## Construct pgpass
+echo "localhost:5432:*:postgres:$PASS" >> $clDir/.pgpass
+echo "127.0.0.1:5432:*:postgres:$PASS" >> $clDir/.pgpass
+input="$clDir/ansible_hosts_node"
+item=1
+while IFS= read -r line
+do
+   if [[ $line == "[hosts]" ]]; then
+      continue
+   elif [[ $line == "" ]]; then
+      break
+   else
+      echo "node${item}-1:5432:*:postgres:$PASS" >> $clDir/.pgpass
+      echo "$line:5432:*:postgres:$PASS" >> $clDir/.pgpass
+      item=$((item+1))
+   fi
+done < "$input"
 
-echo "using key: $key"
-
-$SCP $clDir/ansible_hosts  $usr@$d1:.
-$SCP ansible/add-key.yml $usr@$d1:.
-$SCP $clDir/demo.sql $usr@$d1:.
+echo "Configuring Nodes"
 
 ## Cat hosts to /etc/hosts on each VM
-ansible-playbook -i $clDir/ansible_hosts --user centos --key-file $key ansible/cat-hosts.yml
-
-$SSH $usr@$d1 'mkdir keys'
-$SCP $key $usr@$d1:keys/.
-$SSH $usr@$d1 'echo -e "\n\n\n" | ssh-keygen -t rsa'
+ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key ansible/cat-hosts.yml
 
 ## Add keys to each VM
-$SSH $usr@$d1 "ansible-playbook -i ansible_hosts --user centos --key-file $key -e \"key=/home/centos/.ssh/id_rsa.pub\" add-key.yml"
+ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key -e "KEYFILE=../${key/.pem/.pub}" ansible/add-key.yml
 
-## Run io install and build bmsql, set up password file
-ansible-playbook -i $clDir/ansible_hosts_driver --user centos --key-file $key -e "PGV=$PGV" ansible/io-install.yml
-pw='echo '
-pw+=$PASS
-pw+=' >> test/tf-nimoy/remote/.pword'
-$SSH $usr@driver1-1 "$pw"
+## Run io install, io start
+ansible-playbook -i $clDir/ansible_hosts_node --user $usr --key-file $key -e "PGV=$PGV PASS=$PASS PGFile=$clDir/.pgpass" ansible/io-install.yml
+
+if [[ $DEMO=="True" ]]; then
+  echo "Configuring Demo Global Pharmacy Application"
+
+  ## Cat hosts to /etc/hosts on each VM
+  ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key ansible/cat-hosts.yml
+
+  ## Add keys to each VM
+  ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key -e "KEYFILE=../${key/.pem/.pub}" ansible/add-key.yml
+
+  ## Run io install, build demo, and set up password file
+  ansible-playbook -i $clDir/ansible_hosts_driver --user $usr --key-file $key -e "PGV=$PGV PASS=$PASS PGFile=$clDir/.pgpass DEMSQL=$clDir/demo.sql" ansible/demo-install.yml
+fi
+
+echo "Database Cluster Ready"
 

@@ -1,6 +1,6 @@
 ---
 - name: "Playbook to Update hosts on VM's"
-  hosts: hosts_to_add_key
+  hosts: hosts
   become: yes
   vars:
     - status : "present"
@@ -12,3 +12,5 @@
 
   - name: 
     shell: sudo cat hosts >> /etc/hosts
+
+   

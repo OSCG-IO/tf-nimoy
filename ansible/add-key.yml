@@ -1,15 +1,19 @@
 ---
 - name: "Playbook to Add Key to VM's"
-  hosts: hosts_to_add_key
+  hosts: hosts
   vars:
     - status : "present"
-    - key : "/home/centos/.ssh/id_rsa.pub"
 
   tasks:
+
+  - name: "Copy pvm"
+    copy: 
+      src: '~/.ssh/id_rsa' 
+      dest: '~/.ssh/id_rsa' 
+      mode: '0600'
 
   - name: "Copy the authorized key file from"
     authorized_key:
       user: "{{ansible_user}}"
       state: "{{status}}"
-      key: "{{ lookup('file', '{{ key }}')}}"
-
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

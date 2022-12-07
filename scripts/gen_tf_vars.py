@@ -20,7 +20,7 @@ if len(sys.argv) == 4:
 
 opsys = os.getenv("OPSYS", "")
 plat = os.getenv("PLATFORM", "")
-key_name = os.getenv("KEY_NAME", "dl-m1book-key").removesuffix(".pem")
+key_name = os.getenv("KEY_NAME","").removesuffix(".pem")
 
 if ((opsys == "") or (plat == "")):
   print("ERROR: The OPSYS & PLATFORM environment variables both need to be set")

@@ -1,18 +1,30 @@
 ---
 - name: "Playbook to install VM's"
-  hosts: hosts_to_io
+  hosts: hosts
   vars:
     - status : "present"
 
   tasks:
-  - name: "Install bmsql"
-    shell: cd test/tf-nimoy/remote/benchmarksql; /home/centos/apache-ant-1.9.16/bin/ant;
-  
-  - name: "Install io"       
-    shell: python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)"; 
+  - name: "Install io on Database Nodes"       
+    shell: cd /db; python3 -c "$(curl -fsSL https://oscg-io-download.s3.amazonaws.com/REPO/install.py)" 
     
-  - name: Install pg"
-    shell: cd oscg; ./io install pg{{ PGV }};
+  - name: "Install base Postgres"
+    shell: cd /db/oscg; ./io install pg{{ PGV }};
     
-  - name: "Set up pgpass"
-    shell: touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass; 
+  - name: "Securely Remembering PG Password"
+    shell: echo {{ PASS }} > /db/oscg/pg{{ PGV }}/.pgpass
+
+  - name: "Configure and Tune PostgreSQL. Install Spock and Friends"
+    shell: cd /db/oscg; ./io start pg{{ PGV }} -y -d demo {{ ':' }} tune pg{{ PGV }} {{ ':' }} install spock -d demo {{ ':' }} install prompgexp
+
+  - name: "Configure Prometheus Monitoring for Postgres"
+    copy: src=../conf/queries.yml dest=/db/oscg/prompgexp/queries.yml
+
+  - name: "Starting Monitoring Background Process"
+    shell: cd /db/oscg; ./io start prompgexp;
+
+  - name: "Finalize PG Password..."
+    copy: src="{{ PGFile }}" dest=/home/centos/.pgpass
+
+  - name: "Finalized"
+    shell: touch /home/centos/.pgpass; chmod 600 /home/centos/.pgpass;

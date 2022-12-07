@@ -1,0 +1,1 @@
+UPDATE bmsql_customer SET c_last=NULL, c_first=NULL, c_middle=NULL, c_phone=NULL, c_street_1=NULL, c_street_2=NULL, c_data=NULL, c_credit_card=NULL, c_credit_exp=NULL, c_pronouns=NULL, c_gender=NULL WHERE c_w_id=:REGION

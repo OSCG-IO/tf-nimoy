@@ -4,8 +4,10 @@ export CLOUD=aws
 export MACHINE=c6g.medium
 export OPSYS=cos8
 export PLATFORM=arm
+export KEY_NAME=pge_dev_key.pem
 export PGV=15
 export NODE_KOUNT=3
+export DEMO=False
 
 export N1=pdt
 export N1Z=a

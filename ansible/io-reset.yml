@@ -1,0 +1,12 @@
+---
+- name: "Playbook to uninstall VM's"
+  hosts: hosts
+  vars:
+    - status : "present"
+
+  tasks:
+  - name: "Stop pg"
+    shell: /db/oscg/io stop;
+    
+  - name: "Remove dir"
+    shell: sudo rm -rf /db/oscg

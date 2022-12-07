@@ -1,16 +1,17 @@
 import os
 
 f = open('nodes/' + os.environ['CLUSTER']+ '/' + os.environ['CLUSTER'] + '.out', 'r')
-fa = open('nodes/' + os.environ['CLUSTER']+ '/' + 'ansible_hosts', 'w')
+fn = open('nodes/' + os.environ['CLUSTER']+ '/' + 'ansible_hosts_node', 'w')
 fd = open('nodes/' + os.environ['CLUSTER']+ '/' + 'ansible_hosts_driver', 'w')
 fh = open('hosts', 'w')
 
 fh.write("" + os.linesep)
-fa.write("[hosts_to_add_key]" + os.linesep)
-fd.write("[hosts_to_io]" + os.linesep)
+fn.write("[hosts]" + os.linesep)
+fd.write("[hosts]" + os.linesep)
 
 Lines = f.readlines()
 nn=""
+drive_ip=0
 
 for line in Lines:
   l = line.strip()
@@ -26,21 +27,25 @@ for line in Lines:
     for i in ls:
       if i.startswith('"') and i.endswith('"'):
         ii = i.replace('"',"")
-        fa.write(ii + os.linesep)
-        fh.write(ii +  "   node" + n + "-1" + os.linesep)
+        fn.write(ii + os.linesep)
+        fh.write(ii +  "   node" + n + "-1  aws-" + n + "-" +  os.environ['N'+n]  + os.linesep)
         break
 
   if l.startswith('driver_public_ip'):
+    drive_ip=1
+    continue
+
+  if drive_ip == 1:
+    drive_ip=0
     for i in ls:
-      if i.startswith('"') and i.endswith('"'):
-        ii = i.replace('"',"")
-        fa.write(ii + os.linesep)
-        fd.write(ii + os.linesep)
-        fh.write(ii +  "   driver" + n + "-1" + os.linesep)
-        break
+      ii = i.replace('"',"")
+      ii = ii.replace(",","")
+      fd.write(ii + os.linesep)
+      fh.write(ii +  "   driver" + n + "-1" + os.linesep)
+      break
 
 fh.write("" + os.linesep)
-fa.write(os.linesep + "[hosts_to_add_key:vars]" + os.linesep + \
+fn.write(os.linesep + "[hosts:vars]" + os.linesep + \
    'ansible_ssh_common_args="-o StrictHostKeyChecking=no"' + os.linesep)
-fd.write(os.linesep + "[hosts_to_io:vars]" + os.linesep + \
+fd.write(os.linesep + "[hosts:vars]" + os.linesep + \
    'ansible_ssh_common_args="-o StrictHostKeyChecking=no"' + os.linesep)

@@ -9,6 +9,9 @@ psql="$HOME/oscg/$pgXX/bin/psql -U postgres "
 function add_table {
   table="public.bmsql_$1"
   sql="select spock.replication_set_add_table('bmsql_set', '$table')"
+  if [ "$1" = "customer" ]; then
+     sql="select spock.replication_set_add_table('bmsql_set', '$table', columns := '{c_w_id, c_d_id, c_id, c_discount, c_ytd_payment, c_payment_cnt, c_delivery_cnt, c_since, c_credit, c_credit_lim, c_balance, c_city , c_state, c_zip, c_location, c_country}')"
+  fi
   echo ""
   echo "$sql"
   $psql -h $node -q demo -c "$sql"

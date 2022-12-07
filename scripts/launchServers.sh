@@ -12,6 +12,11 @@ setNodesVars () {
     echo "variable \"nn\" { default = \"${i}-1\" }" > $tf
     echo "variable \"cluster\" { default = \"$CLUSTER\" }" >> $tf
     echo "variable \"machine\" { default = \"$MACHINE\" }" >> $tf
+    if [[ $DEMO == "True" ]]; then
+	echo "variable \"demo\" { default = \"True\" }" >> $tf
+    else
+	echo "variable \"demo\" { default = \"False\" }" >> $tf
+    fi
   done
 }
 
@@ -91,14 +96,16 @@ setupNodesDir
 map="$NN/nodes.html"
 echo ""
 echo "generate the geo map ($map)"
-python3 scripts/generate.py map --provider aws --location "$N1,$N2,N3" > $map
+python3 scripts/generate.py map --provider aws --location "$N1,$N2,$N3" > $map
 rc=$?
 if [ ! "$rc" == "0" ]; then
   exit 1
 fi
 
-demosql="$NN/demo.sql"
-python3 scripts/gen_demo_sql.py $N1 $N2 $N3 > $demosql
+if [[ $DEMO == "True" ]]; then
+  demosql="$NN/demo.sql"
+  python3 scripts/gen_demo_sql.py $N1 $N2 $N3 > $demosql
+fi
 
 echo ""
 echo "# copy location files"
@@ -119,7 +126,7 @@ setNodesVars
 
 echo " "
 echo "configuring localhost"
-./updateLocalhost.sh $CLUSTER
+./scripts/updateLocalhost.sh $CLUSTER
 
 echo ""
 echo "  run './scripts/configServers.sh <cluster_name>' next"
@@ -130,6 +137,6 @@ yes | pv -SL1 -F 'Resuming in %e' -s 150 > /dev/null
 
 os=`uname -s`
 if [ "$os" == "Darwin" ]; then
-  sudo reboot
+  sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 fi
 

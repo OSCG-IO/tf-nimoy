@@ -11,8 +11,7 @@ NODES_DIR = os.getcwd() + "/../nodes"
 KEYS_DIR  = os.getcwd() + "/../keys"
 
 
-def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, pgv=None, key=None):
-
+def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, pgv=None, key=None, demo=None):
   clusdir = NODES_DIR + "/" + str(cluster)
   if os.path.isdir(clusdir):
     print("ERROR: Cluster Directory already exists: " + clusdir, file=sys.stderr)
@@ -44,6 +43,14 @@ def launch(cluster, nodes, cloud=None, machine=None, opsys=None, platform=None, 
   if pgv:
     os.environ['PGV'] = str(pgv)
   write_cluster_env('PGV', os.environ['PGV'], f)
+
+  if key:
+    os.environ['KEY_NAME'] = str(key)
+  write_cluster_env('KEY_NAME', os.environ['KEY_NAME'], f)
+
+  if demo:
+    os.environ['DEMO'] = "True"
+  write_cluster_env('DEMO', os.environ['DEMO'], f)
 
   nodes = str(nodes)
   node_arr = nodes.split(',')
@@ -88,7 +95,13 @@ def list(cluster_pattern=""):
   os.system("ls -l " + NODES_DIR + "/" + str(cluster_pattern))
 
 
-def keygen(key=""):
+def keygen(key="",force="N"):
+  dir_key = KEYS_DIR + "/" + key
+  if force in ('Y', 'y'):
+    os.system('rm -rf ' + dir_key + '*')
+  if os.is_file(dir_key + '.pub'):
+    print("ERROR: key already exists", file=sys.stderr)
+    sys.exit(1)
   os.system("ssh-keygen -t rsa -f " + KEYS_DIR + "/" + key)
 
 
