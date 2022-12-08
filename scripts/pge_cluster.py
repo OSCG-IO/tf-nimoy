@@ -105,11 +105,19 @@ def keygen(key="",force="N"):
   os.system("ssh-keygen -t rsa -f " + KEYS_DIR + "/" + key)
 
 
+def updatePassword(cluster, json_file):
+  os.system("./nimoy.sh updatePass " +  cluster + " " + json_file)
+
+def initReplication(cluster, json_file):
+  os.system("./nimoy.sh initReplication " +  cluster + " " + json_file)
+
 if __name__ == '__main__':
   fire.Fire({
       'launch': launch,
       'destroy': destroy,
       'list': list,
       'keygen': keygen,
+      'updatePassword': updatePassword,
+      'initReplication': initReplication
   })
 
