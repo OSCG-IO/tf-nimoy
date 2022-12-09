@@ -32,12 +32,50 @@ if command=="updatePass":
   pg_pass_file="localhost:5432:*:replication:" + rep_user_pass + "\n" + pg_pass_file
   print(pg_pass_file) 
 
-if command=="initReplication":
+if command=="create-node":
   nodei=1;
-  print("Starting Replication Set Up")
-  if parsed_json["samePass"]=="true":
-    for i in parsed_json["nodes"]:
-      print("psql -h " + i["ip"] + " -U postgres --password " + i["pass"] + "-c \" spock.create_replication_set('spock_replication_set', true, true, true, true);\"")    
-      print("psql -h " + i["ip"] + " -U postgres --password " + i["pass"] + "-c \"SELECT table_name from pg_catalog\"")
-      print("psql -h " + i["ip"] + " -U postgres --password " + i["pass"] + "-c \"SELECT * from spock.pii\"")      
-      print("psql -h " + i["ip"] + " -U postgres --password " + i["pass"] + "-c \"select spock.replication_set_add_table('bmsql_set', '$table')\"")      
+  print("Creating All Spock Nodes")
+  db=parsed_json["dbname"]
+  for i in parsed_json["nodes"]:
+    dns="host=" + i["ip"] + " port=5432 user=replication dbname=" + db
+    io_cmd="\"cd /db/oscg && ./io spock create-node node" + str(nodei) + " '" + dns + "' " + db  +"\""
+    cmd="ssh centos@" + i["ip"] + " " + io_cmd
+    data = os.system(cmd)
+    nodei=nodei+1
+    print(data)
+
+if command=="show-subscription-status":
+  nodei=1;
+  print("Showing All Subscription Status")
+  db=parsed_json["dbname"]
+  for i in parsed_json["nodes"]:
+    io_cmd="\"cd /db/oscg && ./io spock show-subscription-status all " + db + "\"" 
+    cmd="ssh centos@" + i["ip"] + " " + io_cmd
+    data = os.system(cmd)
+    nodei=nodei+1
+    print(data)
+
+if command=="create-replication-set":
+  print("Creating All Replication Sets")
+  db=parsed_json["dbname"]
+  for i in parsed_json["nodes"]:
+    io_cmd="\"cd /db/oscg && ./io spock create-replication-set " + db  + "_replication_set " + db + "\""
+    cmd="ssh centos@" + i["ip"] + " " + io_cmd
+    data = os.system(cmd)
+    print(data)
+
+if command=="get-replication-rules":
+  db=parsed_json["dbname"]
+  cmd="ssh centos@" + parsed_json["nodes"][0]["ip"] + " \"cd /db/oscg && ./io spock get-replication-tables " + db + " --json \""
+  data = os.system(cmd)
+  print(data)
+
+if command=="replication-set-add-table":
+  print("Adding Table to All Replication Sets")
+  db=parsed_json["dbname"]
+  tab="bmsql_item"
+  for i in parsed_json["nodes"]:
+    io_cmd="\"cd /db/oscg && ./io spock replication-set-add-table " + db + " " + db + "_replication_set " + tab + "\""
+    cmd="ssh centos@" + i["ip"] + " " + io_cmd
+    data = os.system(cmd)
+    print(data)
