@@ -33,40 +33,41 @@ INSERT INTO geos VALUES ('af', 'Africa');
 
 CREATE TABLE countries (
   country      TEXT     NOT NULL PRIMARY KEY,
+  country3     TEXT     NOT NULL
   geo          TEXT     NOT NULL REFERENCES geos(geo),
   country_nm   TEXT     NOT NULL
 );
-INSERT INTO countries VALUES ('us', 'na', 'United States');
-INSERT INTO countries VALUES ('ca', 'na', 'Canada');
-INSERT INTO countries VALUES ('br', 'sa', 'Brazil');
-INSERT INTO countries VALUES ('ir', 'eu', 'Ireland');
-INSERT INTO countries VALUES ('gb', 'eu', 'Great Britain');
-INSERT INTO countries VALUES ('de', 'eu', 'Germany');
-INSERT INTO countries VALUES ('fr', 'eu', 'France');
-INSERT INTO countries VALUES ('it', 'eu', 'Italy');
-INSERT INTO countries VALUES ('se', 'eu', 'Sweden');
-INSERT INTO countries VALUES ('bh', 'me', 'Bahrain');
-INSERT INTO countries VALUES ('ae', 'me', 'UAE');
-INSERT INTO countries VALUES ('au', 'au', 'Australia');
-INSERT INTO countries VALUES ('za', 'af', 'South Africa');
-INSERT INTO countries VALUES ('jp', 'ap', 'Japan');
-INSERT INTO countries VALUES ('hk', 'ap', 'Hong Kong');
-INSERT INTO countries VALUES ('sg', 'ap', 'Singapore');
-INSERT INTO countries VALUES ('kr', 'ap', 'South Korea');
-INSERT INTO countries VALUES ('id', 'ap', 'Indonesia');
-INSERT INTO countries VALUES ('in', 'ap', 'India');
-INSERT INTO countries VALUES ('nz', 'ap', 'New Zealand');
-INSERT INTO countries VALUES ('cn', 'ap', 'China');
-INSERT INTO countries VALUES ('es', 'eu', 'Spain');
-INSERT INTO countries VALUES ('il', 'me', 'Israel');
-INSERT INTO countries VALUES ('be', 'eu', 'Belgium');
-INSERT INTO countries VALUES ('nl', 'eu', 'Netherlands');
-INSERT INTO countries VALUES ('fl', 'eu', 'Finland');
-INSERT INTO countries VALUES ('tw', 'ap', 'Taiwan');
-INSERT INTO countries VALUES ('cl', 'sa', 'Chile');
-INSERT INTO countries VALUES ('pl', 'eu', 'Poland');
-INSERT INTO countries VALUES ('no', 'eu', 'Norway');
-INSERT INTO countries VALUES ('qa', 'me', 'Qatar');
+INSERT INTO countries VALUES ('us', 'usa', 'na', 'United States');
+INSERT INTO countries VALUES ('ca', 'can', 'na', 'Canada');
+INSERT INTO countries VALUES ('br', 'bra', 'sa', 'Brazil');
+INSERT INTO countries VALUES ('ir', 'irl', 'eu', 'Ireland');
+INSERT INTO countries VALUES ('gb', 'gbr', 'eu', 'Great Britain');
+INSERT INTO countries VALUES ('de', 'ger', 'eu', 'Germany');
+INSERT INTO countries VALUES ('fr', 'fra', 'eu', 'France');
+INSERT INTO countries VALUES ('it', 'ita', 'eu', 'Italy');
+INSERT INTO countries VALUES ('se', 'swe', 'eu', 'Sweden');
+INSERT INTO countries VALUES ('bh', 'bhr', 'me', 'Bahrain');
+INSERT INTO countries VALUES ('ae', 'are', 'me', 'UAE');
+INSERT INTO countries VALUES ('au', 'aus', 'au', 'Australia');
+INSERT INTO countries VALUES ('za', 'zaf', 'af', 'South Africa');
+INSERT INTO countries VALUES ('jp', 'jpn', 'ap', 'Japan');
+INSERT INTO countries VALUES ('hk', 'hkg', 'ap', 'Hong Kong');
+INSERT INTO countries VALUES ('sg', 'sgp', 'ap', 'Singapore');
+INSERT INTO countries VALUES ('kr', 'kor', 'ap', 'South Korea');
+INSERT INTO countries VALUES ('id', 'idn', 'ap', 'Indonesia');
+INSERT INTO countries VALUES ('in', 'ind', 'ap', 'India');
+INSERT INTO countries VALUES ('nz', 'nzl', 'ap', 'New Zealand');
+INSERT INTO countries VALUES ('cn', 'chn', 'ap', 'China');
+INSERT INTO countries VALUES ('es', 'esp', 'eu', 'Spain');
+INSERT INTO countries VALUES ('il', 'isr', 'me', 'Israel');
+INSERT INTO countries VALUES ('be', 'bel', 'eu', 'Belgium');
+INSERT INTO countries VALUES ('nl', 'ned', 'eu', 'Netherlands');
+INSERT INTO countries VALUES ('fl', 'fin', 'eu', 'Finland');
+INSERT INTO countries VALUES ('tw', 'twn', 'ap', 'Taiwan');
+INSERT INTO countries VALUES ('cl', 'chl', 'sa', 'Chile');
+INSERT INTO countries VALUES ('pl', 'pol', 'eu', 'Poland');
+INSERT INTO countries VALUES ('no', 'nor', 'eu', 'Norway');
+INSERT INTO countries VALUES ('qa', 'qat', 'me', 'Qatar');
 
 
 CREATE TABLE locations (
@@ -284,7 +285,7 @@ INSERT INTO regions VALUES ('az', 'cbr', 'australiacentral',   'australiacentral
 
 
 CREATE VIEW v_locations AS
-SELECT g.geo, c.country, l.location, l.state, r.provider, r.region, l.location_nm, 
+SELECT g.geo, c.country3, c.country, l.location, l.state, r.provider, r.region, l.location_nm, 
        l.lattitude, l.longitude, r.parent_region, r.avail_zones
   FROM geos g, countries c, regions r, locations l
  WHERE g.geo = c.geo 
