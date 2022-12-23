@@ -33,7 +33,7 @@ INSERT INTO geos VALUES ('af', 'Africa');
 
 CREATE TABLE countries (
   country      TEXT     NOT NULL PRIMARY KEY,
-  country3     TEXT     NOT NULL
+  country3     TEXT     NOT NULL,
   geo          TEXT     NOT NULL REFERENCES geos(geo),
   country_nm   TEXT     NOT NULL
 );
