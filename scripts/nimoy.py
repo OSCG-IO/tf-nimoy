@@ -48,6 +48,13 @@ def create_replication_set(db, node_id, ip):
   return data
 
 
+def create_subscription(db, subname, prov_node_id, prov_ip, sub_node_id, sub_ip):
+  print("Creating Subscription for: " + prov_node_id)
+  io_cmd="create-subscription " + subname + " 'host=" + sub_ip + " port=5432 user=replication dbname=" + db + "' "+ db
+  data=run_spock(prov_ip,io_cmd)
+  return data
+
+
 def show_subscription_status(db, node_id, ip):
   print("Showing Subscription Status for: " + node_id)
   io_cmd="show-subscription-status all " + db 
@@ -79,7 +86,15 @@ def replication_set_add_table(db, node_id, ip, table, col):
 
 ## ---- Business Logic to run full set ups
 def run_for(function,nodes):
-  if nodes == "all":
+  if function == "create_subscription":
+    if nodes == "all":
+      db=parsed_json["dbname"]
+      for i in parsed_json["nodes"]:
+        for j in parsed_json["nodes"]:
+          if i["ip"] != j["ip"]:
+            data=create_subscription(db, i["nodename"]+j["nodename"], i["nodename"], i["ip"], j["nodename"], j["ip"])
+            print(json.dumps(data))
+  elif nodes == "all":
     db=parsed_json["dbname"]
     for i in parsed_json["nodes"]:
       data=globals()[function](db, i["nodename"], i["ip"])
@@ -93,6 +108,12 @@ def add_tables_with_pii(db, node_id, ip):
   for i in data:
     data2=replication_set_add_table(db, node_id, ip,i["table_name"], i["array_agg"])
   return data2
+
+
+def init_cluster():
+  run_for("create_node","all")
+  run_for("create_replication_set","all")
+  run_for("create_subscription","all")
 
 
 ## ---- Basic io Commands
@@ -117,7 +138,10 @@ except Exception as e:
 
 command=command.replace("-","_")
 
-rc = run_for(command,nodes_to_process)
+if command=="init_cluster":
+  rc = init_cluster()
+else:
+  rc = run_for(command,nodes_to_process)
 
 
 ## ---- Leftover code

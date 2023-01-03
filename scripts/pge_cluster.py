@@ -109,7 +109,7 @@ def updatePassword(cluster, json_file):
   os.system("./nimoy.sh updatePass " +  cluster + " " + json_file)
 
 def initReplication(cluster, json_file):
-  os.system("./nimoy.sh initReplication " +  cluster + " " + json_file)
+  os.system("./nimoy.sh init-cluster " +  cluster + " all  " + json_file)
 
 if __name__ == '__main__':
   fire.Fire({
